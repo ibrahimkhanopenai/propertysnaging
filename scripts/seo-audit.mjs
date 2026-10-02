@@ -46,7 +46,7 @@ for (const url of urls) {
 }
 
 for (const [t, ps] of titles) if (ps.length > 1) problems.push(`Duplicate title "${t}" on ${ps.join(", ")}`);
-for (const [d, ps] of descs) if (ps.length > 1) problems.push(`Duplicate description on ${ps.join(", ")}`);
+for (const [, ps] of descs) if (ps.length > 1) problems.push(`Duplicate description on ${ps.join(", ")}`);
 
 console.log(`Checking ${linkTargets.size} internal link targets…`);
 for (const p of linkTargets) {

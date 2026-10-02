@@ -9,6 +9,10 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "check": "npm run typecheck && npm run lint && npm test",
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
     "db:deploy": "prisma migrate deploy",
@@ -30,29 +34,37 @@
     "jose": "^5.9.6",
     "marked": "^15.0.0",
     "next": "^15.5.0",
-    "nodemailer": "^6.10.0",
+    "nodemailer": "^10.0.13",
     "react": "^19.1.0",
-    "server-only": "^0.0.1",
     "react-dom": "^19.1.0",
+    "sanitize-html": "^2.18.0",
+    "server-only": "^0.0.1",
     "zod": "^3.25.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
     "@tailwindcss/postcss": "^4.1.0",
     "@types/node": "^22.10.0",
-    "@types/nodemailer": "^6.4.17",
+    "@types/nodemailer": "^8.0.2",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
+    "@types/sanitize-html": "^2.16.2",
     "@types/turndown": "^5.0.5",
+    "@vitest/coverage-v8": "^3.2.7",
     "eslint": "^9.20.0",
     "eslint-config-next": "^15.5.0",
     "prisma": "^6.10.0",
     "tailwindcss": "^4.1.0",
     "tsx": "^4.19.0",
     "turndown": "^7.2.0",
-    "typescript": "^5.8.0"
+    "typescript": "^5.8.0",
+    "vitest": "^3.2.7"
   },
   "engines": {
     "node": ">=20.9.0"
+  },
+  "overrides": {
+    "postcss": "^8.5.28",
+    "deepmerge-ts": "^8.0.2"
   }
 }

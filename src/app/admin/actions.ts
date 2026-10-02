@@ -2,10 +2,12 @@
 
 import bcrypt from "bcryptjs";
 import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createSession, destroySession, getSession } from "@/lib/auth";
 import { prisma } from "@/lib/db";
+import { clientIp, createRateLimiter } from "@/lib/rate-limit";
 import { normalizePath, slugify } from "@/lib/utils";
 import { staticRoutes } from "@/lib/routes";
 
@@ -19,9 +21,18 @@ async function requireAdmin() {
 
 export type LoginState = { error?: string };
 
+// Brute-force guard: 10 failed attempts / 15 min per IP, and per email from any IP
+const loginByIp = createRateLimiter({ limit: 10, windowMs: 15 * 60_000 });
+const loginByEmail = createRateLimiter({ limit: 10, windowMs: 15 * 60_000 });
+
 export async function loginAction(_prev: LoginState, fd: FormData): Promise<LoginState> {
   const email = String(fd.get("email") ?? "").trim().toLowerCase();
   const password = String(fd.get("password") ?? "");
+  const ip = clientIp(await headers());
+  // Count the attempt up front; a successful login clears both counters below
+  const ipBlocked = loginByIp.hit(ip);
+  const emailBlocked = email ? loginByEmail.hit(email) : false;
+  if (ipBlocked || emailBlocked) return { error: "Too many login attempts. Try again in 15 minutes." };
   const user = email ? await prisma.adminUser.findUnique({ where: { email } }) : null;
   if (!user) {
     await bcrypt.hash(password, 12); // keep response time similar to a real check
@@ -29,6 +40,8 @@ export async function loginAction(_prev: LoginState, fd: FormData): Promise<Logi
   }
   const ok = await bcrypt.compare(password, user.passwordHash);
   if (!ok) return { error: "Email or password is incorrect." };
+  loginByIp.reset(ip);
+  loginByEmail.reset(email);
   await createSession(user.email);
   redirect("/admin/");
 }

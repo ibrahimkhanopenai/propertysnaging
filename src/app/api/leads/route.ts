@@ -4,6 +4,7 @@ import { prisma } from "@/lib/db";
 import { estimatePrice } from "@/lib/estimate";
 import { escapeHtml, sendMail } from "@/lib/mail";
 import { getPricing } from "@/lib/pricing";
+import { clientIp, createRateLimiter } from "@/lib/rate-limit";
 
 const schema = z.object({
   name: z.string().trim().min(1).max(120),
@@ -21,19 +22,11 @@ const schema = z.object({
   pagePath: z.string().max(255).optional(),
 });
 
-// Basic in-memory rate limit (single server). 5 requests / 10 min / IP.
-const hits = new Map<string, number[]>();
-function limited(ip: string) {
-  const now = Date.now();
-  const recent = (hits.get(ip) ?? []).filter((t) => now - t < 10 * 60_000);
-  recent.push(now);
-  hits.set(ip, recent);
-  return recent.length > 5;
-}
+// 5 requests / 10 min / IP (single server — see src/lib/rate-limit.ts)
+const limiter = createRateLimiter({ limit: 5, windowMs: 10 * 60_000 });
 
 export async function POST(req: Request) {
-  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "local";
-  if (limited(ip)) return NextResponse.json({ ok: false, error: "rate_limited" }, { status: 429 });
+  if (limiter.hit(clientIp(req.headers))) return NextResponse.json({ ok: false, error: "rate_limited" }, { status: 429 });
 
   let body: unknown;
   try {
