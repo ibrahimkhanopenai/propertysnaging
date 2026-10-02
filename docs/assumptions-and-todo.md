@@ -1,0 +1,34 @@
+# Assumptions & TODO before launch
+
+## DUMMY data (replace — all in `src/lib/site.ts` unless noted)
+| Item | Current value | Where |
+|---|---|---|
+| Email | info@propertyinspectors.me | `site.email`, `.env LEAD_NOTIFY_TO` |
+| Opening hours | Mo-Sa 08:00-20:00 | `site.hours` |
+| DED licence no. | DED-000000 | `site.dedLicense` |
+| Social links | guessed URLs | `site.social` |
+| Stats | 1,500+ inspections, 10+ years, 300+ points | `site.stats` (`genuine:false` items) — client requires GENUINE numbers |
+| Google rating | 4.9 placeholder | `site.reviews.rating` |
+| Google review link | Maps search URL | `site.googleReviewUrl` — use the real profile / review link |
+| Reviews | placeholder cards until added | Admin → Reviews |
+| Price | 10 AED per bedroom | `.env PRICE_PER_BEDROOM` |
+| GTM / GA IDs | empty | `.env` — copy from WordPress |
+| Arabic copy | first draft | `ar.ts`, `pages.ar.ts` — native review needed |
+
+## Assumptions made
+- Hosting is a self-managed Node server ("local") — no Vercel-specific features used.
+- MySQL is required, so Payload CMS was not used (it has no MySQL adapter); admin is custom.
+- Download pages (`/sample-report/` etc.) link straight to the existing PDFs.
+- `/download-brochure/` uses the company profile PDF (no separate brochure PDF found).
+- Images reuse the current site's photos (paths in `site.images`); hero = `20251122_142826-scaled.jpg` — swap for the best real inspector photo.
+- Logo is rendered as icon + text; replace `components/layout/Logo.tsx` with the official SVG when available.
+
+## Open tasks
+- [ ] **Confirm domain**: report says propertyinspectors.ae, live site is .me (see `docs/client-requirements.md`)
+- [ ] Confirm sample report images have all client personal data removed
+- [ ] Write the 10 blog drafts (`npm run blog:drafts`) and genuine developer pages
+- [ ] Replace all DUMMY values above
+- [ ] Native Arabic review
+- [ ] Meta parity with `docs/legacy-seo.json`
+- [ ] Real Google reviews (Places API or manual)
+- [ ] Optional: Arabic translations of the 5 imported blog posts

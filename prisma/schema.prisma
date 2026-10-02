@@ -1,0 +1,156 @@
+// MySQL 8+ schema. Run `npm run db:migrate` after changes.
+// Docs: docs/admin-cms.md
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+  SCHEDULED
+}
+
+enum Locale {
+  en
+  ar
+}
+
+/// POST = blog article (/{slug}/, listed in /blog/)
+/// DEVELOPER = developer / development landing page (/{slug}/, listed in /snagging-by-developer/)
+enum PostType {
+  POST
+  DEVELOPER
+}
+
+model AdminUser {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique @db.VarChar(191)
+  passwordHash String   @db.VarChar(255)
+  name         String?  @db.VarChar(120)
+  createdAt    DateTime @default(now())
+}
+
+model Category {
+  id    Int    @id @default(autoincrement())
+  name  String @db.VarChar(120)
+  slug  String @unique @db.VarChar(191)
+  posts Post[]
+}
+
+model Post {
+  id               Int        @id @default(autoincrement())
+  type             PostType   @default(POST)
+  locale           Locale     @default(en)
+  title            String     @db.VarChar(255)
+  /// Public URL is /{slug}/ (root level, same as old WordPress) — /ar/{slug}/ for Arabic
+  slug             String     @db.VarChar(191)
+  excerpt          String?    @db.Text
+  /// Markdown
+  content          String     @db.LongText
+  featuredImage    String?    @db.VarChar(500)
+  featuredImageAlt String?    @db.VarChar(255)
+  status           PostStatus @default(DRAFT)
+  publishedAt      DateTime?
+  authorName       String?    @db.VarChar(120)
+  categoryId       Int?
+  category         Category?  @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  /// Comma separated
+  tags             String?    @db.VarChar(500)
+  /// dubai | abudhabi | sharjah
+  location         String?    @db.VarChar(40)
+  /// Internal path for the CTA at the end of the post, e.g. /snagging-services-in-dubai/
+  relatedService   String?    @db.VarChar(255)
+  tocEnabled       Boolean    @default(true)
+
+  // ── SEO ──
+  metaTitle         String?  @db.VarChar(255)
+  metaDescription   String?  @db.VarChar(500)
+  focusKeyword      String?  @db.VarChar(191)
+  /// Comma separated
+  secondaryKeywords String?  @db.VarChar(500)
+  canonicalUrl      String?  @db.VarChar(500)
+  ogTitle           String?  @db.VarChar(255)
+  ogDescription     String?  @db.VarChar(500)
+  ogImage           String?  @db.VarChar(500)
+  robotsIndex       Boolean  @default(true)
+  robotsFollow      Boolean  @default(true)
+  /// BlogPosting | Article | HowTo
+  schemaType        String   @default("BlogPosting") @db.VarChar(40)
+  /// [{ "q": string, "a": string }]
+  faqs              Json?
+  breadcrumbTitle   String?  @db.VarChar(120)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([locale, slug])
+  @@index([type, status, publishedAt])
+}
+
+/// Paths always stored with leading AND trailing slash, e.g. /old-post/
+model Redirect {
+  id         Int      @id @default(autoincrement())
+  fromPath   String   @unique @db.VarChar(191)
+  toPath     String   @db.VarChar(500)
+  statusCode Int      @default(301)
+  createdAt  DateTime @default(now())
+}
+
+model Lead {
+  id             Int      @id @default(autoincrement())
+  name           String   @db.VarChar(120)
+  phone          String   @db.VarChar(40)
+  email          String?  @db.VarChar(191)
+  /// apartment | villa | commercial — null for the short pop-up form
+  propertyType   String?  @db.VarChar(40)
+  bedrooms       Int?
+  areaSqft       Int?
+  emirate        String?  @db.VarChar(60)
+  /// Community / building / project location (replaces old "project name" field)
+  location       String?  @db.VarChar(191)
+  /// quote_form | popup | contact_page
+  source         String?  @db.VarChar(40)
+  message        String?  @db.Text
+  estimatedPrice Int?
+  locale         String?  @db.VarChar(5)
+  pagePath       String?  @db.VarChar(255)
+  emailSent      Boolean  @default(false)
+  createdAt      DateTime @default(now())
+
+  @@index([createdAt])
+}
+
+/// Customer reviews shown in the scrolling reviews strip and on /reviews/
+model Review {
+  id         Int      @id @default(autoincrement())
+  name       String   @db.VarChar(120)
+  location   String?  @db.VarChar(120)
+  /// 1–5
+  rating     Int      @default(5)
+  text       String   @db.Text
+  /// google | whatsapp | email
+  source     String   @default("google") @db.VarChar(40)
+  reviewDate DateTime?
+  published  Boolean  @default(true)
+  sortOrder  Int      @default(0)
+  createdAt  DateTime @default(now())
+}
+
+/// Inspection photos for /gallery/ and the homepage "real inspection photos" section
+model GalleryImage {
+  id        Int      @id @default(autoincrement())
+  url       String   @db.VarChar(500)
+  alt       String   @db.VarChar(255)
+  caption   String?  @db.VarChar(255)
+  /// defects | equipment | reporting | inspection
+  category  String   @default("defects") @db.VarChar(40)
+  featured  Boolean  @default(false)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+}
