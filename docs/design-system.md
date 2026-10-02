@@ -33,7 +33,7 @@ Top bar → Header → Hero (H1, statement, Get a quote / Book an inspection / W
 Global: floating Call/WhatsApp (desktop), bottom bar (mobile), 10-second callback pop-up.
 
 ## Components
-`ButtonLink` (variants: primary, outline, whatsapp, light, ghostLight), `Container` (max 1240px), `SectionHeading`, `Icon` (inline SVG), `PageHero`, `ContentPage`, `Faq`, `PostCard`.
+`ButtonLink` (variants: primary, outline, whatsapp, light, ghostLight), `Container` (near full width: max 1920px, gutters 16→24→40→64px), `SectionHeading`, `Icon` (inline SVG), `PageHero`, `ContentPage`, `Faq`, `PostCard`.
 Radius: 12px buttons, 16–18px cards, 22–24px large panels. Min touch target 44px.
 
 ## Section patterns (inspired by propertyinspectiondxb.com, Oct 2026 — order and colours unchanged)

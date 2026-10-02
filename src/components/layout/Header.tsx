@@ -45,7 +45,7 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
                   </ul>
                 ) : null}
                 {item.groups ? (
-                  <div className={`${dropdown} inset-x-0 mx-auto grid max-w-[1180px] grid-cols-4 gap-6 p-6`}>
+                  <div className={`${dropdown} inset-x-4 mx-auto grid max-w-[1400px] lg:inset-x-10 grid-cols-4 gap-6 p-6`}>
                     {item.groups.map((g) => (
                       <div key={g.title}>
                         <p className="mb-2 px-3 text-[13px] font-semibold text-subtle">{g.title}</p>
