@@ -35,3 +35,11 @@ Global: floating Call/WhatsApp (desktop), bottom bar (mobile), 10-second callbac
 ## Components
 `ButtonLink` (variants: primary, outline, whatsapp, light, ghostLight), `Container` (max 1240px), `SectionHeading`, `Icon` (inline SVG), `PageHero`, `ContentPage`, `Faq`, `PostCard`.
 Radius: 12px buttons, 16–18px cards, 22–24px large panels. Min touch target 44px.
+
+## Section patterns (inspired by propertyinspectiondxb.com, Oct 2026 — order and colours unchanged)
+- **Service cards:** real inspection photo on top (4:3, purple inner ring + slight zoom on hover), title, summary, "Read more →". Photo/ALT pairing in `ServicesGrid.tsx` → `site.images.scope` + `home.services.photoAlt`.
+- **Icon cards** ("What we inspect"): icon in a round `mist` badge that turns `ink` on hover.
+- **Photo grid:** 12 square photos, 2/3/4 columns.
+- **FAQ:** boxed accordion items; the open item gets an `ink` border, `mist` background and a black round +/× toggle.
+- **Contact block** in the final CTA: address (Google Maps link), phone and email, each with a round icon.
+- **Footer:** "Get in touch" with icons + a 6-thumbnail photo-gallery column (Admin → Gallery, falls back to `site.defaultGallery`).

@@ -24,7 +24,7 @@ Source: `Propertyinspectors_ae_website_report.docx` (client, Oct 2026). Written 
 | 11 | Developer pages (Emaar, DAMAC, Sobha…) only where justified | 🟡 | Admin → Posts, type "Developer page" → `/{slug}/`, listed at `/snagging-by-developer/`. None published: needs genuine content |
 | 12 | FAQs (snagging, timing, cost, duration, report, handover, DLP, re-inspection, pre-purchase, HVAC, areas) | ✅ | Homepage FAQ + `/faqs/` (+ per-service FAQs), FAQPage schema |
 | 13 | Black & white theme, **purple for pictures and forms** | ✅ | Tokens `brand*` in `globals.css`; see `docs/design-system.md` |
-| 13 | Nav: Home, Services, Locations, About, Sample Report, Reviews, FAQs, Contact | ✅ | `components/layout/nav.ts` |
+| 13 | Nav: Home, Services, Locations, About, Contact (Sample Report, Reviews, FAQs moved to footer on client request, 2026-10-02) | ✅ | `components/layout/nav.ts`, `components/layout/Footer.tsx` |
 | 13 | Reference design (About + Reviews pages) | ✅ | `/about-us/` (story, values), `/reviews/` (rating badge, cards, write-a-review banner) |
 | 15 | Resources/blog + 10 initial topics | 🟡 | `npm run blog:drafts` creates 10 DRAFT outlines (not published until written) |
 | 16 | Responsive, CWV, image formats, lazy-load, HTTPS, working links | ✅/⏳ | Built in; HTTPS on the server (Nginx/Caddy); verify with `npm run seo:audit` + Lighthouse |

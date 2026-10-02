@@ -62,7 +62,23 @@ const en = {
         internachi2: "InterNACHI certification",
       },
     },
-    services: { title: "Our property inspection services", text: "Pick the inspection that matches where you are with your property.", all: "View all services" },
+    services: {
+      title: "Our property inspection services",
+      text: "Pick the inspection that matches where you are with your property.",
+      all: "View all services",
+      readMore: "Read more",
+      /** ALT text for the real inspection photos on the service cards (keys = site.images.scope) */
+      photoAlt: {
+        paint: "Inspector checking wall paint and finishing defects",
+        tiling: "Inspector checking floor tile levels and grout",
+        exterior: "Inspector reviewing a villa facade and external works",
+        windows: "Inspector testing window frames and seals",
+        plumbing: "Inspector testing bathroom plumbing for leaks",
+        electrical: "Inspector testing a distribution board and sockets",
+        roof: "Inspector checking roof waterproofing and drainage",
+        hvac: "Inspector measuring AC airflow and temperature",
+      },
+    },
     inspect: {
       title: "What we inspect",
       link: "See the full checklist",
@@ -144,6 +160,9 @@ const en = {
     cta: {
       title: "Handover coming up? Don't sign until we've checked.",
       text: "Tell us about your property and get your quote in seconds.",
+      address: "Visit our office",
+      phone: "Call us",
+      email: "Email us",
     },
   },
   quote: {
@@ -270,6 +289,8 @@ const en = {
     companyProfile: "Company profile",
     inspectionTools: "Inspection tools",
     checklist: "Snagging checklist",
+    contact: "Get in touch",
+    gallery: "Photo gallery",
   },
 };
 

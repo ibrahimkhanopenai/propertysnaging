@@ -1,17 +1,21 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
+import { Icon } from "@/components/ui/Icon";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { localePath, type Locale } from "@/i18n/config";
 import { getPageContent } from "@/content/pages";
 import type { PageKey } from "@/content/types";
 import { routePath } from "@/lib/routes";
 import { site } from "@/lib/site";
+import { getGallery } from "@/lib/content-db";
 import { Logo } from "./Logo";
 import { locationOrder } from "./nav";
 
 const footerServices: PageKey[] = ["handoverInspection", "apartmentSnagging", "villaSnagging", "dlpInspection", "elevenMonth", "prePurchase", "thermalImaging", "hvacMep"];
 
-export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
+export async function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
+  const photos = await getGallery({ take: 6 });
   const L = (p: string) => localePath(locale, p);
   const pageLink = (k: PageKey) => {
     const c = getPageContent(k, locale);
@@ -48,15 +52,25 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   return (
     <footer className="bg-ink pb-24 text-zinc-400 md:pb-0">
       <Container className="flex flex-col gap-12 py-16">
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_repeat(4,1fr)]">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-[1.4fr_repeat(4,1fr)_1.3fr]">
           <div className="flex flex-col gap-4">
             <Logo href={L("/")} inverted />
             <p className="max-w-xs text-sm leading-relaxed">{dict.footer.tagline}</p>
-            <address className="text-sm not-italic leading-relaxed">
-              {site.address.street}, {site.address.locality}, {site.address.city}, UAE
+            <p className="mt-2 font-semibold text-white">{dict.footer.contact}</p>
+            <address className="flex flex-col gap-3 text-sm not-italic leading-relaxed">
+              <a href={site.mapsUrl} target="_blank" rel="noopener noreferrer" className="flex gap-3 hover:text-white">
+                <Icon name="pin" size={18} className="mt-0.5 shrink-0 text-white" />
+                <span>{site.address.street}, {site.address.locality}, {site.address.city}, UAE</span>
+              </a>
+              <a href={`tel:${site.phone}`} data-track="footer" className="flex gap-3 font-semibold text-white">
+                <Icon name="phone" size={18} className="mt-0.5 shrink-0" />
+                <span dir="ltr">{site.phoneDisplay}</span>
+              </a>
+              <a href={`mailto:${site.email}`} className="flex gap-3 text-white">
+                <Icon name="mail" size={18} className="mt-0.5 shrink-0" />
+                <span>{site.email}</span>
+              </a>
             </address>
-            <a href={`tel:${site.phone}`} data-track="footer" className="text-sm font-semibold text-white" dir="ltr">{site.phoneDisplay}</a>
-            <a href={`mailto:${site.email}`} className="text-sm text-white">{site.email}</a>
           </div>
           {cols.map((col) => (
             <div key={col.title} className="flex flex-col gap-2.5 text-sm">
@@ -66,6 +80,20 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
               ))}
             </div>
           ))}
+          {photos.length ? (
+            <div className="flex flex-col gap-2.5 text-sm">
+              <p className="mb-1 font-semibold text-white">{dict.footer.gallery}</p>
+              <ul className="grid max-w-64 grid-cols-3 gap-2">
+                {photos.map((p) => (
+                  <li key={p.id}>
+                    <Link href={L("/gallery/")} className="relative block aspect-square overflow-hidden rounded-lg ring-brand transition hover:ring-2">
+                      <Image src={p.url} alt={p.alt} fill sizes="80px" className="object-cover" />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
         </div>
         <div className="flex flex-wrap items-center justify-between gap-4 border-t border-zinc-800 pt-6 text-[13px]">
           <p>© {new Date().getFullYear()} {site.name}. {dict.common.allRights}</p>

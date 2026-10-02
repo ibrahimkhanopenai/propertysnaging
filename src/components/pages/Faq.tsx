@@ -28,12 +28,12 @@ export function Faq({
           <SectionHeading title={title} text={text} as={as} />
           {link ? <Link href={link.href} className="font-semibold underline-offset-4 hover:underline">{link.label}</Link> : null}
         </div>
-        <div className="divide-y divide-line border-y border-line">
+        <div className="flex flex-col gap-3">
           {items.map((f, i) => (
-            <details key={f.q} className="group py-5" open={i === 0}>
+            <details key={f.q} className="group rounded-2xl border border-line bg-white px-6 py-5 transition open:border-ink open:bg-mist" open={i === 0}>
               <summary className="flex cursor-pointer list-none items-center justify-between gap-6 font-display text-lg font-extrabold [&::-webkit-details-marker]:hidden">
                 <h3 className="text-[inherit]">{f.q}</h3>
-                <span aria-hidden="true" className="text-2xl font-normal transition group-open:rotate-45">+</span>
+                <span aria-hidden="true" className="inline-flex size-9 shrink-0 items-center justify-center rounded-full border border-line bg-white text-xl font-normal transition group-open:rotate-45 group-open:border-ink group-open:bg-ink group-open:text-white">+</span>
               </summary>
               <p className="pt-3 leading-relaxed text-muted">{f.a}</p>
             </details>

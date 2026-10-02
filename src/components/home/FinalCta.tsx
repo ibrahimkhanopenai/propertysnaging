@@ -25,6 +25,25 @@ export function FinalCta({ locale, dict }: { locale: Locale; dict: Dictionary })
               <li key={x} className="flex items-center gap-2"><Icon name="check" size={18} />{x}</li>
             ))}
           </ul>
+          <ul className="mt-4 flex flex-col gap-4 border-t border-zinc-800 pt-6">
+            {[
+              { icon: "pin" as const, label: dict.home.cta.address, value: `${site.address.street}, ${site.address.locality}, ${site.address.city}`, href: site.mapsUrl, external: true },
+              { icon: "phone" as const, label: dict.home.cta.phone, value: site.phoneDisplay, href: `tel:${site.phone}`, ltr: true },
+              { icon: "mail" as const, label: dict.home.cta.email, value: site.email, href: `mailto:${site.email}` },
+            ].map((c) => (
+              <li key={c.icon}>
+                <a href={c.href} {...(c.external ? { target: "_blank", rel: "noopener noreferrer" } : {})} className="group flex items-start gap-4">
+                  <span className="inline-flex size-11 shrink-0 items-center justify-center rounded-full bg-white/10 transition group-hover:bg-white group-hover:text-ink">
+                    <Icon name={c.icon} size={20} />
+                  </span>
+                  <span className="flex flex-col">
+                    <span className="text-sm text-zinc-400">{c.label}</span>
+                    <span className="font-semibold group-hover:underline" dir={c.ltr ? "ltr" : undefined}>{c.value}</span>
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
         <div className="rounded-[22px] border-t-4 border-brand bg-white p-6 md:p-9">
           <p className="text-[15px] font-semibold text-brand-dark">{dict.quote.label}</p>

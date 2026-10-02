@@ -19,8 +19,10 @@ export function WhatWeInspect({ locale, dict }: { locale: Locale; dict: Dictiona
         <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {t.items.map((it) => (
             <li key={it.key}>
-              <Link href={`${localePath(locale, "/scope-of-work/")}#${it.key}`} className="flex h-full flex-col gap-3 rounded-2xl border border-line bg-white p-6 hover:border-ink">
-                <Icon name={icons[it.key] ?? "check"} size={28} />
+              <Link href={`${localePath(locale, "/scope-of-work/")}#${it.key}`} className="group flex h-full flex-col gap-3 rounded-[18px] border border-line bg-white p-6 transition hover:border-ink hover:shadow-[0_18px_40px_rgba(10,10,10,0.08)]">
+                <span className="mb-1 inline-flex size-14 items-center justify-center rounded-full bg-mist transition group-hover:bg-ink group-hover:text-white">
+                  <Icon name={icons[it.key] ?? "check"} size={26} />
+                </span>
                 <h3 className="font-display text-lg font-extrabold">{it.title}</h3>
                 <ul className="flex flex-col gap-1.5 text-sm text-muted">
                   {it.points.map((p) => (

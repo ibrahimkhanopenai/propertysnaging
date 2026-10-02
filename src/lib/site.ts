@@ -16,6 +16,8 @@ export const site = {
     city: "Dubai",
     country: "AE",
   },
+  /** Google Maps link for the office address (footer + contact strip) */
+  mapsUrl: "https://www.google.com/maps/search/?api=1&query=The+Binary+Tower+by+Omniyat+Marasi+Drive+Business+Bay+Dubai",
   hours: "Mo-Sa 08:00-20:00", // DUMMY
   dedLicense: "DED-000000", // DUMMY
   googleVerification: "-YIH_uBxgbK6qZ5zg5zQhJkHvjr5wf9zuGE86ieb1sI", // from current WordPress site
@@ -57,6 +59,10 @@ export const site = {
     "/wp-content/uploads/2025/11/20251024_103456-rotated-e1762517575117-400x500.jpg",
     "/wp-content/uploads/2025/12/HVAC_2-768x1024.jpg",
     "/wp-content/uploads/2025/12/Plumbing_2-768x1024.jpg",
+    "/wp-content/uploads/2025/12/Elect_2-768x1024.jpg",
+    "/wp-content/uploads/2025/12/Exterior_2-461x1024.jpg",
+    "/wp-content/uploads/2025/12/Tiling_2.png",
+    "/wp-content/uploads/2025/12/Roof_2.png",
   ],
   areaServed: ["Dubai", "Abu Dhabi", "Sharjah", "Ras Al Khaimah", "Ajman"],
   pdfs: {
