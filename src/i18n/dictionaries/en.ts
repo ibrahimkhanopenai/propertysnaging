@@ -49,6 +49,8 @@ const en = {
       whatsapp: "WhatsApp us",
       callUs: "Call us",
       imageAlt: "Hand holding a model of the Dubai skyline with towers and palm trees",
+      kicker: "Inspect · Assess · Protect",
+      highlights: ["Detailed inspection", "Trusted experts", "Clear reports", "Peace of mind"],
     },
     trust: {
       title: "Licensed, certified and independent",
@@ -157,7 +159,23 @@ const en = {
       view: "See the full sample report",
       imageAlt: "Page from a Property Inspectors snagging report",
     },
+    findings: {
+      kicker: "Real findings",
+      title: "Defects we find — and what we recommend",
+      text: "A look inside our reports: real issues documented during inspections, each with a clear, developer-ready recommendation.",
+      defectLabel: "Defect identified",
+      fixLabel: "Recommendation",
+      items: [
+        { category: "Waterproofing", photo: "paint", defect: "Elevated moisture was detected on the wall surface.", fix: "Trace and repair the moisture source, then make good and repaint the wall." },
+        { category: "Plumbing", photo: "plumbing", defect: "The bathtub pop-up waste was rusted and not sealing, so water clogged.", fix: "Replace the pop-up waste and confirm the basin drains freely." },
+        { category: "Flooring & tiling", photo: "tiling", defect: "Grout between tiles was missing and inconsistent.", fix: "Apply consistent grout to all joints and clean the surface." },
+        { category: "Electrical", photo: "electrical", defect: "A power socket was loose at its termination.", fix: "Re-secure the socket and seal neatly around the faceplate." },
+        { category: "Doors & windows", photo: "windows", defect: "Scratches were noted on the door handle.", fix: "Repair and polish the handle, or replace it where needed." },
+        { category: "HVAC", photo: "hvac", defect: "The thermostat was not fixed flush; a gap was visible at the wall.", fix: "Re-fix the unit, fill the gap and repaint." },
+      ],
+    },
     process: {
+      kicker: "How it works",
       title: "How our inspection process works",
       steps: [
         { title: "Book", text: "Get a quote online or on WhatsApp and choose a date before your handover or purchase deadline." },
@@ -167,12 +185,16 @@ const en = {
       ],
     },
     why: {
+      kicker: "Why us",
       title: "Why choose Property Inspectors",
+      text: "Engineer-led inspections, independent reporting and the tools to back up every finding.",
       items: [
         { title: "Qualified engineers", text: "InterNACHI-certified engineers with construction industry experience." },
         { title: "In-depth inspection", text: "Every MEP system tested with professional equipment, not just a visual walk-through." },
-        { title: "Independent", text: "We inspect and report. We don't sell repairs, so our findings stay unbiased." },
-        { title: "Fast, clear reports", text: "Professional reporting software and reports delivered within 6–24 hours." },
+        { title: "Independent & unbiased", text: "We inspect and report. We don't sell repairs, so our findings stay honest." },
+        { title: "Fast, clear reports", text: "Professional reporting software, with reports delivered within 6–24 hours." },
+        { title: "Specialized tools & software", text: "Thermal imaging, moisture meters and licensed Spectora reporting for precise, photo-supported reports." },
+        { title: "Protects your investment", text: "Catching defects early prevents costly repairs and protects your property's long-term value." },
       ],
     },
     emirates: { title: "Emirates we cover", text: "From Dubai to Fujairah, our engineers inspect properties across all seven emirates." },

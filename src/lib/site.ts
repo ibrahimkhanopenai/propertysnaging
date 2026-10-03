@@ -79,6 +79,15 @@ export const site = {
     "/wp-content/uploads/2025/12/Tiling_2.png",
     "/wp-content/uploads/2025/12/Roof_2.png",
   ],
+  /**
+   * Real testimonials carried over from the current site — shown until Admin → Reviews has entries.
+   * DUMMY ratings: the source quotes had no star value, represented here as 5★; confirm before launch.
+   */
+  defaultReviews: [
+    { name: "Norah", location: "Marina, Dubai", rating: 5, text: "Excellent snagging service — they caught issues I wouldn't have noticed. Highly professional and detailed." },
+    { name: "Marshal J.", location: "JVT, Dubai", rating: 5, text: "The report was so detailed and clear. It helped us get our developer to fix many issues before handover." },
+    { name: "Eldo R.", location: "Al Furjan, Dubai", rating: 5, text: "Professional, responsive and thorough. Their snagging report saved me from expensive repairs later." },
+  ],
   areaServed: ["Dubai", "Abu Dhabi", "Sharjah", "Ras Al Khaimah", "Ajman"],
   pdfs: {
     profile: "/wp-content/uploads/2026/02/PROFILE-Property-Inspectors.pdf",

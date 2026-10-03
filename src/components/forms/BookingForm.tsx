@@ -11,9 +11,9 @@ type Props = {
   locale: Locale;
 };
 
-// Purple = client rule for forms (docs/design-system.md)
+// Neutral fields with the brand accent on focus (docs/design-system.md)
 const field =
-  "h-12 w-full rounded-xl border border-brand-line bg-white px-3.5 text-[15px] text-ink outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/20";
+  "h-12 w-full rounded-xl border border-line bg-white px-3.5 text-[15px] text-ink outline-none transition placeholder:text-subtle focus:border-brand focus:ring-2 focus:ring-brand/20";
 
 /**
  * One-row booking form (Name, Email, Phone, Property type → Send), carried over from the current site.
