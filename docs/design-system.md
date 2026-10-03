@@ -2,7 +2,7 @@
 
 ## Principles
 - **Client rule: black & white theme; purple is used for pictures and forms only** (image frames/hover rings, form panels, inputs, form buttons, pop-up). Never for headings, nav or generic buttons.
-- Mostly white. Black is reserved for: top bar, primary buttons, the "most popular" persona card, stats strip, Google rating box, CTA band, footer.
+- Mostly white. Black is reserved for: top bar, primary buttons, the "most popular" persona card, stats strip, Google rating box, CTA band, homepage "Our services" and "Sample report" sections, Why choose us, footer.
 - It's a **snagging** company: show real inspection photos and defects, not skylines/luxury villas (skylines only on location cards).
 - One memorable moment per section; no decorative gradients or scroll animations.
 
@@ -29,7 +29,7 @@
 - Headings use `text-balance`, tight tracking; body 16–18px, line-height 1.6–1.8.
 
 ## Homepage section order (client requirement — do not reorder)
-Top bar → Header → Hero (H1, statement, Get a quote / Book an inspection / WhatsApp, phone) → Trust stats & credentials → Our services → What we inspect → Real photos / common defects → Sample report → Process → Why choose us (black) → Emirates we cover → Reviews (scrolling) → FAQ → Final CTA with quote form (black + purple form) → Footer (black)
+Top bar → Header → Hero (H1, statement, company description from the old site, Get a quote / Book an inspection / WhatsApp, phone) → Booking bar (purple-accent form card) → Trust stats & credentials → Our services (black) → What we inspect → Real photos / common defects → Sample report (black) → Process → About us (mist, purple photo frame) → Why choose us (black) → Certified by InterNACHI (white, seal cards) → Developer logos (black — logos are white) → Emirates we cover → Reviews (scrolling) → FAQ → Final CTA with quote form (black + purple form) → Footer (black)
 Global: floating Call/WhatsApp (desktop), bottom bar (mobile), 10-second callback pop-up.
 
 ## Components

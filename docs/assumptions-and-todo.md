@@ -20,8 +20,8 @@
 - MySQL is required, so Payload CMS was not used (it has no MySQL adapter); admin is custom.
 - Download pages (`/sample-report/` etc.) link straight to the existing PDFs.
 - `/download-brochure/` uses the company profile PDF (no separate brochure PDF found).
-- Images reuse the current site's photos (paths in `site.images`); hero = `20251122_142826-scaled.jpg` — swap for the best real inspector photo.
-- Logo is rendered as icon + text; replace `components/layout/Logo.tsx` with the official SVG when available.
+- Images reuse the current site's photos (paths in `site.images`); hero = client-supplied `/images/hero-city-in-hand.jpg` (2026-10-02; the earlier inspector photo `20251122_142826-scaled.jpg` is still in /public).
+- Logo = client-supplied PNG (`/images/logo.png`, white version `/images/logo-white.png` for the footer). Swap for an SVG if one becomes available.
 
 ## Open tasks
 - [ ] **Confirm domain**: report says propertyinspectors.ae, live site is .me (see `docs/client-requirements.md`)
@@ -32,3 +32,6 @@
 - [ ] Meta parity with `docs/legacy-seo.json`
 - [ ] Real Google reviews (Places API or manual)
 - [ ] Optional: Arabic translations of the 5 imported blog posts
+- [ ] Confirm the developer logo strip wording ("We snag homes by the UAE's leading developers") — logos imply inspections in those projects, not a partnership
+- [ ] Re-export the "Dubai Properties" logo (current PNG only contains the red tick, so it is hidden)
+- [ ] Homepage hero/About copy uses the old site's claims ("one of the best and most trusted", "10,000 hours" per engineer) — client OK'd for now (2026-10-02); revisit before launch

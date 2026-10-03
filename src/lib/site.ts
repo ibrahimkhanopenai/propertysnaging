@@ -49,6 +49,21 @@ export const site = {
     { key: "internachi1", image: "/wp-content/uploads/2025/11/snagging-certificate-1.jpg" },
     { key: "internachi2", image: "/wp-content/uploads/2025/11/snagging-certificate-2.jpg" },
   ],
+  /**
+   * Developer logos from the current site's homepage strip (white logos — show on a dark background).
+   * "Dubai Properties" is left out: its file only contains the red tick, the wordmark is missing.
+   */
+  developers: [
+    { name: "Atlantis The Royal", logo: "/wp-content/uploads/2025/11/Atlantis-Photoroom.png", width: 576, height: 223 },
+    { name: "DAMAC", logo: "/wp-content/uploads/2025/11/Damac-Photoroom.png", width: 400, height: 92 },
+    { name: "Danube Properties", logo: "/wp-content/uploads/2025/11/Danube-Photoroom.png", width: 340, height: 128 },
+    { name: "wasl", logo: "/wp-content/uploads/2025/11/da-Photoroom.png", width: 111, height: 84 },
+    { name: "Ellington Properties", logo: "/wp-content/uploads/2025/11/ellington-Photoroom.png", width: 499, height: 189 },
+    { name: "Emaar", logo: "/wp-content/uploads/2025/11/EMAAR-Photoroom.png", width: 964, height: 245 },
+    { name: "Meraas", logo: "/wp-content/uploads/2025/11/Meraas-Photoroom.png", width: 354, height: 142 },
+    { name: "Select Group", logo: "/wp-content/uploads/2025/11/Select-Group-Photoroom.png", width: 202, height: 87 },
+    { name: "Sobha Realty", logo: "/wp-content/uploads/2025/11/Sobha-Photoroom.png", width: 478, height: 190 },
+  ],
   /** Real inspection photos from the current site — used until Admin → Gallery has images */
   defaultGallery: [
     "/wp-content/uploads/2025/11/20251024_123029-rotated-e1762517560680-400x500.jpg",
@@ -73,9 +88,12 @@ export const site = {
   },
   /** Real photos from the current site (downloaded by `npm run assets:download`) */
   images: {
-    logo: "/wp-content/uploads/2025/11/cropped-Black-Logo-scaled-1-e1766401717246.png",
+    /** Official logo supplied by the client (2026-10-02), transparent PNGs */
+    logo: "/images/logo.png",
+    logoWhite: "/images/logo-white.png",
     og: "/wp-content/uploads/2025/11/4963222-removebg-preview-1.png",
-    hero: "/wp-content/uploads/2025/11/20251122_142826-scaled.jpg",
+    /** Hero image supplied by the client (2026-10-02), 1200×919, white background */
+    hero: "/images/hero-city-in-hand.jpg",
     about: "/wp-content/uploads/2025/11/premium_photo-1661604355750-2074610af15d-1024x683.jpg",
     report: [
       "/wp-content/uploads/2025/11/report-1.jpg",

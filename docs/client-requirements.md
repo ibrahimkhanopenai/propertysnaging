@@ -12,6 +12,7 @@ Source: `Propertyinspectors_ae_website_report.docx` (client, Oct 2026). Written 
 | 1 | Pop-up after ~10 s: Name, Phone, Submit, small X | ✅ | `components/forms/LeadPopup.tsx` (once per session, bottom sheet on mobile) |
 | 1 | Call + WhatsApp buttons on all pages | ✅ | `components/layout/FloatingContact.tsx` |
 | 2 | Homepage section order (12 sections) | ✅ | `app/[locale]/page.tsx` (order documented in the file) |
+| 2 | Old-site sections kept on client request (2026-10-02): booking bar, About us, Certified by InterNACHI, developer logos — slotted in without reordering the 12 | ✅ | `components/home/{BookingBar,AboutSection,CertifiedSection,DevelopersStrip}.tsx`; old intro paragraph is in the hero (`home.hero.about`); copy taken from the live site |
 | 3 | 15 service pages, original content each | ✅ | `content/services.{en,ar}.ts`, routes in `lib/routes.ts`. "Property Snagging Dubai" = existing `/snagging-services-in-dubai/` (kept: ranks on Google; avoids a duplicate page) |
 | 4 | 7 location pages, location-specific | ✅ | `content/locations.{en,ar}.ts` — new: Ajman, RAK, Fujairah, UAQ (same URL pattern as the 3 legacy pages) |
 | 5 | Detailed "What we inspect" (8 categories) | ✅ | Homepage `WhatWeInspect.tsx` + `/scope-of-work/` (anchors `#structural`, `#electrical`…) |

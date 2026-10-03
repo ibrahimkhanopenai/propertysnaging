@@ -41,11 +41,14 @@ const en = {
       title: "Property Snagging & Inspection Services in Dubai & UAE",
       intro:
         "We identify defects before handover, during the defect liability period (DLP) or before you buy a property — and send you a photo report within 6–24 hours.",
+      /** Company description from the current site (shown under the statement) */
+      about:
+        "We are one of the best and most trusted property snagging companies in Dubai, Abu Dhabi, Ras Al Khaimah, and Ajman. We are DED-licensed, certified, and use InterNACHI-licensed inspection software to deliver accurate and detailed snagging reports. Our team provides comprehensive property inspections for villas, apartments, offices, and commercial spaces — covering structural finishing, electrical, plumbing, HVAC systems, and more. We offer professional and affordable snagging services designed to ensure complete peace of mind for new homeowners, landlords, and commercial property owners.",
       getQuote: "Get a quote",
       book: "Book an inspection",
       whatsapp: "WhatsApp us",
       callUs: "Call us",
-      imageAlt: "Property Inspectors engineer checking finishes during a handover snagging inspection",
+      imageAlt: "Hand holding a model of the Dubai skyline with towers and palm trees",
     },
     trust: {
       title: "Licensed, certified and independent",
@@ -61,6 +64,47 @@ const en = {
         internachi1: "InterNACHI certified inspectors",
         internachi2: "InterNACHI certification",
       },
+    },
+    /** Booking bar under the hero (from the current site: "Book now for inquiries and booking") */
+    booking: {
+      title: "Book now for inquiries and booking",
+      name: "Name*",
+      email: "Email*",
+      phone: "Phone number*",
+      type: "Select type",
+      submit: "Send",
+      sending: "Sending…",
+      success: "Thank you! We've received your request and will contact you shortly.",
+      error: "We couldn't send your request. Please call or WhatsApp us.",
+      required: "Please enter your name, a valid email and your phone number.",
+    },
+    /** About block — copy from the current site's "About Us" section */
+    about: {
+      label: "About us",
+      title: "Setting the Standard for Property Snagging Services",
+      text:
+        "Property Inspectors is a premium, DED-licensed and InterNACHI-certified property snagging company, backed by highly experienced engineers who have each completed over 10,000 hours of inspection work. We specialise in delivering detailed and comprehensive snagging reports using advanced inspection tools, with one of the fastest turnaround times in the UAE — typically within 6 to 24 hours. Our services cover all major cities including Dubai, Abu Dhabi, Sharjah, and Ras Al Khaimah. We focus on identifying critical defects that affect usability and cost, helping clients achieve major savings, secure smoother handovers, and protect their property investment. Our inspections offer complete coverage of structural elements, MEP systems (mechanical, electrical, plumbing), and finishing quality to ensure your property meets the highest standards.",
+      cta: "Get a quote",
+      more: "More about us",
+      imageAlt: "Two people holding a small model house during a property handover",
+    },
+    /** Certification block — copy from the current site's "Certified by InterNACHI" section */
+    certified: {
+      label: "Certified by",
+      title: "InterNACHI",
+      text:
+        "We are certified by InterNACHI, known worldwide as the leading association for home inspectors. For reliable home inspection services, search for the InterNACHI seal, a symbol of trust and quality.",
+      badges: {
+        internachi1: "InterNACHI Certified seal",
+        internachi2: "InterNACHI Certified Professional Inspector (CPI) seal",
+        ded: "Government of Dubai logo — Property Inspectors is DED licensed",
+      },
+    },
+    /** Developer logo strip (logos from the current site) */
+    developers: {
+      title: "We snag homes by the UAE's leading developers",
+      text: "Handover inspections in communities built by Emaar, DAMAC, Sobha, Meraas, Ellington and more.",
+      logoAlt: "logo",
     },
     services: {
       title: "Our property inspection services",

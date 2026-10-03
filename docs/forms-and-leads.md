@@ -18,7 +18,10 @@ If SMTP is not configured the lead is still saved and a warning is logged.
 `site.whatsapp` in `src/lib/site.ts` (international format, no `+`).
 
 ## Fields (client report §8)
-Property type, bedrooms, **Location / community** (replaces the old "Project name"), emirate (all 7), name, mobile, built-up area, email, notes. Button: **"Get my quote"**. Stored in `Lead.location`; `Lead.source` = `quote_form` | `contact_page` | `popup`.
+Property type, bedrooms, **Location / community** (replaces the old "Project name"), emirate (all 7), name, mobile, built-up area, email, notes. Button: **"Get my quote"**. Stored in `Lead.location`; `Lead.source` = `quote_form` | `contact_page` | `popup` | `booking_bar`.
+
+## Booking bar (homepage, under the hero)
+`components/forms/BookingForm.tsx` — carried over from the old site ("Book now for inquiries and booking"): Name*, Email*, Phone*, property type (Villa/Townhouse, Apartment, Commercial), Send. Same `/api/leads/` pipeline (MySQL + admin email to `LEAD_NOTIFY_TO`, subject "New lead (booking bar): …"), `source: booking_bar`, fires `generate_lead` with `form_id: booking_bar`. No WhatsApp hand-off.
 
 ## Callback pop-up (client report §1)
 `components/forms/LeadPopup.tsx` — appears 10 s after landing, once per browser session, never on `/contact-us/`. Only Name + Phone + Submit, small close button, Esc/backdrop closes. On phones it's a bottom sheet (reduces Google intrusive-interstitial risk). Leads go through the same `/api/leads/` pipeline.

@@ -24,14 +24,14 @@ const featured: Array<{ key: PageKey; photo: Photo }> = [
   { key: "thermalImaging", photo: "hvac" },
 ];
 
-/** Image-topped service cards. Purple ring on hover = client rule for pictures. */
+/** Black section with white image-topped service cards. Purple ring on hover = client rule for pictures. */
 export function ServicesGrid({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   const t = dict.home.services;
   return (
-    <section className="py-20 md:py-24">
+    <section className="bg-ink py-20 text-white md:py-24">
       <Container className="flex flex-col gap-10">
         <div className="flex flex-wrap items-end justify-between gap-6">
-          <SectionHeading title={t.title} text={t.text} />
+          <SectionHeading title={t.title} text={t.text} className="[&_p]:text-zinc-400" />
           <Link href={localePath(locale, "/snagging-services/")} className="font-semibold underline-offset-4 hover:underline">{t.all}</Link>
         </div>
         <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -39,7 +39,7 @@ export function ServicesGrid({ locale, dict }: { locale: Locale; dict: Dictionar
             const c = getPageContent(key, locale);
             return (
               <li key={key}>
-                <Link href={localePath(locale, routePath(key))} className="group flex h-full flex-col overflow-hidden rounded-[18px] border border-line bg-white transition hover:border-ink hover:shadow-[0_18px_40px_rgba(10,10,10,0.08)]">
+                <Link href={localePath(locale, routePath(key))} className="group flex h-full flex-col overflow-hidden rounded-[18px] border border-white/10 bg-white text-ink transition hover:border-white hover:shadow-[0_18px_40px_rgba(0,0,0,0.5)]">
                   <span className="relative block aspect-[4/3] overflow-hidden bg-brand-tint">
                     <Image src={site.images.scope[photo]} alt={t.photoAlt[photo]} fill sizes="(min-width: 1024px) 290px, (min-width: 640px) 50vw, 100vw" className="object-cover transition duration-500 group-hover:scale-105" />
                     <span aria-hidden="true" className="absolute inset-0 ring-brand ring-inset transition group-hover:ring-4" />

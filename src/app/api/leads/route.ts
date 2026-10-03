@@ -12,7 +12,7 @@ const schema = z.object({
   email: z.union([z.string().trim().email().max(191), z.literal("")]).optional(),
   propertyType: z.enum(["apartment", "villa", "commercial"]).optional(),
   location: z.string().trim().max(191).optional(),
-  source: z.enum(["quote_form", "popup", "contact_page"]).optional(),
+  source: z.enum(["quote_form", "popup", "contact_page", "booking_bar"]).optional(),
   bedrooms: z.number().int().min(0).max(20).optional(),
   areaSqft: z.number().int().min(0).max(1_000_000).optional(),
   emirate: z.string().max(60).optional(),
@@ -21,6 +21,9 @@ const schema = z.object({
   locale: z.string().max(5).optional(),
   pagePath: z.string().max(255).optional(),
 });
+
+/** Human-readable form name for the notification email subject */
+const sourceLabel = { quote_form: "quote form", popup: "callback pop-up", contact_page: "contact page", booking_bar: "booking bar" } as const;
 
 // 5 requests / 10 min / IP (single server — see src/lib/rate-limit.ts)
 const limiter = createRateLimiter({ limit: 5, windowMs: 10 * 60_000 });
@@ -77,7 +80,7 @@ export async function POST(req: Request) {
         ["Page", d.pagePath || "-"],
       ];
       const sent = await sendMail({
-        subject: `New lead (${d.source === "popup" ? "callback pop-up" : "quote form"}): ${d.name}`,
+        subject: `New lead (${sourceLabel[d.source ?? "quote_form"]}): ${d.name}`,
         replyTo: d.email || undefined,
         text: rows.map(([k, v]) => `${k}: ${v}`).join("\n"),
         html: `<table cellpadding="6">${rows.map(([k, v]) => `<tr><td><b>${escapeHtml(k)}</b></td><td>${escapeHtml(v)}</td></tr>`).join("")}</table>`,
