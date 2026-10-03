@@ -1,33 +1,63 @@
 import { Container } from "@/components/ui/Container";
 import { Kicker } from "@/components/ui/Kicker";
-import { Icon, type IconName } from "@/components/ui/Icon";
 import { Reveal } from "@/components/ui/Reveal";
 import type { Dictionary } from "@/i18n/dictionaries";
 
-const icons: IconName[] = ["users", "search", "shield", "file", "camera", "home"];
-
-/** Light editorial reasons — sticky intro on the left, open icon grid on the right. */
+/**
+ * Why choose us as an editorial feature spread: an asymmetric masthead
+ * (oversized statement + a standfirst set under a copper rule) over a two-column
+ * ruled index where each reason leads with an oversized copper numeral and a
+ * copper marker ticking the hairline — magazine typography, not icon cards.
+ */
 export function WhyChoose({ dict }: { dict: Dictionary }) {
   const t = dict.home.why;
+
   return (
     <section className="bg-white py-20 md:py-28">
-      <Container className="grid gap-12 lg:grid-cols-[1fr_1.55fr] lg:gap-16">
-        <Reveal className="flex flex-col gap-4 lg:sticky lg:top-28 lg:self-start">
-          <Kicker>{t.kicker}</Kicker>
-          <h2 className="font-display text-[clamp(1.9rem,3.4vw,2.6rem)] font-extrabold leading-[1.1] tracking-[-0.02em] text-balance">{t.title}</h2>
-          <p className="text-lg leading-relaxed text-muted">{t.text}</p>
+      <Container>
+        {/* Masthead — asymmetric: big statement + standfirst under a copper rule */}
+        <Reveal className="grid gap-y-8 lg:grid-cols-12 lg:items-end lg:gap-x-16">
+          <div className="flex flex-col gap-5 lg:col-span-7">
+            <Kicker>{t.kicker}</Kicker>
+            <h2 className="max-w-3xl font-display text-[clamp(2.2rem,5vw,3.6rem)] font-extrabold leading-[1.02] tracking-[-0.03em] text-balance">
+              {t.title}
+            </h2>
+          </div>
+          <p className="border-t-2 border-brand pt-5 text-lg leading-relaxed text-muted lg:col-span-4 lg:col-start-9">
+            {t.text}
+          </p>
         </Reveal>
 
-        <Reveal as="ul" stagger className="grid gap-x-8 gap-y-10 sm:grid-cols-2">
-          {t.items.map((it, i) => (
-            <li key={it.title} style={{ ["--i" as string]: i } as React.CSSProperties} className="flex flex-col gap-3">
-              <span className="inline-flex size-12 items-center justify-center rounded-full bg-ink text-white">
-                <Icon name={icons[i] ?? "check"} size={22} />
-              </span>
-              <h3 className="font-display text-lg font-extrabold">{it.title}</h3>
-              <p className="leading-relaxed text-muted">{it.text}</p>
-            </li>
-          ))}
+        {/* Ruled index — oversized copper numerals across two editorial columns */}
+        <Reveal
+          as="ol"
+          stagger
+          className="mt-16 grid gap-x-12 gap-y-12 sm:grid-cols-2 lg:mt-20 lg:gap-x-20 lg:gap-y-14"
+        >
+          {t.items.map((it, i) => {
+            const n = String(i + 1).padStart(2, "0");
+            return (
+              <li
+                key={it.title}
+                style={{ ["--i" as string]: i } as React.CSSProperties}
+                className="group relative border-t border-line pt-8 sm:pt-9"
+              >
+                {/* copper accent segment on the hairline — an inspection marker */}
+                <span aria-hidden="true" className="absolute -top-px start-0 h-0.5 w-10 bg-brand" />
+                <div className="flex items-start gap-5 sm:gap-7">
+                  <span className="font-display text-[clamp(3rem,7vw,5rem)] font-extrabold leading-[0.8] tracking-[-0.04em] tabular-nums text-brand transition-colors duration-300 group-hover:text-brand-dark">
+                    {n}
+                  </span>
+                  <div className="min-w-0 flex-1 pt-1.5">
+                    <h3 className="font-display text-xl font-extrabold leading-tight tracking-[-0.01em] sm:text-2xl">
+                      {it.title}
+                    </h3>
+                    <p className="mt-3 leading-relaxed text-muted">{it.text}</p>
+                  </div>
+                </div>
+              </li>
+            );
+          })}
         </Reveal>
       </Container>
     </section>
