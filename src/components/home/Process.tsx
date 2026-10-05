@@ -12,8 +12,8 @@ import type { Dictionary } from "@/i18n/dictionaries";
 export function Process({ dict }: { dict: Dictionary }) {
   const t = dict.home.process;
   return (
-    <section className="bg-white py-20 md:py-28">
-      <Container className="flex flex-col gap-14">
+    <section className="bg-white py-16 md:py-24">
+      <Container className="flex flex-col gap-12">
         <Reveal className="flex max-w-2xl flex-col gap-3">
           <Kicker>{t.kicker}</Kicker>
           <h2 className="font-display text-[clamp(1.9rem,3.4vw,2.6rem)] font-extrabold leading-[1.08] tracking-[-0.02em] text-balance">

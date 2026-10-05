@@ -13,10 +13,10 @@ export function WhyChoose({ dict }: { dict: Dictionary }) {
   const t = dict.home.why;
 
   return (
-    <section className="bg-white py-20 md:py-28">
+    <section className="bg-white py-16 md:py-24">
       <Container>
         {/* Masthead — asymmetric: big statement + standfirst under a copper rule */}
-        <Reveal className="grid gap-y-8 lg:grid-cols-12 lg:items-end lg:gap-x-16">
+        <Reveal className="grid gap-y-6 lg:grid-cols-12 lg:items-end lg:gap-x-16">
           <div className="flex flex-col gap-5 lg:col-span-7">
             <Kicker>{t.kicker}</Kicker>
             <h2 className="max-w-3xl font-display text-[clamp(2.2rem,5vw,3.6rem)] font-extrabold leading-[1.02] tracking-[-0.03em] text-balance">
@@ -32,7 +32,7 @@ export function WhyChoose({ dict }: { dict: Dictionary }) {
         <Reveal
           as="ol"
           stagger
-          className="mt-16 grid gap-x-12 gap-y-12 sm:grid-cols-2 lg:mt-20 lg:gap-x-20 lg:gap-y-14"
+          className="mt-12 grid gap-x-12 gap-y-10 sm:grid-cols-2 lg:mt-14 lg:gap-x-20 lg:gap-y-12"
         >
           {t.items.map((it, i) => {
             const n = String(i + 1).padStart(2, "0");

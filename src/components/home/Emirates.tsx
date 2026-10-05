@@ -19,8 +19,8 @@ export function Emirates({ locale, dict }: { locale: Locale; dict: Dictionary })
   const total = String(locationOrder.length).padStart(2, "0");
 
   return (
-    <section className="bg-white py-20 md:py-28">
-      <Container className="grid gap-x-12 gap-y-12 lg:grid-cols-12">
+    <section className="bg-white py-16 md:py-24">
+      <Container className="grid gap-x-12 gap-y-10 lg:grid-cols-12">
         {/* Editorial intro — sticky on desktop */}
         <Reveal className="flex flex-col gap-5 lg:col-span-4 lg:sticky lg:top-24 lg:self-start">
           <Kicker>{dict.nav.locations}</Kicker>

@@ -18,8 +18,8 @@ export function WhatWeInspect({ locale, dict }: { locale: Locale; dict: Dictiona
   const total = String(t.items.length).padStart(2, "0");
 
   return (
-    <section className="border-y border-line bg-mist py-20 md:py-28">
-      <Container className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+    <section className="border-y border-line bg-mist py-16 md:py-24">
+      <Container className="grid gap-10 lg:grid-cols-12 lg:gap-16">
         {/* Left: sticky system index / legend */}
         <Reveal className="flex flex-col gap-7 lg:col-span-4 lg:sticky lg:top-28 lg:self-start">
           <h2 className="max-w-md font-display text-[clamp(2rem,4.3vw,3.2rem)] font-extrabold leading-[1.05] tracking-[-0.03em] text-balance">

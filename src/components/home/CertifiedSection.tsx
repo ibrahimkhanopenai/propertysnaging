@@ -18,7 +18,7 @@ export function CertifiedSection({ dict }: { dict: Dictionary }) {
   const badges = ["internachi1", "internachi2", "ded"] as const;
 
   return (
-    <section className="border-y border-line bg-mist py-20 md:py-28">
+    <section className="border-y border-line bg-mist py-16 md:py-24">
       <Container>
         <div className="grid items-start gap-12 lg:grid-cols-12 lg:gap-16">
           {/* Oversized statement — the wordmark is the hero of the section */}

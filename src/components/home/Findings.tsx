@@ -22,10 +22,10 @@ export function Findings({ dict }: { locale: Locale; dict: Dictionary }) {
   const featPhoto = featured.photo as ScopeKey;
 
   return (
-    <section className="border-y border-line bg-white py-20 md:py-28">
+    <section className="border-y border-line bg-white py-16 md:py-24">
       <Container>
         {/* Header — editorial split: statement on the left, intro on the right */}
-        <Reveal className="mb-12 grid gap-5 md:mb-16 lg:grid-cols-12 lg:items-end">
+        <Reveal className="mb-10 grid gap-5 md:mb-12 lg:grid-cols-12 lg:items-end">
           <div className="flex flex-col gap-4 lg:col-span-7">
             <Kicker>{t.kicker}</Kicker>
             <h2 className="font-display text-[clamp(1.9rem,3.4vw,2.6rem)] font-extrabold leading-[1.08] tracking-[-0.02em] text-balance">

@@ -14,7 +14,7 @@ import { site } from "@/lib/site";
 export function TrustSection({ dict }: { dict: Dictionary }) {
   const t = dict.home.trust;
   return (
-    <section aria-labelledby="trust-title" className="border-b border-line bg-white py-20 md:py-28">
+    <section aria-labelledby="trust-title" className="border-b border-line bg-white py-16 md:py-24">
       <Container>
         {/* Header — asymmetric: oversized statement beside the company intro */}
         <Reveal className="grid gap-y-8 lg:grid-cols-12 lg:items-end lg:gap-x-16">
@@ -33,7 +33,7 @@ export function TrustSection({ dict }: { dict: Dictionary }) {
         </Reveal>
 
         {/* Key-figures ledger — numbers dominate; divided by hairlines, first rule copper */}
-        <Reveal stagger as="ul" className="mt-16 md:mt-24">
+        <Reveal stagger as="ul" className="mt-12 md:mt-16">
           {site.stats.map((s, i) => (
             <li
               key={s.key}
@@ -59,7 +59,7 @@ export function TrustSection({ dict }: { dict: Dictionary }) {
         </Reveal>
 
         {/* Licensed & certified — refined footer line */}
-        <Reveal className="mt-14 flex flex-col gap-x-10 gap-y-6 border-t border-line pt-10 sm:flex-row sm:flex-wrap sm:items-center">
+        <Reveal className="mt-10 flex flex-col gap-x-10 gap-y-6 border-t border-line pt-8 sm:flex-row sm:flex-wrap sm:items-center">
           <span aria-hidden="true" className="hidden h-6 w-0.5 shrink-0 bg-brand sm:block" />
           <ul className="flex flex-wrap items-center gap-x-8 gap-y-5">
             {site.credentials.map((c) => {

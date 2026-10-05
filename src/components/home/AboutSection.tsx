@@ -16,19 +16,20 @@ import { site } from "@/lib/site";
 export function AboutSection({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   const t = dict.home.about;
   return (
-    <section className="relative overflow-hidden border-y border-line bg-mist py-20 md:py-28">
+    <section className="relative overflow-hidden border-y border-line bg-mist py-16 md:py-24">
       <Container>
-        {/* Label + oversized statement set hard to the start for a strong top-left entry */}
-        <Reveal className="max-w-3xl">
+        {/* Masthead spans the full container width — the oversized statement is a
+         * single editorial band rather than a narrow block with empty space beside it. */}
+        <Reveal>
           <Kicker>{t.label}</Kicker>
-          <h2 className="mt-6 max-w-[18ch] font-display text-[clamp(2rem,4.6vw,3.4rem)] font-extrabold leading-[1.03] tracking-[-0.03em] text-balance text-ink">
+          <h2 className="mt-6 font-display text-[clamp(2rem,4.6vw,3.4rem)] font-extrabold leading-[1.03] tracking-[-0.03em] text-balance text-ink">
             {t.title}
           </h2>
           <span aria-hidden="true" className="mt-6 block h-px w-16 bg-brand" />
         </Reveal>
 
         {/* Asymmetric body: tall annotated image at the start, offset story column at the end */}
-        <div className="mt-12 grid gap-10 lg:mt-16 lg:grid-cols-12 lg:items-start lg:gap-16">
+        <div className="mt-10 grid gap-10 lg:mt-14 lg:grid-cols-12 lg:items-start lg:gap-16">
           <Reveal delay={120} className="lg:col-span-6">
             <figure className="relative">
               <div className="relative aspect-[4/5] overflow-hidden rounded-[28px] border border-line bg-white sm:aspect-[16/11] lg:aspect-[4/5]">

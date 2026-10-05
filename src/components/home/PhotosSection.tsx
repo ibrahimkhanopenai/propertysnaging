@@ -35,8 +35,8 @@ export async function PhotosSection({ locale, dict }: { locale: Locale; dict: Di
   const photos = await getGallery({ featuredOnly: true, take: 7 });
 
   return (
-    <section className="bg-white py-20 md:py-28">
-      <Container className="flex flex-col gap-10 md:gap-12">
+    <section className="bg-white py-16 md:py-24">
+      <Container className="flex flex-col gap-8 md:gap-10">
         <Reveal className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div className="max-w-2xl">
             <Kicker>{dict.nav.gallery}</Kicker>

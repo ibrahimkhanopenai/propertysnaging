@@ -12,8 +12,8 @@ export function SampleReportSection({ locale, dict, headingLevel = "h2" }: { loc
   const t = dict.home.report;
   const H = headingLevel;
   return (
-    <section className="bg-ink py-20 text-white md:py-28">
-      <Container className="grid items-center gap-14 lg:grid-cols-2 lg:gap-20">
+    <section className="bg-ink py-16 text-white md:py-24">
+      <Container className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
         <Reveal className="flex flex-col gap-6">
           <Kicker className="text-brand-light">{dict.nav.sampleReport}</Kicker>
           <H className="font-display text-[clamp(1.9rem,3.4vw,2.6rem)] font-extrabold leading-[1.1] tracking-[-0.02em]">{t.title}</H>

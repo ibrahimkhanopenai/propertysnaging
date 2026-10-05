@@ -29,16 +29,17 @@ const featured: Array<{ key: PageKey; photo: Photo; marker: IconName }> = [
   { key: "thermalImaging", photo: "hvac", marker: "thermo" },
 ];
 
-/** Editorial image crops — deliberately varied so no two rows read as the same rectangle. */
+/** Editorial image crops — kept short and close to the content block's height
+ * so no row leaves a tall whitespace band beside the copy. */
 const crops = [
-  "aspect-[3/2]",
-  "aspect-[5/4]",
-  "aspect-[3/2]",
-  "aspect-[4/3]",
-  "aspect-[5/4]",
-  "aspect-[3/2]",
-  "aspect-[4/3]",
-  "aspect-[3/2]",
+  "aspect-[16/9]",
+  "aspect-[2/1]",
+  "aspect-[16/9]",
+  "aspect-[16/10]",
+  "aspect-[2/1]",
+  "aspect-[16/9]",
+  "aspect-[16/10]",
+  "aspect-[16/9]",
 ];
 
 /**
@@ -52,26 +53,30 @@ export function ServicesGrid({ locale, dict }: { locale: Locale; dict: Dictionar
   const total = `0${featured.length}`;
 
   return (
-    <section className="bg-white py-20 md:py-28">
+    <section className="bg-white py-16 md:py-24">
       <Container>
-        <Reveal className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
-          <div className="flex max-w-3xl flex-col gap-4">
+        {/* Editorial masthead: wide heading on the left, standfirst + CTA packed on
+         * the right so the row fills across the container (no middle whitespace). */}
+        <Reveal className="grid gap-y-6 lg:grid-cols-12 lg:items-end lg:gap-x-12">
+          <div className="flex flex-col gap-4 lg:col-span-7">
             <Kicker>{dict.nav.services}</Kicker>
             <h2 className="font-display text-[clamp(2.1rem,4vw,3.25rem)] font-extrabold leading-[1.05] tracking-[-0.03em] text-balance">
               {t.title}
             </h2>
-            <p className="max-w-xl text-lg leading-relaxed text-muted">{t.text}</p>
           </div>
-          <Link
-            href={localePath(locale, "/snagging-services/")}
-            className="group inline-flex items-center gap-2.5 self-start rounded-full border border-ink px-5 py-2.5 text-[15px] font-semibold transition-colors hover:bg-ink hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-white lg:self-auto"
-          >
-            {t.all}
-            <Icon name="arrow" size={18} className="transition-transform group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1" />
-          </Link>
+          <div className="flex flex-col gap-5 lg:col-span-5 lg:pb-1">
+            <p className="text-lg leading-relaxed text-muted">{t.text}</p>
+            <Link
+              href={localePath(locale, "/snagging-services/")}
+              className="group inline-flex items-center gap-2.5 self-start rounded-full border border-ink px-5 py-2.5 text-[15px] font-semibold transition-colors hover:bg-ink hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+            >
+              {t.all}
+              <Icon name="arrow" size={18} className="transition-transform group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1" />
+            </Link>
+          </div>
         </Reveal>
 
-        <Reveal as="ul" stagger className="mt-14 md:mt-16">
+        <Reveal as="ul" stagger className="mt-10 md:mt-12">
           {featured.map(({ key, photo, marker }, i) => {
             const c = getPageContent(key, locale);
             const imageRight = i % 2 === 0;
@@ -82,13 +87,7 @@ export function ServicesGrid({ locale, dict }: { locale: Locale; dict: Dictionar
                   href={localePath(locale, routePath(key))}
                   className="group block rounded-3xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-4 focus-visible:ring-offset-white"
                 >
-                  <div className={cn("relative grid items-center gap-7 border-t border-line py-10 transition-colors duration-500 group-hover:border-brand-line md:grid-cols-2 md:gap-12 md:py-12 lg:gap-20", last && "border-b")}>
-                    {/* copper edge indicator, grows on hover */}
-                    <span
-                      aria-hidden="true"
-                      className="absolute inset-y-6 start-0 w-[3px] origin-top scale-y-0 rounded-full bg-brand transition-transform duration-500 group-hover:scale-y-100"
-                    />
-
+                  <div className={cn("relative grid items-center gap-6 border-t border-line py-8 transition-colors duration-500 group-hover:border-brand-line md:grid-cols-2 md:gap-10 md:py-9 lg:gap-14", last && "border-b")}>
                     {/* content: ghost ordinal + text */}
                     <div className={cn("flex items-start gap-5 md:gap-8", imageRight ? "md:order-1" : "md:order-2")}>
                       <span className="font-display text-[clamp(2.75rem,6vw,5rem)] font-extrabold leading-[0.85] tabular-nums text-ink/10 transition-colors duration-500 group-hover:text-brand">
@@ -110,8 +109,9 @@ export function ServicesGrid({ locale, dict }: { locale: Locale; dict: Dictionar
                       </div>
                     </div>
 
-                    {/* media: varied crop, alternating side */}
-                    <div className={cn("relative mx-auto w-full max-w-[560px] overflow-hidden rounded-[20px] bg-mist", crops[i], imageRight ? "md:order-2" : "md:order-1")}>
+                    {/* media: varied crop, alternating side — capped so the frame
+                     * sits close to the copy's height instead of towering over it */}
+                    <div className={cn("relative mx-auto w-full max-w-[380px] overflow-hidden rounded-[20px] bg-mist", crops[i], imageRight ? "md:order-2 md:ms-auto" : "md:order-1 md:me-auto")}>
                       <Image
                         src={site.images.scope[photo]}
                         alt={t.photoAlt[photo]}

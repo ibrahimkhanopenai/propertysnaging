@@ -31,7 +31,7 @@ export function FinalCta({ locale, dict }: { locale: Locale; dict: Dictionary })
       {/* Copper seam marking the white → black handover */}
       <span aria-hidden="true" className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand to-transparent opacity-80" />
 
-      <Container className="py-20 md:py-28">
+      <Container className="py-16 md:py-24">
         <div className="grid gap-12 lg:grid-cols-12 lg:items-start lg:gap-16">
           {/* Start column: sign-off statement + contact actions */}
           <Reveal className="lg:col-span-5 lg:pt-1">

@@ -27,7 +27,7 @@ export async function ReviewsMarquee({ dict }: { dict: Dictionary }) {
   if (!featured) return null;
 
   return (
-    <section className="border-y border-line bg-mist py-24 md:py-32">
+    <section className="border-y border-line bg-mist py-16 md:py-24">
       <Container>
         <div className="grid gap-x-12 gap-y-16 lg:grid-cols-12">
           {/* Masthead — anchored while the quotes scroll past */}
