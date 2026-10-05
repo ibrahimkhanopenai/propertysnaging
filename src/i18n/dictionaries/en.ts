@@ -113,6 +113,17 @@ const en = {
       text: "Pick the inspection that matches where you are with your property.",
       all: "View all services",
       readMore: "Read more",
+      /** Homepage service rows, in display order (keys = `featured` in ServicesGrid.tsx) */
+      items: {
+        preHandover: { title: "Pre-handover snagging", text: "Find the defects before you take the keys, so the developer fixes them first." },
+        desnagging: { title: "Handover de-snagging", text: "We re-check every reported snag to confirm the developer has actually fixed it." },
+        resale: { title: "Resale / secondary properties", text: "Know the real condition of a ready home before you buy or sign the transfer." },
+        rental: { title: "Rental properties", text: "Move-in and move-out checks that record the unit's condition for tenants and landlords." },
+        commercial: { title: "Commercial unit snagging", text: "Warehouses, buildings, offices and shops inspected before handover or lease." },
+        renovated: { title: "Renovated unit inspection", text: "Check the contractor's work after a fit-out or renovation before final payment." },
+        roofWaterproofing: { title: "Roof waterproofing", text: "Roof membranes, slopes and drains checked for weak spots before water gets in." },
+        leakage: { title: "Leakage inspections", text: "Trace hidden water leaks and damp in walls, ceilings, bathrooms and pipes." },
+      },
       /** ALT text for the real inspection photos on the service cards (keys = site.images.scope) */
       photoAlt: {
         paint: "Inspector checking wall paint and finishing defects",

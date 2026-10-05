@@ -6,27 +6,28 @@ import { Icon, type IconName } from "@/components/ui/Icon";
 import { Reveal } from "@/components/ui/Reveal";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { localePath, type Locale } from "@/i18n/config";
-import { getPageContent } from "@/content/pages";
 import type { PageKey } from "@/content/types";
 import { routePath } from "@/lib/routes";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 type Photo = keyof typeof site.images.scope;
+type Item = keyof Dictionary["home"]["services"]["items"];
 
 /**
- * Featured services, each paired with a real inspection photo (site.images.scope)
- * and a small inspection marker icon (decorative accent only).
+ * Featured services (client's order), each paired with a real inspection photo
+ * (site.images.scope) and a small inspection marker icon (decorative accent only).
+ * `page` = existing service page; rows without one link to "#" until that page exists.
  */
-const featured: Array<{ key: PageKey; photo: Photo; marker: IconName }> = [
-  { key: "handoverInspection", photo: "paint", marker: "badge" },
-  { key: "apartmentSnagging", photo: "tiling", marker: "building" },
-  { key: "villaSnagging", photo: "exterior", marker: "home" },
-  { key: "townhouseSnagging", photo: "windows", marker: "wall" },
-  { key: "dlpInspection", photo: "plumbing", marker: "shield" },
-  { key: "elevenMonth", photo: "electrical", marker: "clock" },
-  { key: "prePurchase", photo: "roof", marker: "search" },
-  { key: "thermalImaging", photo: "hvac", marker: "thermo" },
+const featured: Array<{ key: Item; page?: PageKey; photo: Photo; marker: IconName }> = [
+  { key: "preHandover", page: "preHandover", photo: "tiling", marker: "badge" },
+  { key: "desnagging", page: "handoverInspection", photo: "paint", marker: "check" },
+  { key: "resale", page: "secondaryInspection", photo: "windows", marker: "search" },
+  { key: "rental", photo: "electrical", marker: "home" },
+  { key: "commercial", photo: "exterior", marker: "building" },
+  { key: "renovated", photo: "hvac", marker: "wall" },
+  { key: "roofWaterproofing", photo: "roof", marker: "shield" },
+  { key: "leakage", page: "moistureDetection", photo: "plumbing", marker: "drop" },
 ];
 
 /** Editorial image crops — kept short and close to the content block's height
@@ -77,14 +78,14 @@ export function ServicesGrid({ locale, dict }: { locale: Locale; dict: Dictionar
         </Reveal>
 
         <Reveal as="ul" stagger className="mt-10 md:mt-12">
-          {featured.map(({ key, photo, marker }, i) => {
-            const c = getPageContent(key, locale);
+          {featured.map(({ key, page, photo, marker }, i) => {
+            const c = t.items[key];
             const imageRight = i % 2 === 0;
             const last = i === featured.length - 1;
             return (
               <li key={key} style={{ ["--i" as string]: i } as React.CSSProperties}>
                 <Link
-                  href={localePath(locale, routePath(key))}
+                  href={page ? localePath(locale, routePath(page)) : "#"}
                   className="group block rounded-3xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-4 focus-visible:ring-offset-white"
                 >
                   <div className={cn("relative grid items-center gap-6 border-t border-line py-8 transition-colors duration-500 group-hover:border-brand-line md:grid-cols-2 md:gap-10 md:py-9 lg:gap-14", last && "border-b")}>
@@ -99,9 +100,9 @@ export function ServicesGrid({ locale, dict }: { locale: Locale; dict: Dictionar
                           <span className="tabular-nums">{`0${i + 1}`} / {total}</span>
                         </span>
                         <h3 className="font-display text-[clamp(1.4rem,2.4vw,2rem)] font-extrabold leading-[1.1] tracking-[-0.02em] text-balance">
-                          {c.navLabel}
+                          {c.title}
                         </h3>
-                        <p className="max-w-[42ch] leading-relaxed text-muted">{c.summary}</p>
+                        <p className="max-w-[42ch] leading-relaxed text-muted">{c.text}</p>
                         <span className="mt-1 inline-flex items-center gap-2 text-sm font-semibold text-ink transition-colors group-hover:text-brand">
                           {t.readMore}
                           <Icon name="arrow" size={16} className="transition-transform group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1" />
