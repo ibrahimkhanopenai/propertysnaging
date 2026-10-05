@@ -51,6 +51,9 @@ export default async function LocaleLayout({ children, params }: { children: Rea
     <html lang={locale} dir={localeDir[locale]} className={fonts}>
       {gtm ? <GoogleTagManager gtmId={gtm} /> : null}
       <body>
+        <noscript>
+          <style>{`.reveal,.reveal-stagger>*{opacity:1!important;transform:none!important}`}</style>
+        </noscript>
         <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-ink focus:px-4 focus:py-2 focus:text-white">
           {dict.nav.skip}
         </a>

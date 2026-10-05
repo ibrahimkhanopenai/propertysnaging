@@ -9,6 +9,7 @@ import { TrustSection } from "@/components/home/TrustSection";
 import { ServicesGrid } from "@/components/home/ServicesGrid";
 import { WhatWeInspect } from "@/components/home/WhatWeInspect";
 import { PhotosSection } from "@/components/home/PhotosSection";
+import { Findings } from "@/components/home/Findings";
 import { SampleReportSection } from "@/components/home/SampleReportSection";
 import { Process } from "@/components/home/Process";
 import { WhyChoose } from "@/components/home/WhyChoose";
@@ -49,6 +50,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <ServicesGrid locale={locale} dict={dict} />
       <WhatWeInspect locale={locale} dict={dict} />
       <PhotosSection locale={locale} dict={dict} />
+      <Findings locale={locale} dict={dict} />
       <SampleReportSection locale={locale} dict={dict} />
       <Process dict={dict} />
       <AboutSection locale={locale} dict={dict} />

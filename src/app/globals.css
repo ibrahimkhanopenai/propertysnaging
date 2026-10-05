@@ -12,11 +12,14 @@
   --color-wa: #15803d;
   --color-wa-dark: #166534;
   --color-snag: #b91c1c;
-  /* Client rule: purple is used ONLY for pictures (frames/overlays) and forms */
-  --color-brand: #6d28d9;
-  --color-brand-dark: #5b21b6;
-  --color-brand-tint: #f5f3ff;
-  --color-brand-line: #ddd6fe;
+  /* Single brand accent (white + black + this). Warm architectural copper —
+     used strategically for labels, numbers, markers, tags, rules, active/focus states.
+     brand-light is the copper tint for dark backgrounds. */
+  --color-brand: #c96a32;
+  --color-brand-dark: #a1521f;
+  --color-brand-light: #e7a877;
+  --color-brand-tint: #fbf1ea;
+  --color-brand-line: #edccb2;
 
   --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
@@ -39,6 +42,9 @@ html.admin-root {
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  /* Guard against horizontal scroll from off-canvas elements (e.g. the mobile menu drawer).
+     `clip` (not `hidden`) avoids creating a scroll container, so the sticky header still works. */
+  overflow-x: clip;
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -51,6 +57,7 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  overflow-x: clip;
 }
 
 :focus-visible {
@@ -80,3 +87,40 @@ body {
 .marquee:hover .marquee-track, .marquee:focus-within .marquee-track { animation-play-state: paused; }
 [dir="rtl"] .marquee-track { animation-direction: reverse; }
 @media (prefers-reduced-motion: reduce) { .marquee-track { animation: none; } }
+
+/*
+ * Scroll reveal — progressive enhancement.
+ * The hidden state only applies when motion is allowed; the `.is-in` class is added
+ * by <Reveal> once the element scrolls into view. Content is in the DOM regardless
+ * (crawlable), and a <noscript> override in the layout keeps it visible without JS.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1), transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+    will-change: opacity, transform;
+  }
+  .reveal.is-in { opacity: 1; transform: none; }
+
+  .reveal-stagger > * {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.6s cubic-bezier(0.22, 0.61, 0.36, 1), transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+    transition-delay: calc(var(--i, 0) * 70ms);
+  }
+  .reveal-stagger.is-in > * { opacity: 1; transform: none; }
+}
+
+/* Subtle continuous drift for layered hero cards (motion-safe) */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes floaty { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+  .floaty { animation: floaty 6s ease-in-out infinite; }
+  .floaty-slow { animation: floaty 9s ease-in-out infinite; }
+}
+
+/* Marquee for the developer logo strip (reuses the reviews keyframes, slower) */
+.logo-track { animation: marquee 48s linear infinite; width: max-content; }
+.logo-marquee:hover .logo-track { animation-play-state: paused; }
+[dir="rtl"] .logo-track { animation-direction: reverse; }
+@media (prefers-reduced-motion: reduce) { .logo-track { animation: none; } }
