@@ -16,42 +16,44 @@ export function TrustSection({ dict }: { dict: Dictionary }) {
   return (
     <section aria-labelledby="trust-title" className="border-b border-line bg-white py-16 md:py-24">
       <Container>
-        {/* Header — asymmetric: oversized statement beside the company intro */}
-        <Reveal className="grid gap-y-8 lg:grid-cols-12 lg:items-end lg:gap-x-16">
-          <div className="lg:col-span-7">
-            <span aria-hidden="true" className="mb-6 block h-0.5 w-12 bg-brand" />
-            <h2
-              id="trust-title"
-              className="max-w-[18ch] font-display text-[clamp(2rem,4.5vw,3.4rem)] font-extrabold leading-[1.04] tracking-[-0.03em] text-balance text-ink"
-            >
-              {t.title}
-            </h2>
-          </div>
-          <p className="text-[15px] leading-relaxed text-muted lg:col-span-5 lg:border-s lg:border-brand-line lg:ps-10">
+        {/* Centred masthead — title and paragraph stacked on the same axis */}
+        <Reveal className="mx-auto flex max-w-3xl flex-col items-center gap-5 text-center">
+          <span aria-hidden="true" className="block h-0.5 w-12 bg-brand" />
+          <h2
+            id="trust-title"
+            className="font-display text-[clamp(2rem,4.5vw,3.4rem)] font-extrabold leading-[1.04] tracking-[-0.03em] text-balance text-ink"
+          >
+            {t.title}
+          </h2>
+          <p className="text-[15px] leading-relaxed text-muted sm:text-base">
             {dict.home.hero.about}
           </p>
         </Reveal>
 
-        {/* Key-figures ledger — numbers dominate; divided by hairlines, first rule copper */}
-        <Reveal stagger as="ul" className="mt-12 md:mt-16">
+        {/* Key-figures row — five compact tiles on one baseline, split by hairlines.
+         * `gap-px` on a `bg-line` wrapper paints a single-pixel divider between
+         * tiles whatever the column count wraps to. */}
+        <Reveal
+          stagger
+          as="ul"
+          className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-3 md:mt-16 lg:grid-cols-5"
+        >
           {site.stats.map((s, i) => (
             <li
               key={s.key}
               style={{ ["--i" as string]: i } as React.CSSProperties}
-              className="grid grid-cols-1 gap-x-10 gap-y-3 border-t border-line py-7 first:border-t-2 first:border-brand md:grid-cols-[auto_1fr] md:items-baseline md:py-9"
+              className="flex flex-col items-center gap-3 bg-white px-5 py-7 text-center last:col-span-2 sm:last:col-span-2 md:py-9 lg:last:col-span-1"
             >
-              <div className="flex items-baseline gap-4 md:gap-7">
-                <span aria-hidden="true" className="w-7 shrink-0 font-display text-[13px] font-semibold tabular-nums tracking-[0.2em] text-brand">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <span
-                  dir="ltr"
-                  className="font-display text-[clamp(2.8rem,7vw,5rem)] font-extrabold leading-[0.85] tracking-[-0.03em] text-ink"
-                >
-                  {s.value}
-                </span>
-              </div>
-              <span className="ps-11 text-[13px] font-semibold uppercase leading-snug tracking-[0.18em] text-muted md:ps-0 md:self-center md:text-end">
+              <span aria-hidden="true" className="font-display text-[11px] font-semibold tabular-nums tracking-[0.22em] text-brand">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <span
+                dir="ltr"
+                className="font-display text-[clamp(2rem,3.4vw,2.8rem)] font-extrabold leading-[0.9] tracking-[-0.03em] text-ink"
+              >
+                {s.value}
+              </span>
+              <span className="text-[11px] font-semibold uppercase leading-snug tracking-[0.18em] text-muted sm:text-[12px]">
                 {t.stats[s.key]}
               </span>
             </li>
@@ -59,7 +61,7 @@ export function TrustSection({ dict }: { dict: Dictionary }) {
         </Reveal>
 
         {/* Licensed & certified — refined footer line */}
-        <Reveal className="mt-10 flex flex-col gap-x-10 gap-y-6 border-t border-line pt-8 sm:flex-row sm:flex-wrap sm:items-center">
+        <Reveal className="mt-10 flex flex-col gap-x-10 gap-y-6 border-t border-line pt-8 sm:flex-row sm:flex-wrap sm:items-center sm:justify-center">
           <span aria-hidden="true" className="hidden h-6 w-0.5 shrink-0 bg-brand sm:block" />
           <ul className="flex flex-wrap items-center gap-x-8 gap-y-5">
             {site.credentials.map((c) => {
