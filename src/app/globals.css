@@ -12,14 +12,14 @@
   --color-wa: #15803d;
   --color-wa-dark: #166534;
   --color-snag: #b91c1c;
-  /* Single brand accent (white + black + this). Deep botanical green —
+  /* Single brand accent (white + black + this). Warm architectural copper —
      used strategically for labels, numbers, markers, tags, rules, active/focus states.
-     brand-light is the green tint for dark backgrounds. */
-  --color-brand: #15803d;
-  --color-brand-dark: #14532d;
-  --color-brand-light: #86efac;
-  --color-brand-tint: #f0fdf4;
-  --color-brand-line: #bbf7d0;
+     brand-light is the copper tint for dark backgrounds. */
+  --color-brand: #c96a32;
+  --color-brand-dark: #a1521f;
+  --color-brand-light: #e7a877;
+  --color-brand-tint: #fbf1ea;
+  --color-brand-line: #edccb2;
 
   --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
