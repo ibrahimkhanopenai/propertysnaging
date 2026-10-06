@@ -82,7 +82,7 @@ changelog/                 One file per completed task (see §8)
 - DB reads for public pages go through `src/lib/posts.ts` (wrapped in try/catch so pages render without DB).
 - Admin mutations = server actions in `src/app/admin/actions.ts`, each starting with `requireAdmin()`.
 - Use logical CSS (`ms-`, `pe-`, `start-`, `text-start`) so Arabic RTL works. Flip arrows with `rtl:rotate-180`.
-- Design tokens: `ink #0A0A0A`, `paper #FFF`, `mist #F5F5F4`, `line #E4E4E7`, `muted #52525B`, `wa #15803D` (WhatsApp only), `snag #B91C1C` (errors/defects only), `brand #6D28D9` (**purple: pictures + forms ONLY**). White ≈70%, grey ≈18%, black ≈12%. See `docs/design-system.md`.
+- Design tokens: `ink #0A0A0A`, `paper #FFF`, `mist #F5F5F4`, `line #E4E4E7`, `muted #52525B`, `wa #15803D` (WhatsApp only), `snag #B91C1C` (errors/defects only), `brand #15803D` (**green: single brand accent — kickers, numerals, markers, hairlines, tags, form focus, image hover rings**). White ≈70%, grey ≈18%, black ≈12%. See `docs/design-system.md`.
 - Content rules from the client: genuine stats/reviews/photos only; every service & location page has unique copy (no keyword-swapped clones); descriptive ALT text without keyword stuffing; no thin developer pages.
 - Every new tel:/WhatsApp link is tracked automatically (`TrackClicks`); forms must call `track("generate_lead", …)` on success.
 
