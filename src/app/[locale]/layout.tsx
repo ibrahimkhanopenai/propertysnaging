@@ -7,6 +7,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { TopBar } from "@/components/layout/TopBar";
 import { FloatingContact } from "@/components/layout/FloatingContact";
+import { SectionReveal } from "@/components/layout/SectionReveal";
 import { LeadPopup } from "@/components/forms/LeadPopup";
 import { TrackClicks } from "@/components/analytics/TrackClicks";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -52,7 +53,7 @@ export default async function LocaleLayout({ children, params }: { children: Rea
       {gtm ? <GoogleTagManager gtmId={gtm} /> : null}
       <body>
         <noscript>
-          <style>{`.reveal,.reveal-stagger>*{opacity:1!important;transform:none!important}`}</style>
+          <style>{`.reveal,.reveal-stagger>*,.section-reveal,.section-reveal-zoom,.section-reveal-blur,.section-reveal-start,.section-reveal-end{opacity:1!important;transform:none!important;filter:none!important}`}</style>
         </noscript>
         <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-ink focus:px-4 focus:py-2 focus:text-white">
           {dict.nav.skip}
@@ -64,6 +65,7 @@ export default async function LocaleLayout({ children, params }: { children: Rea
         <FloatingContact dict={dict} />
         <LeadPopup t={dict.popup} locale={locale} />
         <TrackClicks />
+        <SectionReveal />
         <JsonLd data={[organizationSchema(), websiteSchema()]} />
       </body>
       {ga ? <GoogleAnalytics gaId={ga} /> : null}
