@@ -99,34 +99,43 @@ body {
 @media (prefers-reduced-motion: no-preference) {
   .reveal {
     opacity: 0;
-    transform: translateY(14px);
-    transition: opacity 0.3s cubic-bezier(0.22, 0.61, 0.36, 1), transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+    transform: translateY(32px);
+    transition:
+      opacity 0.6s cubic-bezier(0.22, 0.9, 0.3, 1),
+      transform 0.7s cubic-bezier(0.22, 0.9, 0.3, 1);
     will-change: opacity, transform;
   }
   .reveal.is-in { opacity: 1; transform: none; }
 
   .reveal-stagger > * {
     opacity: 0;
-    transform: translateY(14px);
-    transition: opacity 0.3s cubic-bezier(0.22, 0.61, 0.36, 1), transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
-    transition-delay: calc(var(--i, 0) * 45ms);
+    transform: translateY(28px);
+    transition:
+      opacity 0.55s cubic-bezier(0.22, 0.9, 0.3, 1),
+      transform 0.65s cubic-bezier(0.22, 0.9, 0.3, 1);
+    transition-delay: calc(var(--i, 0) * 90ms);
   }
   .reveal-stagger.is-in > * { opacity: 1; transform: none; }
 
   /* Section-level reveal — applied by <SectionReveal> to every <section> under
-     <main>. Five variants cycle through the page so adjacent sections never
-     reuse the same motion. All transitions run 0.3s with the shared easing. */
+     <main>. The real motion lives on each section's direct CHILDREN so the
+     reveal is unmistakable (an 80 px slide of a wrapping <section> looks like
+     almost nothing; an 80 px slide of its heading, image or card column
+     reads instantly). The section itself just does a soft fade so the whole
+     band doesn't flicker in before its children.
+
+     Pattern: odd children slide in from the reading start, even children
+     from the reading end, both fading in with a 110 ms stagger between
+     siblings. Longer transform (0.85 s) than opacity (0.6 s) so the motion
+     settles after the content has already read as "there". */
   .section-reveal,
   .section-reveal-zoom,
   .section-reveal-blur,
   .section-reveal-start,
   .section-reveal-end {
     opacity: 0;
-    transition:
-      opacity 0.3s cubic-bezier(0.22, 0.61, 0.36, 1),
-      transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1),
-      filter 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
-    will-change: opacity, transform, filter;
+    transition: opacity 0.45s cubic-bezier(0.22, 0.9, 0.3, 1);
+    will-change: opacity;
   }
   .section-reveal.is-in,
   .section-reveal-zoom.is-in,
@@ -134,22 +143,52 @@ body {
   .section-reveal-start.is-in,
   .section-reveal-end.is-in {
     opacity: 1;
+  }
+
+  /* Direct children of every revealing section — the headline motion */
+  .section-reveal > *,
+  .section-reveal-zoom > *,
+  .section-reveal-blur > *,
+  .section-reveal-start > *,
+  .section-reveal-end > * {
+    opacity: 0;
+    transition:
+      opacity 0.6s cubic-bezier(0.22, 0.9, 0.3, 1) calc(var(--child-i, 0) * 110ms + 120ms),
+      transform 0.85s cubic-bezier(0.22, 0.9, 0.3, 1) calc(var(--child-i, 0) * 110ms + 120ms),
+      filter 0.6s cubic-bezier(0.22, 0.9, 0.3, 1) calc(var(--child-i, 0) * 110ms + 120ms);
+    will-change: opacity, transform;
+  }
+
+  /* ── Variant 1 (default): alternating slide — odd from start, even from end */
+  .section-reveal > *:nth-child(odd)   { transform: translate3d(-90px, 0, 0); }
+  .section-reveal > *:nth-child(even)  { transform: translate3d(90px, 0, 0); }
+  [dir="rtl"] .section-reveal > *:nth-child(odd)  { transform: translate3d(90px, 0, 0); }
+  [dir="rtl"] .section-reveal > *:nth-child(even) { transform: translate3d(-90px, 0, 0); }
+
+  /* ── Variant 2: zoom in with a staggered pop */
+  .section-reveal-zoom > *             { transform: scale(0.88) translate3d(0, 20px, 0); transform-origin: 50% 60%; }
+
+  /* ── Variant 3: focus-in with a soft blur and gentle rise */
+  .section-reveal-blur > *             { transform: translate3d(0, 40px, 0); filter: blur(8px); }
+
+  /* ── Variant 4: all children slide from the reading start */
+  .section-reveal-start > *            { transform: translate3d(-90px, 0, 0); }
+  [dir="rtl"] .section-reveal-start > * { transform: translate3d(90px, 0, 0); }
+
+  /* ── Variant 5: all children slide from the reading end */
+  .section-reveal-end > *              { transform: translate3d(90px, 0, 0); }
+  [dir="rtl"] .section-reveal-end > *  { transform: translate3d(-90px, 0, 0); }
+
+  /* ── Shared end-state for every variant's children */
+  .section-reveal.is-in > *,
+  .section-reveal-zoom.is-in > *,
+  .section-reveal-blur.is-in > *,
+  .section-reveal-start.is-in > *,
+  .section-reveal-end.is-in > * {
+    opacity: 1;
     transform: none;
     filter: none;
   }
-
-  /* 1 — fade + rise */
-  .section-reveal        { transform: translate3d(0, 20px, 0); }
-  /* 2 — zoom + fade */
-  .section-reveal-zoom   { transform: scale(0.96); }
-  /* 3 — focus + fade (blur dissolves away) */
-  .section-reveal-blur   { filter: blur(10px); transform: translate3d(0, 6px, 0); }
-  /* 4 — slide from the reading start (left in LTR, right in RTL) */
-  .section-reveal-start  { transform: translate3d(-26px, 0, 0); }
-  [dir="rtl"] .section-reveal-start { transform: translate3d(26px, 0, 0); }
-  /* 5 — slide from the reading end (right in LTR, left in RTL) */
-  .section-reveal-end    { transform: translate3d(26px, 0, 0); }
-  [dir="rtl"] .section-reveal-end   { transform: translate3d(-26px, 0, 0); }
 }
 
 /* Subtle continuous drift for layered hero cards (motion-safe) */

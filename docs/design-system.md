@@ -1,7 +1,7 @@
-# Design system — Black & White + purple accents (client-approved, Oct 2026)
+# Design system — Black & White + green accents (client-approved, Oct 2026)
 
 ## Principles
-- **Client rule: black & white theme; purple is used for pictures and forms only** (image frames/hover rings, form panels, inputs, form buttons, pop-up). Never for headings, nav or generic buttons.
+- **Client rule: black & white theme; green is the single brand accent** — kickers, numerals, markers, hairlines, tags, image hover rings, form focus, active/focus states. Never for headings, nav or generic buttons.
 - Mostly white. Black is reserved for: top bar, primary buttons, the "most popular" persona card, stats strip, Google rating box, CTA band, homepage "Our services" and "Sample report" sections, Why choose us, footer.
 - It's a **snagging** company: show real inspection photos and defects, not skylines/luxury villas (skylines only on location cards).
 - One memorable moment per section; no decorative gradients or scroll animations.
@@ -16,12 +16,13 @@
 | line | #E4E4E7 | borders |
 | muted | #52525B | body text on white |
 | subtle | #71717A | captions |
-| wa | #15803D | WhatsApp buttons ONLY |
+| wa | #15803D | WhatsApp buttons ONLY (same green as brand; context-only distinction) |
 | snag | #B91C1C | errors / defect tags ONLY |
-| brand | #6D28D9 | PURPLE — form buttons, input focus, image frames |
-| brand-dark | #5B21B6 | purple hover / price text |
-| brand-tint | #F5F3FF | price box, image placeholders |
-| brand-line | #DDD6FE | form input borders |
+| brand | #15803D | GREEN — kickers, numerals, markers, hairlines, tags, form focus, image hover ring |
+| brand-dark | #14532D | green hover / pressed |
+| brand-light | #86EFAC | green tint for dark backgrounds (ordinals on `bg-ink`, etc.) |
+| brand-tint | #F0FDF4 | subtle green fill (badges, tag backgrounds) |
+| brand-line | #BBF7D0 | form input borders, soft hairlines |
 
 ## Type
 - EN: Manrope 600–800 (headings, `font-display`) + DM Sans 400–600 (body).
