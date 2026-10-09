@@ -3,7 +3,7 @@ import { jwtVerify } from "jose";
 
 /**
  * 1. Protects /admin/* (except /admin/login/) with the JWT session cookie.
- * 2. i18n routing: English has NO URL prefix (keeps WordPress URLs) → internally
+ * 2. i18n routing: English has NO URL prefix (keeps the old site URLs) → internally
  *    rewritten to /en/...; Arabic is served from /ar/...; /en/... is 301'd away
  *    so English content never has two URLs.
  *
@@ -48,6 +48,6 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  // Skip API, Next internals, uploads, WordPress assets and any file with an extension
-  matcher: ["/((?!api/|_next/|uploads/|wp-content/|favicon.ico|.*\\..*).*)"],
+  // Skip API, Next internals, uploads and any file with an extension
+  matcher: ["/((?!api/|_next/|uploads/|favicon.ico|.*\\..*).*)"],
 };

@@ -15,7 +15,7 @@ Run `npm run build && npm start`, then `npm run seo:audit -- http://localhost:30
 - [ ] Test every WhatsApp and phone button on iPhone + Android
 - [ ] GA4/GTM: `generate_lead`, `click_call`, `click_whatsapp` visible in DebugView
 - [ ] No duplicate content (service/location pages are unique; blog checklist post not duplicated by draft)
-- [ ] No 404s for old WordPress URLs (crawl the old sitemap list)
+- [ ] No 404s for old site URLs (crawl the old sitemap list; old image/PDF URLs 301)
 - [ ] HTTPS everywhere, HTTP → HTTPS redirect at the proxy
 - [ ] DUMMY data replaced (`docs/assumptions-and-todo.md`)
 - [ ] After launch: resubmit sitemap in Search Console

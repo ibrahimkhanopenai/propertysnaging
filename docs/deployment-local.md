@@ -23,8 +23,6 @@ cp .env.example .env
 npm install
 npx prisma migrate dev --name init   # first time (creates prisma/migrations)
 npm run db:seed
-npm run assets:download
-npm run wp:import                     # optional
 npm run dev
 ```
 
@@ -40,4 +38,4 @@ Put Nginx/Caddy in front for HTTPS on `propertyinspectors.me` (proxy to `localho
 ## Backups
 - MySQL: `mysqldump propertyinspectors > backup.sql` (daily).
 - Uploaded images: `storage/uploads/` (`UPLOAD_DIR`).
-- `public/wp-content/` can be re-downloaded but keep a copy before WordPress is shut down.
+- Site images and PDFs (`public/images/`, `public/downloads/`) are in git — no backup needed.

@@ -7,7 +7,7 @@ export type OtherPageKey =
 
 /**
  * English copy for every non-home page.
- * metaTitle/metaDescription: sync with docs/legacy-seo.json (run `npm run wp:seo-export`)
+ * metaTitle/metaDescription: old site values are in docs/legacy-seo.json
  * before launch so rankings are not disturbed.
  */
 export const pagesEn: Record<OtherPageKey, PageContent> = {

@@ -15,7 +15,7 @@ import { buildMetadata } from "@/lib/seo";
 import { readingMinutes } from "@/lib/utils";
 
 /**
- * Blog posts live at the ROOT (/{slug}/) exactly like the old WordPress site.
+ * Blog posts live at the ROOT (/{slug}/) exactly like the old site.
  * Unknown paths fall back to the Redirect table, then 404.
  */
 export const revalidate = 3600;

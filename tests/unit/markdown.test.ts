@@ -25,8 +25,8 @@ describe("renderMarkdown", () => {
   });
 
   it("lazy-loads images and opens external links safely", () => {
-    const { html } = renderMarkdown('![Cracked tile](/wp-content/uploads/a.jpg)\n\n[ext](https://example.com) [int](https://propertyinspectors.me/blog/)');
-    expect(html).toContain('<img loading="lazy" decoding="async" src="/wp-content/uploads/a.jpg" alt="Cracked tile"');
+    const { html } = renderMarkdown('![Cracked tile](/uploads/a.jpg)\n\n[ext](https://example.com) [int](https://propertyinspectors.me/blog/)');
+    expect(html).toContain('<img loading="lazy" decoding="async" src="/uploads/a.jpg" alt="Cracked tile"');
     expect(html).toContain('<a href="https://example.com" target="_blank" rel="noopener noreferrer"');
     expect(html).toContain('<a href="https://propertyinspectors.me/blog/">');
   });

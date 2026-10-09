@@ -35,7 +35,6 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     description: dict.meta.homeDescription,
     applicationName: site.name,
     verification: { google: site.googleVerification },
-    icons: { icon: "/wp-content/uploads/2025/12/cropped-property-inspectors-fav-icon-270x270.jpg" },
     formatDetection: { telephone: false },
   };
 }

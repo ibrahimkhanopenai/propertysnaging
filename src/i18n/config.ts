@@ -11,7 +11,7 @@ export const ogLocale: Record<Locale, string> = { en: "en_US", ar: "ar_AE" };
 
 /**
  * Public URL for a path in a locale.
- * English has NO prefix (keeps old WordPress URLs). Arabic lives under /ar/.
+ * English has NO prefix (keeps the old site URLs). Arabic lives under /ar/.
  * Always pass paths with leading + trailing slash: "/about-us/".
  */
 export function localePath(locale: Locale, path: string): string {

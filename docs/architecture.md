@@ -7,7 +7,7 @@ Browser ──► middleware.ts
              ├─ /en/*     → 301 to the unprefixed URL (EN must have one URL only)
              ├─ /ar/*     → pass through → app/[locale=ar]/...
              └─ anything else → REWRITE (not redirect) to /en/... → app/[locale=en]/...
-           (matcher skips /api, /_next, /uploads, /wp-content and files with an extension)
+           (matcher skips /api, /_next, /uploads and files with an extension)
 ```
 
 ## Rendering
@@ -39,7 +39,7 @@ Static page folders always win over the catch-all, so slugs that clash with page
 - No UI kit, no icon library, no animation library. Client JS only for: quote form, mobile menu, language switch.
 - `next/font` (self-hosted Google fonts, `display: swap`); Arabic font loaded only on `/ar/`.
 - `next/image` AVIF/WebP, explicit `sizes`, only hero is `priority`.
-- Static/ISR everywhere; long cache headers on `/wp-content/*` and `/uploads/*`.
+- Static/ISR everywhere; 1-day cache headers on `/images/*` and `/downloads/*` (files are replaced in place), long cache on `/uploads/*`.
 - GTM/GA via `@next/third-parties` (loaded after hydration).
 
 ## Upgrading to Next.js 16

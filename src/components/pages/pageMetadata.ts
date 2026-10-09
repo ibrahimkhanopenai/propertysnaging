@@ -7,5 +7,5 @@ import { buildMetadata } from "@/lib/seo";
 export function pageMetadata(pageKey: PageKey, locale: string): Metadata {
   if (!isLocale(locale)) return {};
   const c = getPageContent(pageKey, locale);
-  return buildMetadata({ locale, path: routePath(pageKey), title: c.metaTitle, description: c.metaDescription, image: c.image });
+  return buildMetadata({ locale, path: routePath(pageKey), title: c.metaTitle, absoluteTitle: c.metaTitleAbsolute, description: c.metaDescription, image: c.image });
 }

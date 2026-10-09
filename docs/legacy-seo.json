@@ -1,0 +1,312 @@
+{
+  "note": "One-time snapshot of the old site SEO (Yoast) taken before it was shut down. Reference only — the live values are in src/content and src/i18n. Old asset paths here are redirected (src/lib/legacy-redirects.ts).",
+  "exportedAt": "2026-10-09T08:05:19.037Z",
+  "source": "https://propertyinspectors.me",
+  "pages": [
+    {
+      "path": "/",
+      "title": "Property Inspectors UAE | Home & Building Inspection",
+      "description": "Certified property inspectors in the UAE delivering detailed home and building inspections. Get accurate reports, expert guidance, and book your inspection today.",
+      "canonical": "https://propertyinspectors.me/",
+      "robots": {
+        "index": "index",
+        "follow": "follow"
+      },
+      "ogTitle": "Property Inspectors UAE | Home & Building Inspection",
+      "ogDescription": "Certified property inspectors in the UAE delivering detailed home and building inspections. Get accurate reports, expert guidance, and book your inspection today.",
+      "ogImage": "/wp-content/uploads/2025/11/4963222-removebg-preview-1.png"
+    },
+    {
+      "path": "/about-us/",
+      "title": "About Us -",
+      "description": null,
+      "canonical": "https://propertyinspectors.me/about-us/",
+      "robots": {
+        "index": "index",
+        "follow": "follow"
+      },
+      "ogTitle": "About Us -",
+      "ogDescription": "About Us About Us Setting the Standard for Property Snagging Services Property Inspectors is a premium, DED-licensed and InterNACHI-certified property snagging company, backed by highly experienced engineers with each completed over 10,000 hours of inspection expertise. We specialize in delivering detailed and comprehensive snagging reports using advanced inspection tools, ensuring one of the fastest turnaround … Continue reading \"About Us\"",
+      "ogImage": "/wp-content/uploads/2025/11/premium_photo-1661604355750-2074610af15d.jpg"
+    },
+    {
+      "path": "/blog/",
+      "title": "Blog -",
+      "description": null,
+      "canonical": "https://propertyinspectors.me/blog/",
+      "robots": {
+        "index": "index",
+        "follow": "follow"
+      },
+      "ogTitle": "Blog -",
+      "ogDescription": "Explore Our Blogs Property Snagging Checklist Before Taking Property Handover March 19, 2026 | by Property Inspector Team If you are reading this blog that means you are close to your property handover or renting a property. This blog will help you understand in detail and seek expert… Read More → Guide for Property Snagging: … Continue reading \"Blog\"",
+      "ogImage": "/wp-content/uploads/2026/03/Need-Property-Snagging-n-Inspection-300x195.png"
+    },
+    {
+      "path": "/check-list/",
+      "title": "Check List -",
+      "description": null,
+      "canonical": "https://propertyinspectors.me/check-list/",
+      "robots": {
+        "index": "index",
+        "follow": "follow"
+      },
+      "ogTitle": "Check List -",
+      "ogDescription": null,
+      "ogImage": null
+    },
+    {
+      "path": "/company-profile/",
+      "title": "Company Profile -",
+      "description": null,
+      "canonical": "https://propertyinspectors.me/company-profile/",
+      "robots": {
+        "index": "index",
+        "follow": "follow"
+      },
+      "ogTitle": "Company Profile -",
+      "ogDescription": null,
+      "ogImage": null
+    },
+    {
+      "path": "/developers/",
+      "title": "Developers -",
+      "description": null,
+      "canonical": "https://propertyinspectors.me/developers/",
+      "robots": {
+        "index": "index",
+        "follow": "follow"
+      },
+      "ogTitle": "Developers -",
+      "ogDescription": "Supporting Developers by Closing Property Quality Gaps Book Now Get Instant Quote × Let’s collaborate to ensure you complete the final check before handing over the unit to Home Owners. Reduce snagging issues, DLP calls & fixes saving on your post sales repair and maintenance cost. We offer high expertise snagging services with advanced tools … Continue reading \"Developers\"",
+      "ogImage": null
+    },
+    {
+      "path": "/download-brochure/",
+      "title": "Download Brochure -",
+      "description": null,
+      "canonical": "https://propertyinspectors.me/download-brochure/",
+      "robots": {
+        "index": "index",
+        "follow": "follow"
+      },
+      "ogTitle": "Download Brochure -",
+      "ogDescription": "Download Brochure Explore detailed sample reports prepared by Maestro Snaggers Property Reports Villa Report Maestro Snaggers – Sample Report Download Report Apartment Report Maestro Snaggers – Sample Report Download Report Condition Report Maestro Snaggers – Sample Report Download Report",
+      "ogImage": null
+    },
+    {
+      "path": "/inspection-tools/",
+      "title": "Inspection Tools -",
+      "description": null,
+      "canonical": "https://propertyinspectors.me/inspection-tools/",
+      "robots": {
+        "index": "index",
+        "follow": "follow"
+      },
+      "ogTitle": "Inspection Tools -",
+      "ogDescription": null,
+      "ogImage": null
+    },
+    {
+      "path": "/real-estate-agents/",
+      "title": "Real Estate Agents -",
+      "description": null,
+      "canonical": "https://propertyinspectors.me/real-estate-agents/",
+      "robots": {
+        "index": "index",
+        "follow": "follow"
+      },
+      "ogTitle": "Real Estate Agents -",
+      "ogDescription": "Trusted Partnerships with Real Estate Experts Our Services Book Now Get Instant Quote × Contact Us One thing common for us, is that we both strive towards delivering better services to our customers. Whether finding the best property offering highest ROI, saving their Post sales expenses or guiding them take right decisions. Let’s work together … Continue reading \"Real Estate Agents\"",
+      "ogImage": null
+    },
+    {
+      "path": "/sample-page/",
+      "title": "Sample Page -",
+      "description": null,
+      "canonical": "https://propertyinspectors.me/sample-page/",
+      "robots": {
+        "index": "index",
+        "follow": "follow"
+      },
+      "ogTitle": "Sample Page -",
+      "ogDescription": "This is an example page. It’s different from a blog post because it will stay in one place and will show up in your site navigation (in most themes). Most people start with an About page that introduces them to potential site visitors. It might say something like this: Hi there! I’m a bike messenger … Continue reading \"Sample Page\"",
+      "ogImage": null
+    },
+    {
+      "path": "/sample-report/",
+      "title": "Sample Report -",
+      "description": null,
+      "canonical": "https://propertyinspectors.me/sample-report/",
+      "robots": {
+        "index": "index",
+        "follow": "follow"
+      },
+      "ogTitle": "Sample Report -",
+      "ogDescription": null,
+      "ogImage": null
+    },
+    {
+      "path": "/scope-of-work/",
+      "title": "Scope of work -",
+      "description": null,
+      "canonical": "https://propertyinspectors.me/scope-of-work/",
+      "robots": {
+        "index": "index",
+        "follow": "follow"
+      },
+      "ogTitle": "Scope of work -",
+      "ogDescription": "Property Inspectors Scope of Work Checklist Comprehensive Inspection Coverage for All Property Components Electrical Fittings & Systems Switches and sockets alignment Light fixtures and installations Circuit breaker (DB) panel check Load testing and safety compliance Painting & Wall Finishes Paint uniformity and touch-ups Wall cracks, stains, or bubbles Plaster finish and straightness Skirting and edge … Continue reading \"Scope of work\"",
+      "ogImage": "/wp-content/uploads/2025/12/Elect__1-scaled.jpg"
+    },
+    {
+      "path": "/snagging-services-in-abudhabi/",
+      "title": "Best Property Snagging Abu Dhabi | Professional Inspections UAE",
+      "description": "Expert property snagging services in Abu Dhabi & UAE. Get detailed inspection reports before handover to find defects and protect your investment. Book now",
+      "canonical": "https://propertyinspectors.me/snagging-services-in-abudhabi/",
+      "robots": {
+        "index": "index",
+        "follow": "follow"
+      },
+      "ogTitle": "Best Property Snagging Abu Dhabi | Professional Inspections UAE",
+      "ogDescription": "Expert property snagging services in Abu Dhabi & UAE. Get detailed inspection reports before handover to find defects and protect your investment. Book now",
+      "ogImage": "/wp-content/uploads/2026/02/sale.jpg"
+    },
+    {
+      "path": "/snagging-services-in-dubai/",
+      "title": "Snagging Companies in Dubai | Professional Property Inspections",
+      "description": "Are you looking for certified snagging services in Dubai? We inspect villas, apartments & commercial properties and deliver detailed reports. Book Now!!",
+      "canonical": "https://propertyinspectors.me/snagging-services-in-dubai/",
+      "robots": {
+        "index": "index",
+        "follow": "follow"
+      },
+      "ogTitle": "Snagging Companies in Dubai | Professional Property Inspections",
+      "ogDescription": "Are you looking for certified snagging services in Dubai? We inspect villas, apartments & commercial properties and deliver detailed reports. Book Now!!",
+      "ogImage": "/wp-content/uploads/2026/02/sale.jpg"
+    },
+    {
+      "path": "/snagging-services-in-sharjah/",
+      "title": "Expert Property Snagging Sharjah | Inspection Services UAE",
+      "description": "Professional property snagging services in Sharjah, UAE. Get detailed inspection reports to spot defects before handover and protect your investment. Book now",
+      "canonical": "https://propertyinspectors.me/snagging-services-in-sharjah/",
+      "robots": {
+        "index": "index",
+        "follow": "follow"
+      },
+      "ogTitle": "Expert Property Snagging Sharjah | Inspection Services UAE",
+      "ogDescription": "Professional property snagging services in Sharjah, UAE. Get detailed inspection reports to spot defects before handover and protect your investment. Book now",
+      "ogImage": "/wp-content/uploads/2026/02/sale.jpg"
+    },
+    {
+      "path": "/snagging-services/",
+      "title": "Snagging Services -",
+      "description": null,
+      "canonical": "https://propertyinspectors.me/snagging-services/",
+      "robots": {
+        "index": "index",
+        "follow": "follow"
+      },
+      "ogTitle": "Snagging Services -",
+      "ogDescription": "Property Inspectors Services in UAE Protect Your Investment and Ensure Quality Across the UAE Purchasing property in the Emirates is a significant investment. Our professional property snagging and home inspection services guarantee your investment meets the highest standards of quality, safety, and functionality before you take full responsibility in Dubai, Abu Dhabi, or Sharjah.   We are your Certified Home Inspectors … Continue reading \"Snagging Services\"",
+      "ogImage": null
+    }
+  ],
+  "posts": [
+    {
+      "path": "/property-snagging-checklist-before-handover-dubai/",
+      "title": "Property Snagging Checklist Before Taking Property Handover -",
+      "description": "Need for Property Snagging and inspection in Dubai, Abu Dhabi, Sharjah and from Experts, using advance tools in the UAE.",
+      "canonical": "https://propertyinspectors.me/property-snagging-checklist-before-handover-dubai/",
+      "robots": {
+        "index": "index",
+        "follow": "follow"
+      },
+      "ogTitle": "Property Snagging Checklist Before Taking Property Handover -",
+      "ogDescription": "Need for Property Snagging and inspection in Dubai, Abu Dhabi, Sharjah and from Experts, using advance tools in the UAE.",
+      "ogImage": "/wp-content/uploads/2026/03/Need-Property-Snagging-n-Inspection.png",
+      "publishedAt": "2026-03-19T10:30:39Z"
+    },
+    {
+      "path": "/property-snagging-interior-finishes-fitout-guide/",
+      "title": "Property Snagging Guide: Interior Finishes & Fit-Out Inspection",
+      "description": "Guide to interior finishes and fit-out property snagging inspections. Learn how experts identify paint defects, tile issues, and installation problems before property handover.",
+      "canonical": "https://propertyinspectors.me/property-snagging-interior-finishes-fitout-guide/",
+      "robots": {
+        "index": "index",
+        "follow": "follow"
+      },
+      "ogTitle": "Property Snagging Guide: Interior Finishes & Fit-Out Inspection",
+      "ogDescription": "Guide to interior finishes and fit-out property snagging inspections. Learn how experts identify paint defects, tile issues, and installation problems before property handover.",
+      "ogImage": "/wp-content/uploads/2026/03/Property-snagging-Interior-Handover-1024x1017.png",
+      "publishedAt": "2026-03-14T09:45:59Z"
+    },
+    {
+      "path": "/property-snagging-electrical-plumbing-mep-guide/",
+      "title": "Guide for Property Snagging: Electrical and Plumbing (MEP)",
+      "description": "Guide to electrical and plumbing (MEP) property snagging inspections. Learn how professionals detect wiring faults, plumbing leaks, and drainage issues before property handover.",
+      "canonical": "https://propertyinspectors.me/property-snagging-electrical-plumbing-mep-guide/",
+      "robots": {
+        "index": "index",
+        "follow": "follow"
+      },
+      "ogTitle": "Guide for Property Snagging: Electrical and Plumbing (MEP)",
+      "ogDescription": "Guide to electrical and plumbing (MEP) property snagging inspections. Learn how professionals detect wiring faults, plumbing leaks, and drainage issues before property handover.",
+      "ogImage": "/wp-content/uploads/2026/03/property-snagging-electrical-plumbing-mep.png",
+      "publishedAt": "2026-03-13T14:20:12Z"
+    },
+    {
+      "path": "/property-snagging-inspection-dubai-abudhabi-sharjah/",
+      "title": "Need for Property Snagging & Inspection in Dubai (UAE)",
+      "description": "Protect Your Investment with UAE’s Best Snagging Company. Property Snagging Dubai, Property Inspection Abu Dhabi, Experts in the UAE.",
+      "canonical": "https://propertyinspectors.me/property-snagging-inspection-dubai-abudhabi-sharjah/",
+      "robots": {
+        "index": "index",
+        "follow": "follow"
+      },
+      "ogTitle": "Need for Property Snagging & Inspection in Dubai (UAE)",
+      "ogDescription": "Protect Your Investment with UAE’s Best Snagging Company. Property Snagging Dubai, Property Inspection Abu Dhabi, Experts in the UAE.",
+      "ogImage": "/wp-content/uploads/2026/03/Dubai-Image-for-Blog-Landscape.png",
+      "publishedAt": "2026-03-13T12:34:36Z"
+    },
+    {
+      "path": "/civil-structural-property-snagging-guide/",
+      "title": "Property Snagging Guide: Civil & Structural Inspection of Property",
+      "description": "Property snagging guide covering civil and structural inspections. Discover how professionals detect construction defects and structural issues before property handover.",
+      "canonical": "https://propertyinspectors.me/civil-structural-property-snagging-guide/",
+      "robots": {
+        "index": "index",
+        "follow": "follow"
+      },
+      "ogTitle": "Property Snagging Guide: Civil & Structural Inspection of Property",
+      "ogDescription": "Property snagging guide covering civil and structural inspections. Discover how professionals detect construction defects and structural issues before property handover.",
+      "ogImage": "/wp-content/uploads/2026/03/Civil-structural-snagging-scaled.jpg",
+      "publishedAt": "2026-03-13T12:26:12Z"
+    }
+  ],
+  "imageAlt": {
+    "/wp-content/uploads/2025/11/20251122_141146-scaled.jpg": "Wall-Finishes",
+    "/wp-content/uploads/2025/11/20251122_151424-scaled.jpg": "Sanitary-Fixtures",
+    "/wp-content/uploads/2025/11/20251122_165807-scaled.jpg": "External-Works-3",
+    "/wp-content/uploads/2025/11/4963222-removebg-preview-1.png": "buildings-in-hand-2",
+    "/wp-content/uploads/2025/11/Atlantis-Photoroom.png": "Atlantis",
+    "/wp-content/uploads/2025/11/Damac-Photoroom.png": "Damac",
+    "/wp-content/uploads/2025/11/Danube-Photoroom.png": "Danube",
+    "/wp-content/uploads/2025/11/EMAAR-Photoroom.png": "EMAAR",
+    "/wp-content/uploads/2025/11/Meraas-Photoroom.png": "Meraas",
+    "/wp-content/uploads/2025/11/Select-Group-Photoroom.png": "Select Group",
+    "/wp-content/uploads/2025/11/Sobha-Photoroom.png": "Sobha",
+    "/wp-content/uploads/2025/11/Untitled-Photoroom.png": "government-of-dubai",
+    "/wp-content/uploads/2025/11/da-Photoroom.png": "da",
+    "/wp-content/uploads/2025/11/ellington-Photoroom.png": "ellington",
+    "/wp-content/uploads/2025/11/report-1.jpg": "report-1",
+    "/wp-content/uploads/2025/11/report-2.jpg": "report-2",
+    "/wp-content/uploads/2025/11/report-3.jpg": "report-3",
+    "/wp-content/uploads/2025/11/snagging-certificate-1.jpg": "snagging-certificate-1",
+    "/wp-content/uploads/2025/11/snagging-certificate-2.jpg": "snagging-certificate-2",
+    "/wp-content/uploads/2025/12/Roof_1.png": "Roof_1",
+    "/wp-content/uploads/2025/12/Roof_2.png": "Roof_2",
+    "/wp-content/uploads/2025/12/Tiling_2.png": "Tiling_2",
+    "/wp-content/uploads/2025/12/Windows.png": "Window-lock"
+  }
+}

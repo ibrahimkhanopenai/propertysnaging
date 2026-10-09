@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`route registry (SEO rule: never change a public URL) > legacy WordPress URLs are unchanged (update the snapshot ONLY with a 301 in place) 1`] = `
+exports[`route registry (SEO rule: never change a public URL) > legacy URLs are unchanged (update the snapshot ONLY with a 301 in place) 1`] = `
 [
   "/",
   "/snagging-services/",

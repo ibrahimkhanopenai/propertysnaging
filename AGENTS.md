@@ -8,7 +8,8 @@ Marketing website + blog CMS for **Property Inspectors**, a UAE property **snagg
 properties for defects before handover). It is NOT a real-estate agency site — copy and imagery must stay about
 inspections, defects, handovers and reports.
 
-Migrated from WordPress (Elementor + Yoast). **Existing URLs rank on Google and must never change.**
+Rebuilt from an old CMS site that is being shut down — nothing is fetched from it; its SEO snapshot is `docs/legacy-seo.json`.
+**Existing URLs rank on Google and must never change.**
 
 **Client requirements:** `docs/client-requirements.md` maps every item of the client's website report to the code. Read it before changing any page, the homepage order, colours, forms or navigation.
 
@@ -28,9 +29,6 @@ Migrated from WordPress (Elementor + Yoast). **Existing URLs rank on Google and 
 npm install
 npm run db:migrate      # create/update MySQL tables (dev)
 npm run db:seed         # first admin user + categories (reads ADMIN_EMAIL/ADMIN_PASSWORD)
-npm run assets:download # copy WordPress images/PDFs into /public with the SAME paths
-npm run wp:import       # import WordPress blog posts (same slugs)
-npm run wp:seo-export   # dump current Yoast titles/descriptions → docs/legacy-seo.json
 npm run blog:drafts     # create the 10 client blog topics as DRAFT outlines
 npm run seo:audit -- http://localhost:3000   # pre-launch QA crawl (H1, titles, canonicals, broken links)
 npm run dev | build | start | lint | typecheck
@@ -43,7 +41,7 @@ src/
   app/
     [locale]/              PUBLIC SITE (root layout per locale: html lang/dir, fonts, header/footer)
       page.tsx             Homepage (primary focus)
-      <slug>/page.tsx      One folder per legacy WordPress page (thin: calls ContentPage)
+      <slug>/page.tsx      One folder per legacy page (thin: calls ContentPage)
       blog/page.tsx        Blog index
       [...slug]/page.tsx   Blog post at ROOT (/{slug}/) → else DB redirect → else 404
     admin/                 CMS (own root layout, noindex)
@@ -57,7 +55,8 @@ src/
   content/locations.*.ts  7 emirate pages (location-specific)
   content/pages.*.ts      about, scope, partners, downloads, legal
   i18n/dictionaries/en.ts|ar.ts     UI + homepage copy (ar must match en shape)
-  lib/                     site config, seo, schema (JSON-LD), routes registry, db, auth, mail, posts, markdown
+  lib/                     site config, seo, schema (JSON-LD), routes registry, legacy-redirects, db, auth, mail, posts, markdown
+public/images/<section>/   site images (brand, developers, gallery, scope, locations…) · public/downloads/ = PDFs
 docs/                      Detailed docs (see §9)
 changelog/                 One file per completed task (see §8)
 ```
@@ -65,14 +64,14 @@ changelog/                 One file per completed task (see §8)
 ## 5. NON-NEGOTIABLE SEO rules
 1. **Never change or remove a public URL.** All legacy paths live in `src/lib/routes.ts`. Need a new URL? Add it; if an old one must go, add a 301 (in `next.config.ts` for static, Admin → Redirects for content).
 2. `trailingSlash: true` stays. Every internal link ends with `/`.
-3. Blog posts are served at the **root** (`/{slug}/`), not `/blog/{slug}/` — this matches WordPress.
+3. Blog posts are served at the **root** (`/{slug}/`), not `/blog/{slug}/` — this matches the old site.
 4. English URLs have **no** locale prefix. Arabic = `/ar/...`. Never expose `/en/...`.
 5. Every page sets metadata through `buildMetadata()` (`src/lib/seo.ts`) → canonical + hreflang + OG.
-6. Homepage `<title>`/description must stay identical to WordPress (in `en.ts → meta`) unless an SEO review says otherwise.
+6. Homepage and Dubai/Abu Dhabi/Sharjah `<title>`/description stay identical to the old site (`en.ts → meta`, `locations.en.ts`) unless an SEO review says otherwise.
 7. Structured data only through `src/lib/schema.ts`. **No Review/AggregateRating schema** while `site.reviews.isPlaceholder` is true.
 8. One `<h1>` per page. Section headings are `<h2>`.
 9. Images: `next/image` with real `alt`, `sizes`; only the hero is `priority`.
-10. Keep `/wp-content/uploads/...` asset paths — they are indexed and linked.
+10. Images live in `public/images/<section>/`, PDFs in `public/downloads/` (lowercase-hyphen names, paths only in `site.ts`). Old asset URLs are indexed and linked: every one we use 301s via `src/lib/legacy-redirects.ts` — never delete an entry; update it if a file is renamed. Replace an image by overwriting the same file name.
 
 ## 6. Coding conventions
 - Server Components by default; `"use client"` only for interactivity (QuoteForm, MobileMenu, LanguageSwitch, admin forms).

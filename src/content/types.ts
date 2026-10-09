@@ -4,6 +4,8 @@ export type PageSection = { id?: string; title: string; paragraphs?: string[]; b
 
 export type PageContent = {
   metaTitle: string;
+  /** true = metaTitle is the full <title> (no "| Property Inspectors UAE" suffix) — used for the old site's ranking titles */
+  metaTitleAbsolute?: boolean;
   metaDescription: string;
   breadcrumb: string;
   /** Short name used in menus, cards and related links */

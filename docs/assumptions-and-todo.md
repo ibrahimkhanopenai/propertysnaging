@@ -13,7 +13,7 @@
 | Reviews | 3 real testimonials carried from the live site | `site.defaultReviews` (shown until Admin → Reviews has entries); ratings represented as 5★ (source had none) — confirm |
 | Homepage "Real findings" | defect/recommendation copy cleaned from the live site | `home.findings` in `en.ts`/`ar.ts` — confirm wording |
 | Price | 10 AED per bedroom | `.env PRICE_PER_BEDROOM` |
-| GTM / GA IDs | empty | `.env` — copy from WordPress |
+| GTM / GA IDs | empty locally | production `.env`: `NEXT_PUBLIC_GTM_ID=GTM-N2BF4B58` (old site container) |
 | Arabic copy | first draft | `ar.ts`, `pages.ar.ts` — native review needed |
 
 ## Assumptions made
@@ -21,7 +21,7 @@
 - MySQL is required, so Payload CMS was not used (it has no MySQL adapter); admin is custom.
 - Download pages (`/sample-report/` etc.) link straight to the existing PDFs.
 - `/download-brochure/` uses the company profile PDF (no separate brochure PDF found).
-- Images reuse the current site's photos (paths in `site.images`); hero = client-supplied `/images/hero-city-in-hand.jpg` (2026-10-02; the earlier inspector photo `20251122_142826-scaled.jpg` is still in /public).
+- Images reuse the old site's photos, renamed into `public/images/<section>/` (paths in `site.images`, old URLs 301 via `src/lib/legacy-redirects.ts`); hero = client-supplied `/images/hero-city-in-hand.jpg`. The client will replace images by hand (same file name).
 - Logo = client-supplied PNG (`/images/logo.png`, white version `/images/logo-white.png` for the footer). Swap for an SVG if one becomes available.
 
 ## Open tasks
@@ -30,9 +30,11 @@
 - [ ] Write the 10 blog drafts (`npm run blog:drafts`) and genuine developer pages
 - [ ] Replace all DUMMY values above
 - [ ] Native Arabic review
-- [ ] Meta parity with `docs/legacy-seo.json`
+- [ ] Re-add the 5 old blog posts in Admin with the same slug/meta (table in `docs/seo-migration.md`)
+- [ ] Dubai location photo: the old file no longer exists — `/snagging-services-in-dubai/` shows no image until one is added (`site.images.locations`)
+- [ ] About photo (`/images/about/property-handover.jpg`) is an Unsplash+ premium image with a visible watermark — replace with a licensed/real photo
 - [ ] Real Google reviews (Places API or manual)
-- [ ] Optional: Arabic translations of the 5 imported blog posts
+- [ ] Optional: Arabic translations of the 5 old blog posts
 - [ ] Confirm the developer logo strip wording ("We snag homes by the UAE's leading developers") — logos imply inspections in those projects, not a partnership
 - [ ] Re-export the "Dubai Properties" logo (current PNG only contains the red tick, so it is hidden)
 - [ ] Homepage hero/About copy uses the old site's claims ("one of the best and most trusted", "10,000 hours" per engineer) — client OK'd for now (2026-10-02); revisit before launch

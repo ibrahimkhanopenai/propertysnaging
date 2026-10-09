@@ -29,16 +29,16 @@ async function main() {
   // Gallery: seed with real photos from the current site (only if empty)
   if ((await prisma.galleryImage.count()) === 0) {
     const photos = [
-      { url: "/wp-content/uploads/2025/11/20251024_123029-rotated-e1762517560680-400x500.jpg", alt: "Engineer inspecting external works during a snagging inspection", category: "inspection" },
-      { url: "/wp-content/uploads/2025/11/20251024_112841-400x500.jpg", alt: "Wall finish defect marked during snagging", category: "defects" },
-      { url: "/wp-content/uploads/2025/11/20251024_105721-400x500.jpg", alt: "Checking wall level and finish", category: "inspection" },
-      { url: "/wp-content/uploads/2025/11/20251024_103650-400x500.jpg", alt: "Wall surface check with inspection tools", category: "equipment" },
-      { url: "/wp-content/uploads/2025/11/20251024_103511-rotated-e1762517524996-400x500.jpg", alt: "Mirror and fixture installation check", category: "defects" },
-      { url: "/wp-content/uploads/2025/12/HVAC__1-768x1024.jpg", alt: "AC diffuser temperature test", category: "equipment" },
-      { url: "/wp-content/uploads/2025/12/Plumbing_1-768x1024.jpg", alt: "Plumbing fixture inspection", category: "inspection" },
-      { url: "/wp-content/uploads/2025/12/Elect__1-768x1024.jpg", alt: "Socket alignment and polarity test", category: "equipment" },
-      { url: "/wp-content/uploads/2025/12/Tiling_1-1024x768.jpg", alt: "Hollow floor tile identified with tapping test", category: "defects" },
-      { url: "/wp-content/uploads/2025/11/report-1.jpg", alt: "Page from a snagging report showing defect photos", category: "reporting" },
+      { url: "/images/gallery/external-works-inspection.jpg", alt: "Engineer inspecting external works during a snagging inspection", category: "inspection" },
+      { url: "/images/gallery/wall-finish-defect.jpg", alt: "Wall finish defect marked during snagging", category: "defects" },
+      { url: "/images/gallery/wall-level-check.jpg", alt: "Checking wall level and finish", category: "inspection" },
+      { url: "/images/gallery/wall-surface-check.jpg", alt: "Wall surface check with inspection tools", category: "equipment" },
+      { url: "/images/gallery/mirror-fixture-check.jpg", alt: "Mirror and fixture installation check", category: "defects" },
+      { url: "/images/scope/hvac.jpg", alt: "AC diffuser temperature test", category: "equipment" },
+      { url: "/images/scope/plumbing.jpg", alt: "Plumbing fixture inspection", category: "inspection" },
+      { url: "/images/scope/electrical.jpg", alt: "Socket alignment and polarity test", category: "equipment" },
+      { url: "/images/scope/tiling.jpg", alt: "Hollow floor tile identified with tapping test", category: "defects" },
+      { url: "/images/reports/sample-report-page-1.jpg", alt: "Page from a snagging report showing defect photos", category: "reporting" },
     ];
     await prisma.galleryImage.createMany({ data: photos.map((p, i) => ({ ...p, featured: i < 8, sortOrder: i })) });
   }

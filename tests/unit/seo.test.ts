@@ -27,7 +27,7 @@ describe("route registry (SEO rule: never change a public URL)", () => {
       expect(fs.existsSync(file), file).toBe(true);
     }
   });
-  it("legacy WordPress URLs are unchanged (update the snapshot ONLY with a 301 in place)", () => {
+  it("legacy URLs are unchanged (update the snapshot ONLY with a 301 in place)", () => {
     expect(staticRoutes.filter((r) => r.legacy).map((r) => r.path)).toMatchSnapshot();
   });
 });

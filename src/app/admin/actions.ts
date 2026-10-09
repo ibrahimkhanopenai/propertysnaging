@@ -55,7 +55,7 @@ export async function logoutAction() {
 
 export type PostState = { error?: string; saved?: boolean };
 
-const reservedSlugs = new Set(["ar", "en", "admin", "api", "uploads", "wp-content", "blog", ...staticRoutes.map((r) => r.path.replace(/\//g, "")).filter(Boolean)]);
+const reservedSlugs = new Set(["ar", "en", "admin", "api", "uploads", "images", "downloads", "blog", ...staticRoutes.map((r) => r.path.replace(/\//g, "")).filter(Boolean)]);
 
 const optional = (v: FormDataEntryValue | null) => {
   const s = String(v ?? "").trim();

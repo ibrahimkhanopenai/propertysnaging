@@ -1,6 +1,6 @@
 # Client requirements (website report) → implementation map
 
-Source: `Propertyinspectors_ae_website_report.docx` (client, Oct 2026). Written for the old WordPress site; applied to the Next.js build.
+Source: `Propertyinspectors_ae_website_report.docx` (client, Oct 2026). Written for the old site; applied to the Next.js build.
 **Any agent changing a page must keep these rules.** Status: ✅ done · 🟡 done, needs client data · ⏳ open
 
 | § | Requirement | Status | Where |

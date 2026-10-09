@@ -44,7 +44,7 @@ function ImageField({ name, value, onChange, labelText }: { name: string; value:
     <div className={label}>
       {labelText}
       <div className="flex gap-2">
-        <input name={name} value={value} onChange={(e) => onChange(e.target.value)} placeholder="/uploads/... or /wp-content/..." className={input} />
+        <input name={name} value={value} onChange={(e) => onChange(e.target.value)} placeholder="/uploads/... or /images/..." className={input} />
         <label className="inline-flex h-11 shrink-0 cursor-pointer items-center rounded-lg border border-zinc-300 px-3 text-sm font-semibold hover:bg-mist">
           {busy ? "Uploading…" : "Upload"}
           <input

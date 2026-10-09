@@ -5,7 +5,6 @@ out
 .env.local
 *.tsbuildinfo
 storage/
-public/wp-content/
 npm-debug.log*
 .DS_Store
 coverage/

@@ -20,7 +20,7 @@ export const site = {
   mapsUrl: "https://www.google.com/maps/search/?api=1&query=The+Binary+Tower+by+Omniyat+Marasi+Drive+Business+Bay+Dubai",
   hours: "Mo-Sa 08:00-20:00", // DUMMY
   dedLicense: "DED-000000", // DUMMY
-  googleVerification: "-YIH_uBxgbK6qZ5zg5zQhJkHvjr5wf9zuGE86ieb1sI", // from current WordPress site
+  googleVerification: "-YIH_uBxgbK6qZ5zg5zQhJkHvjr5wf9zuGE86ieb1sI", // from the old site — keeps Search Console verified
   /** true until the real profile URLs below are confirmed — sameAs is omitted from schema meanwhile */
   socialIsPlaceholder: true,
   social: {
@@ -45,39 +45,39 @@ export const site = {
   reviews: { rating: "4.9", count: "100+", isPlaceholder: true },
   /** Credentials shown in the trust section (images from the current site) */
   credentials: [
-    { key: "ded", image: "/wp-content/uploads/2025/11/Untitled-Photoroom.png" },
-    { key: "internachi1", image: "/wp-content/uploads/2025/11/snagging-certificate-1.jpg" },
-    { key: "internachi2", image: "/wp-content/uploads/2025/11/snagging-certificate-2.jpg" },
+    { key: "ded", image: "/images/credentials/government-of-dubai.png" },
+    { key: "internachi1", image: "/images/credentials/internachi-certificate-1.jpg" },
+    { key: "internachi2", image: "/images/credentials/internachi-certificate-2.jpg" },
   ],
   /**
    * Developer logos from the current site's homepage strip (white logos — show on a dark background).
    * "Dubai Properties" is left out: its file only contains the red tick, the wordmark is missing.
    */
   developers: [
-    { name: "Atlantis The Royal", logo: "/wp-content/uploads/2025/11/Atlantis-Photoroom.png", width: 576, height: 223 },
-    { name: "DAMAC", logo: "/wp-content/uploads/2025/11/Damac-Photoroom.png", width: 400, height: 92 },
-    { name: "Danube Properties", logo: "/wp-content/uploads/2025/11/Danube-Photoroom.png", width: 340, height: 128 },
-    { name: "wasl", logo: "/wp-content/uploads/2025/11/da-Photoroom.png", width: 111, height: 84 },
-    { name: "Ellington Properties", logo: "/wp-content/uploads/2025/11/ellington-Photoroom.png", width: 499, height: 189 },
-    { name: "Emaar", logo: "/wp-content/uploads/2025/11/EMAAR-Photoroom.png", width: 964, height: 245 },
-    { name: "Meraas", logo: "/wp-content/uploads/2025/11/Meraas-Photoroom.png", width: 354, height: 142 },
-    { name: "Select Group", logo: "/wp-content/uploads/2025/11/Select-Group-Photoroom.png", width: 202, height: 87 },
-    { name: "Sobha Realty", logo: "/wp-content/uploads/2025/11/Sobha-Photoroom.png", width: 478, height: 190 },
+    { name: "Atlantis The Royal", logo: "/images/developers/atlantis-the-royal.png", width: 576, height: 223 },
+    { name: "DAMAC", logo: "/images/developers/damac.png", width: 400, height: 92 },
+    { name: "Danube Properties", logo: "/images/developers/danube-properties.png", width: 340, height: 128 },
+    { name: "wasl", logo: "/images/developers/wasl.png", width: 111, height: 84 },
+    { name: "Ellington Properties", logo: "/images/developers/ellington-properties.png", width: 499, height: 189 },
+    { name: "Emaar", logo: "/images/developers/emaar.png", width: 964, height: 245 },
+    { name: "Meraas", logo: "/images/developers/meraas.png", width: 354, height: 142 },
+    { name: "Select Group", logo: "/images/developers/select-group.png", width: 202, height: 87 },
+    { name: "Sobha Realty", logo: "/images/developers/sobha-realty.png", width: 478, height: 190 },
   ],
   /** Real inspection photos from the current site — used until Admin → Gallery has images */
   defaultGallery: [
-    "/wp-content/uploads/2025/11/20251024_123029-rotated-e1762517560680-400x500.jpg",
-    "/wp-content/uploads/2025/11/20251024_112841-400x500.jpg",
-    "/wp-content/uploads/2025/11/20251024_105721-400x500.jpg",
-    "/wp-content/uploads/2025/11/20251024_103650-400x500.jpg",
-    "/wp-content/uploads/2025/11/20251024_103511-rotated-e1762517524996-400x500.jpg",
-    "/wp-content/uploads/2025/11/20251024_103456-rotated-e1762517575117-400x500.jpg",
-    "/wp-content/uploads/2025/12/HVAC_2-768x1024.jpg",
-    "/wp-content/uploads/2025/12/Plumbing_2-768x1024.jpg",
-    "/wp-content/uploads/2025/12/Elect_2-768x1024.jpg",
-    "/wp-content/uploads/2025/12/Exterior_2-461x1024.jpg",
-    "/wp-content/uploads/2025/12/Tiling_2.png",
-    "/wp-content/uploads/2025/12/Roof_2.png",
+    "/images/gallery/external-works-inspection.jpg",
+    "/images/gallery/wall-finish-defect.jpg",
+    "/images/gallery/wall-level-check.jpg",
+    "/images/gallery/wall-surface-check.jpg",
+    "/images/gallery/mirror-fixture-check.jpg",
+    "/images/gallery/shower-glass-inspection.jpg",
+    "/images/gallery/hvac-inspection.jpg",
+    "/images/gallery/plumbing-inspection.jpg",
+    "/images/gallery/electrical-inspection.jpg",
+    "/images/gallery/exterior-inspection.jpg",
+    "/images/gallery/tiling-inspection.png",
+    "/images/gallery/roof-inspection.png",
   ],
   /**
    * Real testimonials carried over from the current site — shown until Admin → Reviews has entries.
@@ -90,40 +90,43 @@ export const site = {
   ],
   areaServed: ["Dubai", "Abu Dhabi", "Sharjah", "Ras Al Khaimah", "Ajman"],
   pdfs: {
-    profile: "/wp-content/uploads/2026/02/PROFILE-Property-Inspectors.pdf",
-    sampleReport: "/wp-content/uploads/2026/02/Sample-Report-PropertyInspectors.pdf",
-    checklist: "/wp-content/uploads/2026/02/CHECKLIST-Property-Inspector.pdf",
-    tools: "/wp-content/uploads/2026/02/INSPECTION-TOOLS-PropertyInspectors.pdf",
+    profile: "/downloads/property-inspectors-company-profile.pdf",
+    sampleReport: "/downloads/property-inspectors-sample-snagging-report.pdf",
+    checklist: "/downloads/property-inspectors-snagging-checklist.pdf",
+    tools: "/downloads/property-inspectors-inspection-tools.pdf",
   },
-  /** Real photos from the current site (downloaded by `npm run assets:download`) */
+  /**
+   * Images live in /public/images/<section>/ (lowercase-hyphen names). To replace one, overwrite the
+   * file with the SAME name. Old site paths 301 here via src/lib/legacy-redirects.ts.
+   */
   images: {
     /** Official logo supplied by the client (2026-10-02), transparent PNGs */
     logo: "/images/logo.png",
     logoWhite: "/images/logo-white.png",
-    og: "/wp-content/uploads/2025/11/4963222-removebg-preview-1.png",
+    og: "/images/brand/og-image.png",
     /** Hero image supplied by the client (2026-10-02), 1200×919, white background */
     hero: "/images/hero-city-in-hand.jpg",
-    about: "/wp-content/uploads/2025/11/premium_photo-1661604355750-2074610af15d-1024x683.jpg",
+    about: "/images/about/property-handover.jpg",
     report: [
-      "/wp-content/uploads/2025/11/report-1.jpg",
-      "/wp-content/uploads/2025/11/report-2.jpg",
-      "/wp-content/uploads/2025/11/report-3.jpg",
+      "/images/reports/sample-report-page-1.jpg",
+      "/images/reports/sample-report-page-2.jpg",
+      "/images/reports/sample-report-page-3.jpg",
     ],
     scope: {
-      hvac: "/wp-content/uploads/2025/12/HVAC__1-768x1024.jpg",
-      plumbing: "/wp-content/uploads/2025/12/Plumbing_1-768x1024.jpg",
-      electrical: "/wp-content/uploads/2025/12/Elect__1-768x1024.jpg",
-      paint: "/wp-content/uploads/2025/12/Paint___Wall_1-768x1024.jpg",
-      windows: "/wp-content/uploads/2025/12/Windows.png",
-      tiling: "/wp-content/uploads/2025/12/Tiling_1-1024x768.jpg",
-      exterior: "/wp-content/uploads/2025/12/Exterior_1-461x1024.jpg",
-      roof: "/wp-content/uploads/2025/12/Roof_1.png",
+      hvac: "/images/scope/hvac.jpg",
+      plumbing: "/images/scope/plumbing.jpg",
+      electrical: "/images/scope/electrical.jpg",
+      paint: "/images/scope/paint-and-walls.jpg",
+      windows: "/images/scope/windows-and-doors.png",
+      tiling: "/images/scope/tiling.jpg",
+      exterior: "/images/scope/exterior.jpg",
+      roof: "/images/scope/roof.png",
     },
+    /** No Dubai photo yet (the old file was already deleted) — add `dubai` here and in content/locations.*.ts */
     locations: {
-      dubai: "/wp-content/uploads/2026/03/Dubai-Image-for-Blog-Landscape.png",
-      abudhabi: "/wp-content/uploads/2025/11/20251122_151424-scaled.jpg",
-      sharjah: "/wp-content/uploads/2025/11/20251122_141146-scaled.jpg",
-      rak: "/wp-content/uploads/2025/11/20251122_165807-scaled.jpg",
+      abudhabi: "/images/locations/abu-dhabi.jpg",
+      sharjah: "/images/locations/sharjah.jpg",
+      rak: "/images/locations/ras-al-khaimah.jpg",
     },
   },
 };

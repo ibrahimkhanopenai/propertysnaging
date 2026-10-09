@@ -1,5 +1,5 @@
 /**
- * Registry of every static page. Legacy WordPress paths are IDENTICAL to the old site
+ * Registry of every static page. Legacy paths are IDENTICAL to the old site
  * (see docs/seo-migration.md). Used by sitemap, nav, footer, related links and hreflang.
  * NEVER rename a path — add a redirect instead.
  */

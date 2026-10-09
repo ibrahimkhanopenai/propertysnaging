@@ -10,8 +10,8 @@ cp .env.example .env          # fill DATABASE_URL, AUTH_SECRET, SMTP…
 npm install
 npm run db:migrate            # creates tables
 npm run db:seed               # creates the admin user
-npm run assets:download       # images + PDFs from the current WordPress site
-npm run wp:import             # (optional) import WordPress blog posts
 npm run dev                   # http://localhost:3000  · admin: /admin/
 ```
+All images and PDFs are in the repo (`public/images/`, `public/downloads/`). Blog posts are added in the admin.
+
 Production: `npm run build && npm start` — full guide in `docs/deployment-local.md`.

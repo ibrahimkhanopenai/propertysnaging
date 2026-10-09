@@ -4,9 +4,10 @@
  */
 const en = {
   meta: {
-    homeTitle: "Property Snagging & Inspection Dubai & UAE | Property Inspectors",
+    /** Old site title/description, kept as-is (SEO rule #6) — see docs/legacy-seo.json */
+    homeTitle: "Property Inspectors UAE | Home & Building Inspection",
     homeDescription:
-      "DED-licensed, InterNACHI-certified property snagging and inspection in Dubai and across the UAE. Handover, DLP and pre-purchase inspections with photo reports in 6–24 hours.",
+      "Certified property inspectors in the UAE delivering detailed home and building inspections. Get accurate reports, expert guidance, and book your inspection today.",
     titleSuffix: "Property Inspectors UAE",
   },
   nav: {

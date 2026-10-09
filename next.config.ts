@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
+import { legacyAssetRedirects } from "./src/lib/legacy-redirects";
 
 /**
- * SEO RULE: trailingSlash MUST stay true — every URL on the old WordPress
+ * SEO RULE: trailingSlash MUST stay true — every URL on the old
  * site ends with "/" and Google has indexed them that way.
  * See docs/seo-migration.md before touching redirects.
  */
@@ -15,7 +16,7 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
-      // WordPress leftovers → 301 (see docs/seo-migration.md)
+      // Old site leftovers → 301 (see docs/seo-migration.md)
       { source: "/sample-page/", destination: "/", permanent: true },
       { source: "/category/:path*", destination: "/blog/", permanent: true },
       { source: "/author/:path*", destination: "/blog/", permanent: true },
@@ -27,6 +28,8 @@ const nextConfig: NextConfig = {
       { source: "/category-sitemap.xml", destination: "/sitemap.xml", permanent: true },
       { source: "/author-sitemap.xml", destination: "/sitemap.xml", permanent: true },
       { source: "/elementor-hf-sitemap.xml", destination: "/sitemap.xml", permanent: true },
+      // Old image/PDF URLs → /images, /downloads (src/lib/legacy-redirects.ts)
+      ...legacyAssetRedirects,
     ];
   },
   async headers() {
@@ -44,10 +47,11 @@ const nextConfig: NextConfig = {
             : []),
         ],
       },
-      {
-        source: "/wp-content/:path*",
-        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
-      },
+      // 1 day, not immutable: images are replaced by overwriting the same file name
+      ...["/images/:path*", "/downloads/:path*"].map((source) => ({
+        source,
+        headers: [{ key: "Cache-Control", value: "public, max-age=86400, stale-while-revalidate=604800" }],
+      })),
     ];
   },
 };

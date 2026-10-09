@@ -25,7 +25,7 @@ export default async function PostsPage() {
           </thead>
           <tbody>
             {posts.length === 0 ? (
-              <tr><td colSpan={6} className="p-6 text-muted">No posts yet. Write one, or run <code>npm run wp:import</code> to bring posts from WordPress.</td></tr>
+              <tr><td colSpan={6} className="p-6 text-muted">No posts yet. Write the first one.</td></tr>
             ) : null}
             {posts.map((p) => {
               const url = `${p.locale === "ar" ? "/ar" : ""}/${p.slug}/`;

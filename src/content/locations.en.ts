@@ -6,14 +6,15 @@ export type LocationKey = "dubai" | "abudhabi" | "sharjah" | "ajman" | "rak" | "
 /** Location pages — each with location-specific content (client rule: no duplicated location pages). */
 export const locationsEn: Record<LocationKey, PageContent> = {
   dubai: {
-    metaTitle: "Property Snagging Dubai | Snagging Services in Dubai",
-    metaDescription: "Property snagging in Dubai for apartments, villas and townhouses. DED-licensed engineers, handover and DLP inspections, photo reports within 6–24 hours.",
+    // Old site title/description kept as-is (page ranks on Google) — see docs/legacy-seo.json
+    metaTitle: "Snagging Companies in Dubai | Professional Property Inspections",
+    metaTitleAbsolute: true,
+    metaDescription: "Are you looking for certified snagging services in Dubai? We inspect villas, apartments & commercial properties and deliver detailed reports. Book Now!!",
     breadcrumb: "Snagging in Dubai",
     navLabel: "Dubai",
     summary: "Our home base — fastest scheduling for handovers across Dubai.",
     h1: "Property snagging services in Dubai",
     intro: "Dubai sees thousands of off-plan handovers every year, and developers give buyers a short window to report defects. From our Business Bay office we reach most communities the same day.",
-    image: site.images.locations.dubai,
     schema: "service",
     city: "Dubai",
     communities: ["Dubai Hills Estate", "Business Bay", "Downtown Dubai", "Dubai Marina & JBR", "Jumeirah Village Circle (JVC)", "Dubai Creek Harbour", "Arabian Ranches", "Damac Hills", "Dubai South", "Meydan & MBR City"],
@@ -28,8 +29,10 @@ export const locationsEn: Record<LocationKey, PageContent> = {
     related: ["apartmentSnagging", "villaSnagging", "handoverInspection", "dlpInspection"],
   },
   abudhabi: {
-    metaTitle: "Property Snagging Abu Dhabi | Handover Inspection Experts",
-    metaDescription: "Property snagging in Abu Dhabi for villas, townhouses and apartments on Yas, Saadiyat, Al Reem and beyond. Engineer-led inspections and fast photo reports.",
+    // Old site title/description kept as-is (page ranks on Google) — see docs/legacy-seo.json
+    metaTitle: "Best Property Snagging Abu Dhabi | Professional Inspections UAE",
+    metaTitleAbsolute: true,
+    metaDescription: "Expert property snagging services in Abu Dhabi & UAE. Get detailed inspection reports before handover to find defects and protect your investment. Book now",
     breadcrumb: "Snagging in Abu Dhabi",
     navLabel: "Abu Dhabi",
     summary: "Large villa communities on Yas, Saadiyat and Al Reem.",
@@ -47,8 +50,10 @@ export const locationsEn: Record<LocationKey, PageContent> = {
     related: ["villaSnagging", "townhouseSnagging", "handoverInspection", "thermalImaging"],
   },
   sharjah: {
-    metaTitle: "Property Snagging Sharjah | New Home Inspection Sharjah",
-    metaDescription: "Property snagging in Sharjah for new communities like Aljada and Tilal City as well as resale apartments. Engineer-led inspections with photo reports.",
+    // Old site title/description kept as-is (page ranks on Google) — see docs/legacy-seo.json
+    metaTitle: "Expert Property Snagging Sharjah | Inspection Services UAE",
+    metaTitleAbsolute: true,
+    metaDescription: "Professional property snagging services in Sharjah, UAE. Get detailed inspection reports to spot defects before handover and protect your investment. Book now",
     breadcrumb: "Snagging in Sharjah",
     navLabel: "Sharjah",
     summary: "Fast-growing new communities and resale apartments.",

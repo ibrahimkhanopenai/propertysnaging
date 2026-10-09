@@ -4,7 +4,7 @@ import { slugify } from "@/lib/utils";
 
 export type TocItem = { id: string; text: string; level: 2 | 3 };
 
-/** Allow-list for post HTML: Markdown output, WordPress-imported markup and YouTube embeds. No scripts, styles or event handlers. */
+/** Allow-list for post HTML: Markdown output, pasted HTML markup and YouTube embeds. No scripts, styles or event handlers. */
 const SANITIZE: sanitizeHtml.IOptions = {
   allowedTags: [...sanitizeHtml.defaults.allowedTags, "img", "figure", "figcaption", "picture", "source", "iframe", "del", "ins", "sup", "sub"],
   allowedAttributes: {
@@ -25,7 +25,7 @@ const SANITIZE: sanitizeHtml.IOptions = {
 const stripTags = (s: string) => s.replace(/<[^>]+>/g, "").replace(/&amp;/g, "&").replace(/&#39;/g, "'").replace(/&quot;/g, '"');
 
 /**
- * Markdown → sanitized HTML (defence in depth: admins and WordPress imports can paste raw HTML).
+ * Markdown → sanitized HTML (defence in depth: admins can paste raw HTML).
  * Adds ids to h2/h3 and returns a table of contents.
  * Also makes images lazy and external links safe.
  */

@@ -48,7 +48,7 @@ model Post {
   type             PostType   @default(POST)
   locale           Locale     @default(en)
   title            String     @db.VarChar(255)
-  /// Public URL is /{slug}/ (root level, same as old WordPress) — /ar/{slug}/ for Arabic
+  /// Public URL is /{slug}/ (root level, same as the old site) — /ar/{slug}/ for Arabic
   slug             String     @db.VarChar(191)
   excerpt          String?    @db.Text
   /// Markdown
