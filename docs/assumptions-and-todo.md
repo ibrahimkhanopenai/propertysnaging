@@ -13,7 +13,7 @@
 | Reviews | 3 real testimonials carried from the live site | `site.defaultReviews` (shown until Admin → Reviews has entries); ratings represented as 5★ (source had none) — confirm |
 | Homepage "Real findings" | defect/recommendation copy cleaned from the live site | `home.findings` in `en.ts`/`ar.ts` — confirm wording |
 | Price | 10 AED per bedroom | `.env PRICE_PER_BEDROOM` |
-| GTM / GA IDs | empty locally | production `.env`: `NEXT_PUBLIC_GTM_ID=GTM-N2BF4B58` (old site container) |
+| GTM / GA IDs | empty locally | production `.env`: `NEXT_PUBLIC_GTM_ID=GTM-MCTLKNHC` (client container, 2026-10-09; replaces the old site's GTM-N2BF4B58). Leave `NEXT_PUBLIC_GA_ID` empty if GA4 is set up inside GTM (else double counting) |
 | Arabic copy | first draft | `ar.ts`, `pages.ar.ts` — native review needed |
 
 ## Assumptions made

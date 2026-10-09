@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 import { DM_Sans, IBM_Plex_Sans_Arabic, Manrope } from "next/font/google";
-import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import "../globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -10,6 +10,7 @@ import { FloatingContact } from "@/components/layout/FloatingContact";
 import { SectionReveal } from "@/components/layout/SectionReveal";
 import { LeadPopup } from "@/components/forms/LeadPopup";
 import { TrackClicks } from "@/components/analytics/TrackClicks";
+import { GtmHead, GtmNoScript } from "@/components/analytics/GoogleTagManager";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { getDictionary } from "@/i18n/dictionaries";
 import { isLocale, localeDir, locales } from "@/i18n/config";
@@ -49,8 +50,11 @@ export default async function LocaleLayout({ children, params }: { children: Rea
 
   return (
     <html lang={locale} dir={localeDir[locale]} className={fonts}>
-      {gtm ? <GoogleTagManager gtmId={gtm} /> : null}
+      <head>
+        <GtmHead id={gtm} />
+      </head>
       <body>
+        <GtmNoScript id={gtm} />
         <noscript>
           <style>{`.reveal,.reveal-stagger>*,.section-reveal,.section-reveal-zoom,.section-reveal-blur,.section-reveal-start,.section-reveal-end,.section-reveal>*,.section-reveal-zoom>*,.section-reveal-blur>*,.section-reveal-start>*,.section-reveal-end>*{opacity:1!important;transform:none!important;filter:none!important}`}</style>
         </noscript>

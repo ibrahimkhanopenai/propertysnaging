@@ -1,5 +1,7 @@
 # AGENTS.md — Property Inspectors (propertyinspectors.me)
 
+> **Never run `git add` or `git commit`, even if requested.** Staging and committing are user-only actions. Leave changes unstaged and uncommitted, ready for the user's review.
+
 **Read this file first.** It is the single source of truth for any AI agent or developer working on this repo.
 Tool-specific files (e.g. `CLAUDE.md`) only point here.
 

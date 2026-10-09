@@ -74,6 +74,6 @@ Original publish dates are in `docs/legacy-seo.json → posts[].publishedAt`.
 - [ ] Meta parity checked against `docs/legacy-seo.json`
 - [ ] Crawl the old sitemap URLs against the new server (Screaming Frog list mode) → no 404s
 - [ ] Google Search Console verification tag present (it is in `site.googleVerification`)
-- [ ] `NEXT_PUBLIC_GTM_ID=GTM-N2BF4B58` set in the production `.env`
+- [ ] `NEXT_PUBLIC_GTM_ID=GTM-MCTLKNHC` set in the production `.env`
 - [ ] Submit `https://propertyinspectors.me/sitemap.xml` in Search Console
 - [ ] Monitor Search Console Coverage + rankings for 4–6 weeks; log findings in `changelog/`

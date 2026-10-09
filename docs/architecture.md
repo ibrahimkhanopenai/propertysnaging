@@ -40,7 +40,7 @@ Static page folders always win over the catch-all, so slugs that clash with page
 - `next/font` (self-hosted Google fonts, `display: swap`); Arabic font loaded only on `/ar/`.
 - `next/image` AVIF/WebP, explicit `sizes`, only hero is `priority`.
 - Static/ISR everywhere; 1-day cache headers on `/images/*` and `/downloads/*` (files are replaced in place), long cache on `/uploads/*`.
-- GTM/GA via `@next/third-parties` (loaded after hydration).
+- GTM: Google's official snippet server-rendered in `<head>` + `<noscript>` right after `<body>` (`components/analytics/GoogleTagManager.tsx`; gtm.js loads async). GA4-only fallback via `@next/third-parties` (after hydration).
 
 ## Upgrading to Next.js 16
 Next 16 renames `middleware.ts` → `proxy.ts` (export `proxy` instead of `middleware`). Do it in one PR, test admin auth + `/ar/` + `/en/` redirect, and log it in `changelog/`.

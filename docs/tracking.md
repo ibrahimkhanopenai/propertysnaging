@@ -1,7 +1,7 @@
 # Analytics & conversion tracking
 
 ## Setup
-1. `.env`: `NEXT_PUBLIC_GTM_ID=GTM-XXXX` (preferred) and/or `NEXT_PUBLIC_GA_ID=G-XXXX`.
+1. `.env`: `NEXT_PUBLIC_GTM_ID=GTM-MCTLKNHC` (client container). Rendered as Google's official snippet in `<head>` + `<noscript>` after `<body>` on every public page (not admin) — `src/components/analytics/GoogleTagManager.tsx`. Set `NEXT_PUBLIC_GA_ID=G-XXXX` ONLY if GA4 is not configured inside GTM (both = double counting).
 2. Search Console: verification tag already in `site.googleVerification`. After launch submit `/sitemap.xml`.
 
 ## Events pushed (`window.dataLayer` + `gtag` if present)
