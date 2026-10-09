@@ -19,3 +19,13 @@ export function localePath(locale: Locale, path: string): string {
   if (locale === "en") return clean;
   return clean === "/" ? "/ar/" : `/ar${clean}`;
 }
+
+/**
+ * Same page in the other language, for the language switch.
+ * `pathname` may carry the internal /en/ prefix (English pages are rewritten to /en/... and
+ * usePathname() returns that path while rendering), so any locale prefix is stripped first.
+ */
+export function switchLocalePath(current: Locale, pathname: string): string {
+  const path = pathname.replace(/^\/(en|ar)(?=\/|$)/, "") || "/";
+  return localePath(current === "ar" ? "en" : "ar", path);
+}

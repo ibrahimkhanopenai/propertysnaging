@@ -2,15 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import type { Locale } from "@/i18n/config";
+import { switchLocalePath, type Locale } from "@/i18n/config";
 
 /** Links to the same page in the other language (EN has no prefix, AR uses /ar/). */
 export function LanguageSwitch({ locale, label, ariaLabel }: { locale: Locale; label: string; ariaLabel: string }) {
-  const pathname = usePathname() || "/";
-  const target =
-    locale === "ar"
-      ? pathname.replace(/^\/ar(?=\/|$)/, "") || "/"
-      : `/ar${pathname === "/" ? "/" : pathname}`;
+  const target = switchLocalePath(locale, usePathname() || "/");
   return (
     <Link
       href={target}

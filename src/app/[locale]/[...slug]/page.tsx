@@ -16,7 +16,8 @@ import { readingMinutes } from "@/lib/utils";
 
 /**
  * Blog posts live at the ROOT (/{slug}/) exactly like the old site.
- * Unknown paths fall back to the Redirect table, then 404.
+ * Unknown paths fall back to the Redirect table, then (post only in the other language) the
+ * blog/developer listing, then 404.
  */
 export const revalidate = 3600;
 export const dynamicParams = true;
@@ -60,6 +61,11 @@ export default async function PostPage(props: Props) {
     if (r) {
       if (r.statusCode === 302 || r.statusCode === 307) redirect(r.toPath);
       permanentRedirect(r.toPath);
+    }
+    // Post exists only in the other language (language switch link) → this language's listing, not a 404
+    if (isLocale(rawLocale) && slug.length === 1) {
+      const other = await getPostBySlug(rawLocale === "ar" ? "en" : "ar", decodeURIComponent(slug[0]));
+      if (other) redirect(localePath(rawLocale, other.type === "DEVELOPER" ? "/snagging-by-developer/" : "/blog/"));
     }
     notFound();
   }

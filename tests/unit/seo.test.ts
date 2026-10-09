@@ -3,7 +3,7 @@ import path from "path";
 import { describe, expect, it } from "vitest";
 import { staticRoutes } from "@/lib/routes";
 import { buildMetadata } from "@/lib/seo";
-import { localePath } from "@/i18n/config";
+import { localePath, switchLocalePath } from "@/i18n/config";
 import { organizationSchema } from "@/lib/schema";
 import { site } from "@/lib/site";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -37,6 +37,24 @@ describe("localePath", () => {
     expect(localePath("en", "/about-us/")).toBe("/about-us/");
     expect(localePath("ar", "/about-us/")).toBe("/ar/about-us/");
     expect(localePath("ar", "/")).toBe("/ar/");
+  });
+});
+
+describe("switchLocalePath (language switch)", () => {
+  it("never builds /ar/en/ from the internal English path", () => {
+    expect(switchLocalePath("en", "/en/about-us/")).toBe("/ar/about-us/");
+    expect(switchLocalePath("en", "/en")).toBe("/ar/");
+    expect(switchLocalePath("en", "/about-us/")).toBe("/ar/about-us/");
+    expect(switchLocalePath("en", "/")).toBe("/ar/");
+  });
+  it("Arabic → English drops the prefix", () => {
+    expect(switchLocalePath("ar", "/ar/about-us/")).toBe("/about-us/");
+    expect(switchLocalePath("ar", "/ar/")).toBe("/");
+    expect(switchLocalePath("ar", "/ar")).toBe("/");
+  });
+  it("leaves slugs that only start with the letters en/ar alone", () => {
+    expect(switchLocalePath("en", "/arabian-ranches-snagging/")).toBe("/ar/arabian-ranches-snagging/");
+    expect(switchLocalePath("ar", "/ar/english-guide/")).toBe("/english-guide/");
   });
 });
 
