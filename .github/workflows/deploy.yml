@@ -1,0 +1,67 @@
+name: Deploy
+
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+    branches: [main]
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to EC2
+    # Only when CI succeeded on a push to main 
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: production
+    env:
+      APP_DIR: /var/www/propertysnaging
+      PM2_NAME: propertyinspectors
+      DEPLOY_SHA: ${{ github.event.workflow_run.head_sha }}
+    steps:
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/ec2_key
+          chmod 600 ~/.ssh/ec2_key
+          echo "${{ secrets.EC2_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Deploy over SSH
+        run: |
+          ssh -i ~/.ssh/ec2_key \
+              -o StrictHostKeyChecking=yes \
+              ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} \
+              "APP_DIR='${{ env.APP_DIR }}' PM2_NAME='${{ env.PM2_NAME }}' DEPLOY_SHA='${{ env.DEPLOY_SHA }}' bash -s" << 'SCRIPT'
+          set -e
+          cd "$APP_DIR"
+
+          echo "==> Updating code to $DEPLOY_SHA"
+          git fetch origin main
+          git reset --hard "$DEPLOY_SHA"
+
+          echo "==> Installing dependencies"
+          npm ci
+
+          echo "==> Applying database migrations"
+          npm run db:deploy
+
+          echo "==> Building"
+          NEXT_TELEMETRY_DISABLED=1 npm run build
+
+          echo "==> Restarting app"
+          pm2 reload "$PM2_NAME" --update-env || pm2 start npm --name "$PM2_NAME" -- start
+          pm2 save
+
+          echo "==> Deployment complete"
+          SCRIPT
+
+      - name: Clean up SSH key
+        if: always()
+        run: rm -f ~/.ssh/ec2_key
