@@ -22,15 +22,15 @@ jobs:
     environment: production
     env:
       APP_DIR: /var/www/propertysnaging
-      PM2_NAME: propertyinspectors
+      PM2_NAME: propertysnaging
       DEPLOY_SHA: ${{ github.event.workflow_run.head_sha }}
     steps:
       - name: Configure SSH
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/ec2_key
+          printf '%s\n' "${{ secrets.EC2_SSH_KEY }}" | tr -d '\r' > ~/.ssh/ec2_key
           chmod 600 ~/.ssh/ec2_key
-          echo "${{ secrets.EC2_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+          printf '%s\n' "${{ secrets.EC2_KNOWN_HOSTS }}" | tr -d '\r' > ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
 
       - name: Deploy over SSH
@@ -40,6 +40,11 @@ jobs:
               ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} \
               "APP_DIR='${{ env.APP_DIR }}' PM2_NAME='${{ env.PM2_NAME }}' DEPLOY_SHA='${{ env.DEPLOY_SHA }}' bash -s" << 'SCRIPT'
           set -e
+
+          # Load nvm so npm/pm2 work in non-interactive SSH
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+
           cd "$APP_DIR"
 
           echo "==> Updating code to $DEPLOY_SHA"
