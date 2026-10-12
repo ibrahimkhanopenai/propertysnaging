@@ -22,8 +22,8 @@ const link = (key: PageKey, locale: Locale): NavLink => {
 };
 
 /**
- * Header navigation: Home, Services, Locations, About, Contact.
- * Sample Report, Reviews and FAQs live in the footer only (client change 2026-10-02).
+ * Header navigation: Home, Services, Locations, About, Sample report, Gallery, Blog, FAQs, Contact.
+ * Sample report, Gallery, Blog and FAQs were added back to the header on client request (2026-10-09).
  * Paths are locale-free; Header/MobileMenu wrap them with localePath().
  */
 export function getNav(dict: Dictionary, locale: Locale): NavItem[] {
@@ -36,6 +36,10 @@ export function getNav(dict: Dictionary, locale: Locale): NavItem[] {
     },
     { label: dict.nav.locations, href: "/snagging-services-in-dubai/", children: locationOrder.map((k) => link(k, locale)) },
     { label: dict.nav.about, href: "/about-us/" },
+    { label: dict.nav.sampleReport, href: "/sample-report/" },
+    { label: dict.nav.gallery, href: "/gallery/" },
+    { label: dict.nav.blog, href: "/blog/" },
+    { label: dict.nav.faqs, href: "/faqs/" },
     { label: dict.nav.contact, href: "/contact-us/" },
   ];
 }

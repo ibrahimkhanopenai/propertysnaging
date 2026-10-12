@@ -1,0 +1,7 @@
+-- AlterTable
+ALTER TABLE `Lead` ADD COLUMN `gclid` VARCHAR(255) NULL,
+    ADD COLUMN `handoverDate` DATE NULL,
+    ADD COLUMN `utmCampaign` VARCHAR(191) NULL,
+    ADD COLUMN `utmMedium` VARCHAR(191) NULL,
+    ADD COLUMN `utmSource` VARCHAR(191) NULL,
+    ADD COLUMN `utmTerm` VARCHAR(191) NULL;

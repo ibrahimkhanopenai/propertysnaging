@@ -114,10 +114,18 @@ model Lead {
   emirate        String?  @db.VarChar(60)
   /// Community / building / project location (replaces old "project name" field)
   location       String?  @db.VarChar(191)
-  /// quote_form | popup | contact_page
+  /// quote_form | popup | contact_page | booking_bar
   source         String?  @db.VarChar(40)
   message        String?  @db.Text
   estimatedPrice Int?
+  /// Optional handover date from the quote form (urgency)
+  handoverDate   DateTime? @db.Date
+  /// Google Ads click id + UTM tags captured on the landing page (src/lib/attribution.ts)
+  gclid          String?  @db.VarChar(255)
+  utmSource      String?  @db.VarChar(191)
+  utmMedium      String?  @db.VarChar(191)
+  utmCampaign    String?  @db.VarChar(191)
+  utmTerm        String?  @db.VarChar(191)
   locale         String?  @db.VarChar(5)
   pagePath       String?  @db.VarChar(255)
   emailSent      Boolean  @default(false)

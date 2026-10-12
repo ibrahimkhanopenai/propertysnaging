@@ -42,7 +42,7 @@ export function Faq({
           <Reveal className="flex flex-col gap-6">
             <span
               aria-hidden="true"
-              className="inline-flex items-center gap-2.5 text-[12px] font-semibold uppercase tracking-[0.2em] text-brand tabular-nums"
+              className="inline-flex items-center gap-2.5 text-[13px] font-semibold uppercase tracking-[0.18em] text-brand tabular-nums"
             >
               <span className="h-px w-6 bg-current opacity-60" />
               01 &mdash; {total}

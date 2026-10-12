@@ -31,7 +31,7 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
           <ul className="flex items-center">
             {nav.map((item) => (
               <li key={item.label} className={item.groups ? "group static" : "group relative"}>
-                <Link href={item.href} className="inline-flex items-center gap-1 rounded-lg px-2.5 py-2 text-[15px] text-ink-soft hover:text-ink">
+                <Link href={item.href} className="inline-flex items-center gap-1 whitespace-nowrap rounded-lg px-2 py-2 text-[15px] text-ink-soft hover:text-ink 2xl:px-2.5">
                   {item.label}
                   {item.children || item.groups ? <Icon name="chevron" size={14} /> : null}
                 </Link>
@@ -69,15 +69,16 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
         </nav>
 
         <div className="flex items-center gap-2">
-          <a href={`tel:${site.phone}`} data-track="header" className="hidden items-center gap-2 rounded-full px-3 py-2 text-[15px] font-semibold hover:bg-mist md:inline-flex" dir="ltr">
+          {/* Hidden at xl, where the 9-item nav needs the room; the top bar always shows the number */}
+          <a href={`tel:${site.phone}`} data-track="header" className="hidden items-center gap-2 whitespace-nowrap rounded-full px-3 py-2 text-[15px] font-semibold hover:bg-mist md:inline-flex xl:hidden 2xl:inline-flex" dir="ltr">
             <Icon name="phone" size={18} />
             {site.phoneDisplay}
           </a>
           <LanguageSwitch locale={locale} label={dict.nav.switchLanguage} ariaLabel={dict.nav.switchLanguageLabel} />
-          <ButtonLink href={whatsappLink(dict.quote.waIntro)} variant="whatsapp" icon="whatsapp" external className="hidden rounded-full lg:inline-flex">
+          <ButtonLink href={whatsappLink(dict.quote.waIntro)} variant="whatsapp" icon="whatsapp" external className="whitespace-nowrap rounded-full max-lg:hidden">
             {dict.nav.whatsapp}
           </ButtonLink>
-          <ButtonLink href={`${L("/")}#quote`} className="hidden rounded-full sm:inline-flex">{dict.nav.getQuote}</ButtonLink>
+          <ButtonLink href={`${L("/")}#quote`} className="whitespace-nowrap rounded-full max-sm:hidden">{dict.nav.getQuote}</ButtonLink>
           <MobileMenu items={nav} openLabel={dict.nav.menu} closeLabel={dict.nav.close} quoteHref={`${L("/")}#quote`} quoteLabel={dict.nav.getQuote} />
         </div>
       </Container>

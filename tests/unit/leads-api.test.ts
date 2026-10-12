@@ -28,6 +28,7 @@ const post = (body: unknown, ip = `10.0.0.${++ipCounter}`) =>
 const runAfter = () => Promise.all(afterTasks.map((t) => t()));
 
 beforeEach(() => {
+  process.env.PRICE_PER_SQFT = "0.70";
   create.mockClear();
   update.mockClear();
   sendMail.mockClear();
@@ -35,11 +36,11 @@ beforeEach(() => {
 });
 
 describe("POST /api/leads", () => {
-  it("saves a valid lead with the price estimate and emails it after the response", async () => {
-    const res = await post({ name: "Ali", phone: "+971500000000", propertyType: "villa", bedrooms: 3, source: "quote_form" });
+  it("saves a valid lead with the price estimate (area × rate) and emails it after the response", async () => {
+    const res = await post({ name: "Ali", phone: "+971500000000", propertyType: "villa", bedrooms: 3, areaSqft: 1250, source: "quote_form" });
     expect(res.status).toBe(200);
     expect(create).toHaveBeenCalledOnce();
-    expect(create.mock.calls[0][0].data).toMatchObject({ name: "Ali", propertyType: "villa", bedrooms: 3, estimatedPrice: 30 });
+    expect(create.mock.calls[0][0].data).toMatchObject({ name: "Ali", propertyType: "villa", bedrooms: 3, areaSqft: 1250, estimatedPrice: 875 });
     expect(sendMail).not.toHaveBeenCalled();
     await runAfter();
     expect(sendMail).toHaveBeenCalledOnce();
@@ -54,9 +55,38 @@ describe("POST /api/leads", () => {
     expect(html).toContain("&lt;b&gt;");
   });
 
-  it("drops bedrooms for commercial and stores no price", async () => {
-    await post({ name: "Co", phone: "+971500000000", propertyType: "commercial", bedrooms: 5 });
-    expect(create.mock.calls[0][0].data).toMatchObject({ bedrooms: null, estimatedPrice: null });
+  it("drops bedrooms for commercial but prices it by area like any property", async () => {
+    await post({ name: "Co", phone: "+971500000000", propertyType: "commercial", bedrooms: 5, areaSqft: 2000 });
+    expect(create.mock.calls[0][0].data).toMatchObject({ bedrooms: null, estimatedPrice: 1400 });
+  });
+
+  it("stores no price without an area or without a configured rate", async () => {
+    await post({ name: "A", phone: "+971500000000", propertyType: "apartment", bedrooms: 2 });
+    expect(create.mock.calls[0][0].data).toMatchObject({ estimatedPrice: null });
+    delete process.env.PRICE_PER_SQFT;
+    await post({ name: "B", phone: "+971500000000", propertyType: "apartment", areaSqft: 900 });
+    expect(create.mock.calls[1][0].data).toMatchObject({ estimatedPrice: null });
+  });
+
+  it("stores the handover date and Google Ads attribution and puts them in the email", async () => {
+    await post({
+      name: "Ad", phone: "+971500000000", handoverDate: "2026-11-15",
+      gclid: "abc123", utmSource: "google", utmMedium: "cpc", utmCampaign: "handover", utmTerm: "snagging dubai",
+    });
+    expect(create.mock.calls[0][0].data).toMatchObject({
+      handoverDate: new Date("2026-11-15T00:00:00Z"),
+      gclid: "abc123", utmSource: "google", utmMedium: "cpc", utmCampaign: "handover", utmTerm: "snagging dubai",
+    });
+    await runAfter();
+    const { text } = sendMail.mock.calls[0][0];
+    expect(text).toContain("Handover date: 2026-11-15");
+    expect(text).toContain("abc123");
+    expect(text).toContain("google / cpc / handover / snagging dubai");
+  });
+
+  it("rejects a malformed handover date", async () => {
+    const res = await post({ name: "X", phone: "+971500000000", handoverDate: "next week" });
+    expect(res.status).toBe(422);
   });
 
   it("rejects bad JSON and invalid fields", async () => {

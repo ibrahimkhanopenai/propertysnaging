@@ -10,9 +10,9 @@ export function Logo({ href, inverted = false }: { href: string; inverted?: bool
         src={inverted ? site.images.logoWhite : site.images.logo}
         alt={site.name}
         width={1200}
-        height={463}
-        sizes="140px"
-        className="h-11 w-auto md:h-12"
+        height={451}
+        sizes="(min-width: 768px) 170px, 150px"
+        className="h-14 w-auto md:h-16"
       />
     </Link>
   );

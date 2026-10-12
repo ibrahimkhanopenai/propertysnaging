@@ -17,6 +17,8 @@
      brand-light is the copper tint for dark backgrounds. */
   --color-brand: #c96a32;
   --color-brand-dark: #a1521f;
+  /* CTA buttons = brand-dark bg (5.6:1 with white text, WCAG AA); brand-deep is their hover. */
+  --color-brand-deep: #8a4519;
   --color-brand-light: #e7a877;
   --color-brand-tint: #fbf1ea;
   --color-brand-line: #edccb2;

@@ -3,21 +3,21 @@
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import type { Dictionary } from "@/i18n/dictionaries";
-import type { Locale } from "@/i18n/config";
 import { track } from "@/lib/track";
 
 const KEY = "pi_popup_seen";
 const DELAY_MS = 10_000;
 
 /**
- * Client requirement: pop-up ~10 s after entering the site with only Name, Phone and Submit,
- * and a small, discreet close button.
+ * Client requirement: pop-up ~10 s after entering the site with Name, No. of bedrooms and
+ * BUA (sq ft); Submit opens WhatsApp with those details, and a small, discreet close button.
+ * Nothing is posted to /api/leads/ (no phone field — WhatsApp gives us the number).
  * Shown once per browser session. On phones it is a bottom sheet (not full-screen) to limit
  * Google's "intrusive interstitial" risk. Never shown on /contact-us/.
  */
-export function LeadPopup({ t, locale }: { t: Dictionary["popup"]; locale: Locale }) {
+export function LeadPopup({ t, whatsapp }: { t: Dictionary["popup"]; whatsapp: string }) {
   const [open, setOpen] = useState(false);
-  const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
+  const [invalid, setInvalid] = useState(false);
   const firstInput = useRef<HTMLInputElement>(null);
   const pathname = usePathname() || "";
 
@@ -47,29 +47,30 @@ export function LeadPopup({ t, locale }: { t: Dictionary["popup"]; locale: Local
 
   if (!open) return null;
 
-  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
     const name = String(fd.get("name") ?? "").trim();
-    const phone = String(fd.get("phone") ?? "").trim();
-    if (!name || phone.replace(/\D/g, "").length < 7) return;
-    setStatus("sending");
-    try {
-      const r = await fetch("/api/leads/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, phone, company: String(fd.get("company") ?? ""), source: "popup", locale, pagePath: window.location.pathname }),
-      });
-      if (!r.ok) throw new Error();
-      setStatus("done");
-      track("generate_lead", { form_id: "popup" });
-      window.setTimeout(() => setOpen(false), 2500);
-    } catch {
-      setStatus("error");
+    const bedroomsRaw = String(fd.get("bedrooms") ?? "");
+    const area = Number(String(fd.get("area") ?? "").replace(/[^\d]/g, "")) || undefined;
+    if (!name || bedroomsRaw === "") {
+      setInvalid(true);
+      return;
     }
+    const bedrooms = Number(bedroomsRaw);
+    const lines = [
+      t.waIntro,
+      `${t.name}: ${name}`,
+      `${t.bedrooms}: ${bedrooms === 0 ? t.studio : `${bedrooms} ${t.br}`}`,
+      area ? `${t.area}: ${area}` : "",
+    ].filter(Boolean);
+    // Opened inside the submit handler so popup blockers allow it
+    window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent(lines.join("\n"))}`, "_blank", "noopener");
+    track("generate_lead", { form_id: "popup", method: "whatsapp" });
+    setOpen(false);
   }
 
-  const input = "h-12 w-full rounded-xl border border-brand-line px-3.5 text-[15px] outline-none focus:border-brand focus:ring-2 focus:ring-brand/20";
+  const input = "h-12 w-full rounded-xl border border-brand-line bg-white px-3.5 text-[15px] text-ink outline-none focus:border-brand focus:ring-2 focus:ring-brand/20";
 
   return (
     <div className="fixed inset-0 z-[60] flex items-end justify-center bg-ink/40 sm:items-center sm:p-6" onClick={() => setOpen(false)}>
@@ -85,19 +86,22 @@ export function LeadPopup({ t, locale }: { t: Dictionary["popup"]; locale: Local
         </button>
         <h2 id="lead-popup-title" className="pe-8 font-display text-xl font-extrabold">{t.title}</h2>
         <p className="mt-1 text-sm text-muted">{t.text}</p>
-        {status === "done" ? (
-          <p role="status" className="mt-5 rounded-xl bg-brand-tint p-4 font-semibold text-brand-dark">{t.success}</p>
-        ) : (
-          <form onSubmit={onSubmit} className="mt-5 flex flex-col gap-3" noValidate>
-            <label className="sr-only" htmlFor="popup-name">{t.name}</label>
-            <input ref={firstInput} id="popup-name" name="name" placeholder={t.name} autoComplete="name" required className={input} />
-            <label className="sr-only" htmlFor="popup-phone">{t.phone}</label>
-            <input id="popup-phone" name="phone" type="tel" placeholder={t.phone} autoComplete="tel" dir="ltr" required className={input} />
-            <input name="company" tabIndex={-1} autoComplete="off" aria-hidden="true" className="hidden" />
-            <button type="submit" disabled={status === "sending"} className="min-h-12 rounded-xl bg-brand font-semibold text-white hover:bg-brand-dark disabled:opacity-60">{t.submit}</button>
-            {status === "error" ? <p role="alert" className="text-sm text-snag">{t.error}</p> : null}
-          </form>
-        )}
+        <form onSubmit={onSubmit} className="mt-5 flex flex-col gap-3" noValidate>
+          <label className="sr-only" htmlFor="popup-name">{t.name}</label>
+          <input ref={firstInput} id="popup-name" name="name" placeholder={t.name} autoComplete="name" required className={input} />
+          <label className="sr-only" htmlFor="popup-bedrooms">{t.bedrooms}</label>
+          <select id="popup-bedrooms" name="bedrooms" required defaultValue="" className={`${input} invalid:text-subtle`}>
+            <option value="" disabled>{t.bedrooms}</option>
+            <option value={0}>{t.studio}</option>
+            {[1, 2, 3, 4, 5, 6, 7].map((n) => (
+              <option key={n} value={n}>{n} {t.br}</option>
+            ))}
+          </select>
+          <label className="sr-only" htmlFor="popup-area">{t.area}</label>
+          <input id="popup-area" name="area" inputMode="numeric" placeholder={t.areaPlaceholder} className={input} />
+          <button type="submit" className="min-h-12 rounded-xl bg-brand-dark font-semibold text-white hover:bg-brand-deep">{t.submit}</button>
+          {invalid ? <p role="alert" className="text-sm text-snag">{t.required}</p> : null}
+        </form>
       </div>
     </div>
   );

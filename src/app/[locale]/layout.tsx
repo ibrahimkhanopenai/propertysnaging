@@ -11,6 +11,7 @@ import { SectionReveal } from "@/components/layout/SectionReveal";
 import { LeadPopup } from "@/components/forms/LeadPopup";
 import { TrackClicks } from "@/components/analytics/TrackClicks";
 import { GtmHead, GtmNoScript } from "@/components/analytics/GoogleTagManager";
+import { ClarityHead } from "@/components/analytics/Clarity";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { getDictionary } from "@/i18n/dictionaries";
 import { isLocale, localeDir, locales } from "@/i18n/config";
@@ -47,11 +48,13 @@ export default async function LocaleLayout({ children, params }: { children: Rea
   const fonts = locale === "ar" ? plexArabic.variable : `${manrope.variable} ${dmSans.variable}`;
   const gtm = process.env.NEXT_PUBLIC_GTM_ID;
   const ga = process.env.NEXT_PUBLIC_GA_ID;
+  const clarity = process.env.NEXT_PUBLIC_CLARITY_ID;
 
   return (
     <html lang={locale} dir={localeDir[locale]} className={fonts}>
       <head>
         <GtmHead id={gtm} />
+        <ClarityHead id={clarity} />
       </head>
       <body>
         <GtmNoScript id={gtm} />
@@ -66,7 +69,7 @@ export default async function LocaleLayout({ children, params }: { children: Rea
         <main id="main">{children}</main>
         <Footer locale={locale} dict={dict} />
         <FloatingContact dict={dict} />
-        <LeadPopup t={dict.popup} locale={locale} />
+        <LeadPopup t={dict.popup} whatsapp={site.whatsapp} />
         <TrackClicks />
         <SectionReveal />
         <JsonLd data={[organizationSchema(), websiteSchema()]} />

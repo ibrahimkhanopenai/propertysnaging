@@ -7,32 +7,18 @@ import { Reveal } from "@/components/ui/Reveal";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { localePath, type Locale } from "@/i18n/config";
 import { getGallery } from "@/lib/content-db";
-import { cn } from "@/lib/utils";
+import { Lightbox } from "@/components/ui/Lightbox";
 
 /**
- * Editorial inspection gallery — an art-directed mosaic (one wide feature frame,
- * one tall portrait, and smaller supporting frames) instead of a uniform square grid.
- * Each frame carries a copper "inspection marker" ordinal; real captions render as
- * small copper-accented tags. Data: Admin → Gallery "featured" (falls back to
- * site.defaultGallery). The tile pattern tiles a clean rectangle at 2 cols (mobile)
- * and 6 cols (md+); grid-auto-flow: dense backfills if fewer frames come back.
+ * Inspection photo grid: uniform 4:5 portrait frames (our photos are portrait phone shots, so
+ * almost nothing is cropped — client feedback 2026-10-09: "photos are not complete"). Every
+ * frame opens the full photo in the Lightbox. Each frame carries a copper ordinal marker; real
+ * captions render as small tags. Data: Admin → Gallery "featured" (falls back to
+ * site.defaultGallery). 8 photos = 4 full rows on mobile (2 cols) and 2 on md+ (4 cols).
  */
-const LAYOUT = [
-  // 0 — wide landscape feature
-  { cls: "col-span-2 row-span-2 md:col-span-4 md:row-span-2", sizes: "(min-width: 768px) 56vw, 100vw" },
-  // 1 — tall portrait feature
-  { cls: "col-span-1 row-span-2 md:col-span-2 md:row-span-3", sizes: "(min-width: 768px) 28vw, 50vw" },
-  { cls: "col-span-1 md:col-span-2", sizes: "(min-width: 768px) 28vw, 50vw" },
-  { cls: "col-span-1 md:col-span-2", sizes: "(min-width: 768px) 28vw, 50vw" },
-  // 4 — full-width band on mobile for rhythm
-  { cls: "col-span-2 md:col-span-2", sizes: "(min-width: 768px) 28vw, 100vw" },
-  { cls: "col-span-1 md:col-span-2", sizes: "(min-width: 768px) 28vw, 50vw" },
-  { cls: "col-span-1 md:col-span-2", sizes: "(min-width: 768px) 28vw, 50vw" },
-] as const;
-
 export async function PhotosSection({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   const t = dict.home.photos;
-  const photos = await getGallery({ featuredOnly: true, take: 7 });
+  const photos = await getGallery({ featuredOnly: true, take: 8 });
 
   return (
     <section className="bg-white py-16 md:py-24">
@@ -57,29 +43,25 @@ export async function PhotosSection({ locale, dict }: { locale: Locale; dict: Di
         {/* copper hairline — carries the eye from the header into the mosaic */}
         <div aria-hidden="true" className="h-px w-full bg-gradient-to-r from-brand/50 via-line to-transparent" />
 
-        <Reveal
-          as="ul"
-          stagger
-          className="grid auto-rows-[7.25rem] grid-cols-2 gap-3 [grid-auto-flow:dense] md:auto-rows-[9rem] md:grid-cols-6 md:gap-4"
-        >
-          {photos.map((p, i) => {
-            const spec = LAYOUT[i % LAYOUT.length];
-            const ordinal = String(i + 1).padStart(2, "0");
-            return (
+        <Lightbox items={photos.map(({ url, alt, caption }) => ({ url, alt, caption }))} t={dict.lightbox}>
+          <Reveal as="ul" stagger className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
+            {photos.map((p, i) => (
               <li
                 key={p.id}
                 style={{ ["--i" as string]: i } as React.CSSProperties}
-                className={cn(
-                  "group relative overflow-hidden rounded-2xl bg-mist ring-1 ring-black/5 transition duration-300 hover:ring-2 hover:ring-brand/40",
-                  spec.cls,
-                )}
+                className="group relative aspect-[4/5] overflow-hidden rounded-2xl bg-mist ring-1 ring-black/5 transition duration-300 hover:ring-2 hover:ring-brand/40"
               >
-                <figure className="absolute inset-0">
+                <button
+                  type="button"
+                  data-lightbox={i}
+                  aria-label={`${dict.lightbox.open}: ${p.alt}`}
+                  className="absolute inset-0 cursor-zoom-in rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand"
+                >
                   <Image
                     src={p.url}
                     alt={p.alt}
                     fill
-                    sizes={spec.sizes}
+                    sizes="(min-width: 768px) 24vw, 50vw"
                     className="object-cover transition duration-700 ease-out group-hover:scale-[1.04]"
                   />
                   {/* bottom scrim only where a caption sits, for legibility */}
@@ -92,22 +74,30 @@ export async function PhotosSection({ locale, dict }: { locale: Locale; dict: Di
                     aria-hidden="true"
                     className="absolute end-3 top-3 grid h-6 min-w-[1.5rem] place-items-center rounded-full bg-ink/70 px-1.5 font-display text-[11px] font-bold tabular-nums text-brand-light backdrop-blur-sm"
                   >
-                    {ordinal}
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+
+                  {/* "tap to enlarge" hint: always on touch screens, on hover for mouse */}
+                  <span
+                    aria-hidden="true"
+                    className="absolute bottom-3 end-3 grid size-8 place-items-center rounded-full bg-paper/90 text-ink shadow-sm transition md:opacity-0 md:group-hover:opacity-100 md:group-focus-within:opacity-100"
+                  >
+                    <Icon name="search" size={16} />
                   </span>
 
                   {p.caption ? (
-                    <figcaption className="absolute inset-x-3 bottom-3">
-                      <span className="inline-flex max-w-full items-center gap-2 rounded-full bg-paper/95 px-3 py-1.5 text-[11px] font-semibold text-ink shadow-sm ring-1 ring-black/5 backdrop-blur">
+                    <span className="absolute bottom-3 end-14 start-3 text-start">
+                      <span className="inline-flex max-w-full items-center gap-2 rounded-full bg-paper/95 px-3 py-1.5 text-[13px] font-semibold text-ink shadow-sm ring-1 ring-black/5 backdrop-blur">
                         <span aria-hidden="true" className="h-1.5 w-1.5 shrink-0 rounded-full bg-brand" />
                         <span className="truncate">{p.caption}</span>
                       </span>
-                    </figcaption>
+                    </span>
                   ) : null}
-                </figure>
+                </button>
               </li>
-            );
-          })}
-        </Reveal>
+            ))}
+          </Reveal>
+        </Lightbox>
       </Container>
     </section>
   );

@@ -29,9 +29,13 @@ describe("readingMinutes / cn", () => {
   it("joins truthy classes", () => expect(cn("a", false, null, "b", undefined)).toBe("a b"));
 });
 
-describe("estimatePrice", () => {
-  it("counts studio as 1 bedroom", () => expect(estimatePrice("apartment", 0, 10)).toBe(10));
-  it("multiplies bedrooms", () => expect(estimatePrice("villa", 4, 10)).toBe(40));
-  it("returns null for commercial", () => expect(estimatePrice("commercial", 3, 10)).toBeNull());
-  it("floors fractional bedrooms", () => expect(estimatePrice("apartment", 2.7, 10)).toBe(20));
+describe("estimatePrice (built-up area × rate per sq ft)", () => {
+  it("multiplies the area by the rate", () => expect(estimatePrice(1250, 0.7)).toBe(875));
+  it("rounds to whole AED", () => expect(estimatePrice(1001, 0.7)).toBe(701));
+  it("needs at least 100 sq ft", () => {
+    expect(estimatePrice(99, 0.7)).toBeNull();
+    expect(estimatePrice(100, 0.7)).toBe(70);
+  });
+  it("returns null without an area", () => expect(estimatePrice(undefined, 0.7)).toBeNull());
+  it("returns null without a configured rate", () => expect(estimatePrice(1250, null)).toBeNull());
 });

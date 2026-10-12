@@ -53,7 +53,7 @@ export function TrustSection({ dict }: { dict: Dictionary }) {
               >
                 {s.value}
               </span>
-              <span className="text-[11px] font-semibold uppercase leading-snug tracking-[0.18em] text-muted sm:text-[12px]">
+              <span className="text-[13px] font-semibold uppercase leading-snug tracking-[0.14em] text-muted">
                 {t.stats[s.key]}
               </span>
             </li>
@@ -71,7 +71,7 @@ export function TrustSection({ dict }: { dict: Dictionary }) {
                   <span className="relative block h-11 w-14 shrink-0 overflow-hidden rounded-md border border-line bg-white">
                     <Image src={c.image} alt={label} fill sizes="56px" className="object-contain p-1" />
                   </span>
-                  <span className="max-w-[13rem] text-[12px] font-medium leading-snug text-muted">{label}</span>
+                  <span className="max-w-[13rem] text-[13px] font-medium leading-snug text-muted">{label}</span>
                 </li>
               );
             })}

@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { PageHero } from "@/components/pages/PageHero";
 import { CtaBand } from "@/components/home/CtaBand";
 import { Container } from "@/components/ui/Container";
+import { Icon } from "@/components/ui/Icon";
+import { Lightbox } from "@/components/ui/Lightbox";
 import { getDictionary } from "@/i18n/dictionaries";
 import { isLocale, localePath } from "@/i18n/config";
 import { getGallery } from "@/lib/content-db";
@@ -19,35 +21,49 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return buildMetadata({ locale, path: "/gallery/", title: d.galleryPage.metaTitle, description: d.galleryPage.metaDescription });
 }
 
-/** Photos are managed in Admin → Gallery (upload, alt text, caption, category). Grouped by category. */
+/**
+ * Photos are managed in Admin → Gallery (upload, alt text, caption, category). Grouped by category.
+ * Every photo opens full size in the Lightbox; prev/next runs through all categories in page order.
+ */
 export default async function GalleryPage({ params }: Props) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   const d = getDictionary(locale);
   const photos = await getGallery();
   const cats = (["defects", "inspection", "equipment", "reporting"] as const).filter((c) => photos.some((p) => p.category === c));
+  const ordered = cats.flatMap((c) => photos.filter((p) => p.category === c));
   return (
     <>
       <PageHero h1={d.galleryPage.title} intro={d.galleryPage.intro} breadcrumbs={[{ name: d.common.home, url: localePath(locale, "/") }, { name: d.nav.gallery, url: localePath(locale, "/gallery/") }]} />
-      {cats.map((cat) => (
-        <section key={cat} className="py-12">
-          <Container className="flex flex-col gap-6">
-            <h2 className="font-display text-2xl font-extrabold">{d.galleryPage.categories[cat]}</h2>
-            <ul className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
-              {photos.filter((p) => p.category === cat).map((p) => (
-                <li key={p.id}>
-                  <figure className="flex flex-col gap-2">
-                    <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-brand-tint ring-brand transition hover:ring-4">
-                      <Image src={p.url} alt={p.alt} fill sizes="(min-width: 1024px) 290px, (min-width: 768px) 33vw, 50vw" className="object-cover" />
-                    </div>
-                    {p.caption ? <figcaption className="text-sm text-muted">{p.caption}</figcaption> : null}
-                  </figure>
-                </li>
-              ))}
-            </ul>
-          </Container>
-        </section>
-      ))}
+      <Lightbox items={ordered.map(({ url, alt, caption }) => ({ url, alt, caption }))} t={d.lightbox}>
+        {cats.map((cat) => (
+          <section key={cat} className="py-12">
+            <Container className="flex flex-col gap-6">
+              <h2 className="font-display text-2xl font-extrabold">{d.galleryPage.categories[cat]}</h2>
+              <ul className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
+                {photos.filter((p) => p.category === cat).map((p) => (
+                  <li key={p.id}>
+                    <figure className="flex flex-col gap-2">
+                      <button
+                        type="button"
+                        data-lightbox={ordered.indexOf(p)}
+                        aria-label={`${d.lightbox.open}: ${p.alt}`}
+                        className="group relative aspect-[4/5] cursor-zoom-in overflow-hidden rounded-2xl bg-brand-tint ring-brand transition hover:ring-4 focus-visible:outline-none focus-visible:ring-4"
+                      >
+                        <Image src={p.url} alt={p.alt} fill sizes="(min-width: 1024px) 290px, (min-width: 768px) 33vw, 50vw" className="object-cover" />
+                        <span aria-hidden="true" className="absolute bottom-3 end-3 grid size-8 place-items-center rounded-full bg-paper/90 text-ink shadow-sm transition md:opacity-0 md:group-hover:opacity-100 md:group-focus-visible:opacity-100">
+                          <Icon name="search" size={16} />
+                        </span>
+                      </button>
+                      {p.caption ? <figcaption className="text-sm text-muted">{p.caption}</figcaption> : null}
+                    </figure>
+                  </li>
+                ))}
+              </ul>
+            </Container>
+          </section>
+        ))}
+      </Lightbox>
       <CtaBand dict={d} quoteHref={`${localePath(locale, "/")}#quote`} />
     </>
   );

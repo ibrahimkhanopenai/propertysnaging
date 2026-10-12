@@ -52,7 +52,7 @@ export function Findings({ dict }: { locale: Locale; dict: Dictionary }) {
                 <div aria-hidden="true" className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-ink/55 to-transparent" />
 
                 {/* severity tag (real defect semantics → snag red) */}
-                <span className="absolute start-4 top-4 inline-flex items-center gap-2 rounded-full bg-white/95 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-snag shadow-sm backdrop-blur">
+                <span className="absolute start-4 top-4 inline-flex items-center gap-2 rounded-full bg-white/95 px-3 py-1.5 text-[13px] font-bold uppercase tracking-[0.12em] text-snag shadow-sm backdrop-blur">
                   <span aria-hidden="true" className="size-2 rounded-full bg-snag" />
                   {t.defectLabel}
                 </span>
@@ -62,14 +62,20 @@ export function Findings({ dict }: { locale: Locale; dict: Dictionary }) {
                   01
                 </span>
 
-                {/* copper annotation marker + leader line + category callout (md+) */}
-                <div aria-hidden="true" className="absolute start-[24%] top-[42%] hidden items-center md:flex">
-                  <span className="relative flex size-7 items-center justify-center rounded-full border-2 border-brand bg-brand/15 backdrop-blur-sm">
-                    <span className="size-1.5 rounded-full bg-brand" />
-                  </span>
-                  <span className="h-px w-10 bg-brand/80" />
+                {/* copper annotation marker + leader line + category callout (md+).
+                    Dot sits on the wall where the inspector's torch is lit; the label runs left
+                    over bare wall. Physical right/ltr on purpose: the photo is not mirrored in RTL. */}
+                <div
+                  aria-hidden="true"
+                  dir="ltr"
+                  className="absolute right-[calc(15%-14px)] top-[21%] hidden -translate-y-1/2 items-center md:flex"
+                >
                   <span className="whitespace-nowrap rounded-full border border-brand-line bg-white/95 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-brand-dark shadow-sm">
                     {featured.category}
+                  </span>
+                  <span className="h-px w-6 bg-brand/80" />
+                  <span className="relative flex size-7 items-center justify-center rounded-full border-2 border-brand bg-brand/15 backdrop-blur-sm">
+                    <span className="size-1.5 rounded-full bg-brand" />
                   </span>
                 </div>
 
@@ -80,7 +86,7 @@ export function Findings({ dict }: { locale: Locale; dict: Dictionary }) {
 
               {/* overlapping report card */}
               <figcaption className="relative z-10 -mt-12 me-4 ms-4 rounded-2xl border border-line bg-white p-5 shadow-[0_24px_60px_rgba(10,10,10,0.12)] sm:-mt-16 sm:me-8 sm:ms-8 sm:p-6">
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-line bg-brand-tint px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-brand-dark">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-line bg-brand-tint px-2.5 py-1 text-[13px] font-semibold uppercase tracking-[0.1em] text-brand-dark">
                   <Icon name="search" size={13} />
                   {featured.category}
                 </span>
@@ -92,7 +98,7 @@ export function Findings({ dict }: { locale: Locale; dict: Dictionary }) {
                     <Icon name="check" size={15} />
                   </span>
                   <div className="min-w-0">
-                    <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted">{t.fixLabel}</span>
+                    <span className="text-[13px] font-bold uppercase tracking-[0.12em] text-muted">{t.fixLabel}</span>
                     <p className="mt-0.5 text-[15px] leading-relaxed text-muted">{featured.fix}</p>
                   </div>
                 </div>
@@ -135,7 +141,7 @@ export function Findings({ dict }: { locale: Locale; dict: Dictionary }) {
                   </div>
 
                   <div className="min-w-0 flex-1">
-                    <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-brand">{it.category}</span>
+                    <span className="text-[12px] font-bold uppercase tracking-[0.14em] text-brand-dark">{it.category}</span>
                     <h3 className="mt-1 text-[15px] font-semibold leading-snug text-ink">{it.defect}</h3>
                     <p className="mt-1.5 flex items-start gap-1.5 text-[13px] leading-relaxed text-muted">
                       <Icon name="check" size={14} className="mt-0.5 shrink-0 text-brand" />

@@ -1,11 +1,16 @@
 "use client";
 
 import { useEffect } from "react";
+import { captureAttribution } from "@/lib/attribution";
 import { track } from "@/lib/track";
 
-/** One global listener: every tel: and WhatsApp link on every page is tracked as a conversion. */
+/**
+ * One global listener: every tel: and WhatsApp link on every page is tracked as a conversion.
+ * Also saves the landing URL's gclid/UTM tags so forms can send them with the lead.
+ */
 export function TrackClicks() {
   useEffect(() => {
+    captureAttribution();
     function onClick(e: MouseEvent) {
       const a = (e.target as HTMLElement | null)?.closest?.("a");
       if (!a) return;

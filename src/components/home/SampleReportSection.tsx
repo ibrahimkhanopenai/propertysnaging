@@ -30,8 +30,9 @@ export function SampleReportSection({ locale, dict, headingLevel = "h2" }: { loc
             ))}
           </ol>
           <div className="flex flex-wrap gap-3 pt-1">
-            <ButtonLink href={`${localePath(locale, "/")}#quote`} variant="light" size="lg" className="rounded-full">{t.book}</ButtonLink>
-            <ButtonLink href={localePath(locale, "/sample-report/")} variant="ghostLight" size="lg" className="rounded-full">{t.view}</ButtonLink>
+            <ButtonLink href={`${localePath(locale, "/")}#quote`} variant="cta" size="lg" className="rounded-full">{t.book}</ButtonLink>
+            {/* The real sample PDF (CRO audit 2026-10: "Download a sample report") — the /sample-report/ page stays in the header nav */}
+            <ButtonLink href={site.pdfs.sampleReport} variant="ghostLight" icon="download" size="lg" external className="rounded-full">{t.download}</ButtonLink>
           </div>
         </Reveal>
 

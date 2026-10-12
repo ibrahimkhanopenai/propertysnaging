@@ -50,7 +50,7 @@ export default async function ContactPage({ params }: Props) {
           </ul>
           <div id="quote" className="scroll-mt-24 rounded-[22px] border-t-4 border-brand bg-white p-6 shadow-[0_10px_40px_rgba(10,10,10,0.06)] md:p-9">
             <h2 className="mb-5 font-display text-2xl font-extrabold">{d.quote.title}</h2>
-            <QuoteForm t={d.quote} locale={locale} perBedroom={pricing.perBedroom} currency={pricing.currency} whatsapp={site.whatsapp} source="contact_page" />
+            <QuoteForm t={d.quote} locale={locale} ratePerSqft={pricing.ratePerSqft} currency={pricing.currency} whatsapp={site.whatsapp} source="contact_page" />
           </div>
         </Container>
       </section>

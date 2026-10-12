@@ -17,6 +17,13 @@ const schema = z.object({
   areaSqft: z.number().int().min(0).max(1_000_000).optional(),
   emirate: z.string().max(60).optional(),
   message: z.string().max(2000).optional(),
+  handoverDate: z.union([z.string().regex(/^\d{4}-\d{2}-\d{2}$/), z.literal("")]).optional(),
+  // Ad attribution (src/lib/attribution.ts)
+  gclid: z.string().trim().max(255).optional(),
+  utmSource: z.string().trim().max(191).optional(),
+  utmMedium: z.string().trim().max(191).optional(),
+  utmCampaign: z.string().trim().max(191).optional(),
+  utmTerm: z.string().trim().max(191).optional(),
   company: z.string().optional(), // honeypot
   locale: z.string().max(5).optional(),
   pagePath: z.string().max(255).optional(),
@@ -42,8 +49,9 @@ export async function POST(req: Request) {
   const d = parsed.data;
   if (d.company) return NextResponse.json({ ok: true }); // bot: pretend success
 
-  const { perBedroom, currency } = getPricing();
-  const price = d.propertyType ? estimatePrice(d.propertyType, d.bedrooms ?? 1, perBedroom) : null;
+  const { ratePerSqft, currency } = getPricing();
+  const price = estimatePrice(d.areaSqft, ratePerSqft);
+  const handoverDate = d.handoverDate ? new Date(`${d.handoverDate}T00:00:00Z`) : null;
 
   const lead = await prisma.lead.create({
     data: {
@@ -58,6 +66,12 @@ export async function POST(req: Request) {
       emirate: d.emirate || null,
       message: d.message || null,
       estimatedPrice: price,
+      handoverDate: handoverDate && !Number.isNaN(handoverDate.getTime()) ? handoverDate : null,
+      gclid: d.gclid || null,
+      utmSource: d.utmSource || null,
+      utmMedium: d.utmMedium || null,
+      utmCampaign: d.utmCampaign || null,
+      utmTerm: d.utmTerm || null,
       locale: d.locale || null,
       pagePath: d.pagePath || null,
     },
@@ -66,6 +80,7 @@ export async function POST(req: Request) {
   // Email is sent AFTER the response so the visitor never waits for SMTP.
   after(async () => {
     try {
+      const utm = [d.utmSource, d.utmMedium, d.utmCampaign, d.utmTerm];
       const rows: Array<[string, string]> = [
         ["Name", d.name],
         ["Phone", d.phone],
@@ -75,9 +90,12 @@ export async function POST(req: Request) {
         ["Location", d.location || "-"],
         ["Area (sq ft)", d.areaSqft ? String(d.areaSqft) : "-"],
         ["Emirate", d.emirate || "-"],
+        ["Handover date", d.handoverDate || "-"],
         ["Estimate", price === null ? "-" : `${currency} ${price}`],
         ["Message", d.message || "-"],
         ["Page", d.pagePath || "-"],
+        ["Google Ads click (gclid)", d.gclid || "-"],
+        ["UTM source / medium / campaign / term", utm.some(Boolean) ? utm.map((v) => v || "-").join(" / ") : "-"],
       ];
       const sent = await sendMail({
         subject: `New lead (${sourceLabel[d.source ?? "quote_form"]}): ${d.name}`,

@@ -1,7 +1,7 @@
 # Design system — Black & White + green accents (client-approved, Oct 2026)
 
 ## Principles
-- **Client rule: black & white theme; green is the single brand accent** — kickers, numerals, markers, hairlines, tags, image hover rings, form focus, active/focus states. Never for headings, nav or generic buttons.
+- **Client rule: black & white theme; copper is the single brand accent** — kickers, numerals, markers, hairlines, tags, image hover rings, form focus, active/focus states. Never for headings or nav. The only copper buttons are lead CTAs (`cta` variant / form submits, in `brand-dark`).
 - Mostly white. Black is reserved for: top bar, primary buttons, the "most popular" persona card, stats strip, Google rating box, CTA band, homepage "Our services" and "Sample report" sections, Why choose us, footer.
 - It's a **snagging** company: show real inspection photos and defects, not skylines/luxury villas (skylines only on location cards).
 - One memorable moment per section; no decorative gradients or scroll animations.
@@ -16,13 +16,14 @@
 | line | #E4E4E7 | borders |
 | muted | #52525B | body text on white |
 | subtle | #71717A | captions |
-| wa | #15803D | WhatsApp buttons ONLY (same green as brand; context-only distinction) |
+| wa | #15803D | WhatsApp buttons ONLY |
 | snag | #B91C1C | errors / defect tags ONLY |
-| brand | #15803D | GREEN — kickers, numerals, markers, hairlines, tags, form focus, image hover ring |
-| brand-dark | #14532D | green hover / pressed |
-| brand-light | #86EFAC | green tint for dark backgrounds (ordinals on `bg-ink`, etc.) |
-| brand-tint | #F0FDF4 | subtle green fill (badges, tag backgrounds) |
-| brand-line | #BBF7D0 | form input borders, soft hairlines |
+| brand | #C96A32 | COPPER — kickers, numerals, markers, hairlines, tags, form focus, image hover ring |
+| brand-dark | #A1521F | **CTA buttons** ("Get my free quote", form submits — 5.6:1 with white text) and copper text on white |
+| brand-deep | #8A4519 | CTA button hover |
+| brand-light | #E7A877 | copper tint for dark backgrounds (ordinals on `bg-ink`, etc.) |
+| brand-tint | #FBF1EA | subtle copper fill (badges, tag backgrounds, price box) |
+| brand-line | #EDCCB2 | form input borders, soft hairlines |
 
 ## Type
 - EN: Manrope 600–800 (headings, `font-display`) + DM Sans 400–600 (body).
@@ -34,7 +35,7 @@ Top bar → Header → Hero (H1, statement, company description from the old sit
 Global: floating Call/WhatsApp (desktop), bottom bar (mobile), 10-second callback pop-up.
 
 ## Components
-`ButtonLink` (variants: primary, outline, whatsapp, light, ghostLight), `Container` (near full width: max 1920px, gutters 16→24→40→64px), `SectionHeading`, `Icon` (inline SVG), `PageHero`, `ContentPage`, `Faq`, `PostCard`.
+`ButtonLink` (variants: primary, **cta**, outline, whatsapp, light, ghostLight — `cta` = the one lead action per section, copper `brand-dark`; WhatsApp buttons stay green `wa`; CRO audit 2026-10), `Container` (near full width: max 1920px, gutters 16→24→40→64px), `SectionHeading`, `Icon` (inline SVG), `PageHero`, `ContentPage`, `Faq`, `PostCard`.
 Radius: 12px buttons, 16–18px cards, 22–24px large panels. Min touch target 44px.
 
 ## Section patterns (inspired by propertyinspectiondxb.com, Oct 2026 — order and colours unchanged)

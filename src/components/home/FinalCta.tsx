@@ -46,7 +46,7 @@ export function FinalCta({ locale, dict }: { locale: Locale; dict: Dictionary })
 
             <div className="mt-8 flex flex-wrap gap-3">
               <ButtonLink href={`tel:${site.phone}`} variant="light" icon="phone" size="lg" className="rounded-full">{site.phoneDisplay}</ButtonLink>
-              <ButtonLink href={whatsappLink(dict.quote.waIntro)} variant="whatsapp" icon="whatsapp" size="lg" external className="rounded-full">{dict.home.hero.whatsapp}</ButtonLink>
+              <ButtonLink href={whatsappLink(dict.home.hero.waMessage)} variant="whatsapp" icon="whatsapp" size="lg" external className="rounded-full">{dict.home.hero.whatsapp}</ButtonLink>
             </div>
 
             <ul className="mt-9 flex flex-wrap gap-2.5">
@@ -67,7 +67,7 @@ export function FinalCta({ locale, dict }: { locale: Locale; dict: Dictionary })
               <div className="relative rounded-[24px] bg-white p-6 text-ink md:p-9">
                 <div className="mb-6 flex items-start justify-between gap-4 border-b border-line pb-5">
                   <div>
-                    <span className="inline-flex items-center gap-2.5 text-[12px] font-semibold uppercase tracking-[0.2em] text-brand-dark">
+                    <span className="inline-flex items-center gap-2.5 text-[13px] font-semibold uppercase tracking-[0.18em] text-brand-dark">
                       <span aria-hidden="true" className="h-px w-6 bg-current opacity-60" />
                       {dict.quote.label}
                     </span>
@@ -77,7 +77,7 @@ export function FinalCta({ locale, dict }: { locale: Locale; dict: Dictionary })
                     <Icon name="file" size={22} />
                   </span>
                 </div>
-                <QuoteForm t={dict.quote} locale={locale} perBedroom={pricing.perBedroom} currency={pricing.currency} whatsapp={site.whatsapp} />
+                <QuoteForm t={dict.quote} locale={locale} ratePerSqft={pricing.ratePerSqft} currency={pricing.currency} whatsapp={site.whatsapp} />
                 {/* Survey tick tying the card into the page's inspection system */}
                 <span aria-hidden="true" className="pointer-events-none absolute end-4 top-4 size-5 border-e-2 border-t-2 border-brand/50" />
               </div>
@@ -96,7 +96,7 @@ export function FinalCta({ locale, dict }: { locale: Locale; dict: Dictionary })
               >
                 <span className="font-display text-xl font-extrabold tabular-nums leading-none text-brand">{String(i + 1).padStart(2, "0")}</span>
                 <span className="flex flex-col">
-                  <span className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.12em] text-zinc-400">
+                  <span className="inline-flex items-center gap-1.5 text-[13px] uppercase tracking-[0.1em] text-zinc-400">
                     <Icon name={c.icon} size={13} className="text-brand-light" />
                     {c.label}
                   </span>

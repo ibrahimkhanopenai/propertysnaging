@@ -3,6 +3,7 @@
 import { useId, useState } from "react";
 import type { Dictionary } from "@/i18n/dictionaries";
 import type { Locale } from "@/i18n/config";
+import { getAttribution } from "@/lib/attribution";
 import { track } from "@/lib/track";
 
 type Props = {
@@ -16,8 +17,9 @@ const field =
   "h-12 w-full rounded-xl border border-line bg-white px-3.5 text-[15px] text-ink outline-none transition placeholder:text-subtle focus:border-brand focus:ring-2 focus:ring-brand/20";
 
 /**
- * One-row booking form (Name, Email, Phone, Property type → Send), carried over from the current site.
- * Posts to /api/leads/ (saved in MySQL + emailed to LEAD_NOTIFY_TO) and fires `generate_lead`.
+ * One-row short quote form (Name, Phone, Property type → Get my quote). Email was dropped
+ * (CRO audit 2026-10: every extra field loses leads). Posts to /api/leads/ with gclid/UTM
+ * (saved in MySQL + emailed to LEAD_NOTIFY_TO) and fires `generate_lead`.
  */
 export function BookingForm({ t, types, locale }: Props) {
   const id = useId();
@@ -30,15 +32,15 @@ export function BookingForm({ t, types, locale }: Props) {
     const type = String(fd.get("propertyType") ?? "");
     const data = {
       name: String(fd.get("name") ?? "").trim(),
-      email: String(fd.get("email") ?? "").trim(),
       phone: String(fd.get("phone") ?? "").trim(),
       propertyType: type === "apartment" || type === "villa" || type === "commercial" ? type : undefined,
       company: String(fd.get("company") ?? ""), // honeypot
       source: "booking_bar",
       locale,
       pagePath: window.location.pathname,
+      ...getAttribution(),
     };
-    if (!data.name || !/^\S+@\S+\.\S+$/.test(data.email) || data.phone.replace(/\D/g, "").length < 7) {
+    if (!data.name || data.phone.replace(/\D/g, "").length < 7) {
       setStatus("invalid");
       return;
     }
@@ -56,11 +58,9 @@ export function BookingForm({ t, types, locale }: Props) {
 
   return (
     <form onSubmit={onSubmit} noValidate className="relative flex flex-col gap-3">
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_1fr_auto]">
+      <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-[1fr_1fr_1fr_auto]">
         <label className="sr-only" htmlFor={`${id}-name`}>{t.name}</label>
         <input id={`${id}-name`} name="name" placeholder={t.name} autoComplete="name" required className={field} />
-        <label className="sr-only" htmlFor={`${id}-email`}>{t.email}</label>
-        <input id={`${id}-email`} name="email" type="email" placeholder={t.email} autoComplete="email" required className={field} />
         <label className="sr-only" htmlFor={`${id}-phone`}>{t.phone}</label>
         <input id={`${id}-phone`} name="phone" type="tel" placeholder={t.phone} autoComplete="tel" dir="ltr" required className={`${field} rtl:text-end`} />
         <label className="sr-only" htmlFor={`${id}-type`}>{t.type}</label>
@@ -70,7 +70,7 @@ export function BookingForm({ t, types, locale }: Props) {
           <option value="apartment">{types.apartment}</option>
           <option value="commercial">{types.commercial}</option>
         </select>
-        <button type="submit" disabled={status === "sending"} className="min-h-12 rounded-xl bg-brand px-8 font-semibold text-white transition hover:bg-brand-dark disabled:opacity-60 sm:col-span-2 lg:col-span-1">
+        <button type="submit" disabled={status === "sending"} className="min-h-12 rounded-xl bg-brand-dark px-8 font-semibold text-white transition hover:bg-brand-deep disabled:opacity-60 sm:col-span-3 lg:col-span-1">
           {status === "sending" ? t.sending : t.submit}
         </button>
         <div aria-hidden="true" className="absolute start-[-9999px] h-0 w-0 overflow-hidden">
@@ -82,6 +82,7 @@ export function BookingForm({ t, types, locale }: Props) {
         {status === "invalid" && <span className="text-snag">{t.required}</span>}
         {status === "done" && <span className="font-semibold text-brand-dark">{t.success}</span>}
         {status === "error" && <span className="text-snag">{t.error}</span>}
+        {status === "idle" && <span className="text-muted">{t.reassurance}</span>}
       </p>
     </form>
   );

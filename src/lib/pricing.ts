@@ -1,11 +1,12 @@
 import "server-only";
 
-export type PricingConfig = { perBedroom: number; currency: string };
+/** ratePerSqft is null when PRICE_PER_SQFT is missing/invalid → the form shows "price on request" instead of a wrong price. */
+export type PricingConfig = { ratePerSqft: number | null; currency: string };
 
 export function getPricing(): PricingConfig {
-  const perBedroom = Number(process.env.PRICE_PER_BEDROOM ?? 10);
+  const rate = Number(process.env.PRICE_PER_SQFT);
   return {
-    perBedroom: Number.isFinite(perBedroom) && perBedroom > 0 ? perBedroom : 10,
+    ratePerSqft: Number.isFinite(rate) && rate > 0 ? rate : null,
     currency: process.env.PRICE_CURRENCY ?? "AED",
   };
 }

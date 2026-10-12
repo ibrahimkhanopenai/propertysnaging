@@ -39,19 +39,24 @@ const en = {
   home: {
     hero: {
       label: "Independent property snagging engineers",
-      title: "Property Snagging & Inspection Services in Dubai & UAE",
+      title: "Property Snagging & Inspection Services in the UAE",
+      /** Hook under the H1 (CRO audit 2026-10, "fear of loss" angle) — the H1 itself stays for SEO */
+      hook: "Don't sign your handover until an engineer has checked it.",
       intro:
         "We identify defects before handover, during the defect liability period (DLP) or before you buy a property — and send you a photo report within 6–24 hours.",
       /** Company description from the current site (shown under the statement) */
       about:
         "We are one of the best and most trusted property snagging companies in Dubai, Abu Dhabi, Ras Al Khaimah, and Ajman. We are DED-licensed, certified, and use InterNACHI-licensed inspection software to deliver accurate and detailed snagging reports. Our team provides comprehensive property inspections for villas, apartments, offices, and commercial spaces — covering structural finishing, electrical, plumbing, HVAC systems, and more. We offer professional and affordable snagging services designed to ensure complete peace of mind for new homeowners, landlords, and commercial property owners.",
-      getQuote: "Get a quote",
+      getQuote: "Get my free quote",
       book: "Book an inspection",
-      whatsapp: "WhatsApp us",
-      callUs: "Call us",
+      whatsapp: "Chat on WhatsApp",
+      /** Pre-filled WhatsApp text for the homepage buttons — the visitor fills the brackets and sends */
+      waMessage: "Hi, I need a snagging inspection for my [apartment / villa] in [community]. Handover date: [ ]",
+      callUs: "Or call an engineer:",
       imageAlt: "Hand holding a model of the Dubai skyline with towers and palm trees",
       kicker: "Inspect · Assess · Protect",
-      highlights: ["Detailed inspection", "Trusted experts", "Clear reports", "Peace of mind"],
+      /** Hard proofs under the intro (replaced the generic icon row, CRO audit 2026-10) */
+      highlights: ["DED licensed", "InterNACHI certified", "Report in 6–24h"],
     },
     trust: {
       title: "Licensed, certified and independent",
@@ -70,16 +75,16 @@ const en = {
     },
     /** Booking bar under the hero (from the current site: "Book now for inquiries and booking") */
     booking: {
-      title: "Book now for inquiries and booking",
+      title: "Get your free quote",
       name: "Name*",
-      email: "Email*",
       phone: "Phone number*",
-      type: "Select type",
-      submit: "Send",
+      type: "Property type",
+      submit: "Get my quote",
       sending: "Sending…",
       success: "Thank you! We've received your request and will contact you shortly.",
       error: "We couldn't send your request. Please call or WhatsApp us.",
-      required: "Please enter your name, a valid email and your phone number.",
+      required: "Please enter your name and phone number.",
+      reassurance: "No obligation. Your number is never shared.",
     },
     /** About block — copy from the current site's "About Us" section */
     about: {
@@ -168,7 +173,6 @@ const en = {
       ],
       book: "Book your inspection",
       download: "Download sample report (PDF)",
-      view: "See the full sample report",
       imageAlt: "Page from a Property Inspectors snagging report",
     },
     findings: {
@@ -205,7 +209,7 @@ const en = {
         { title: "In-depth inspection", text: "Every MEP system tested with professional equipment, not just a visual walk-through." },
         { title: "Independent & unbiased", text: "We inspect and report. We don't sell repairs, so our findings stay honest." },
         { title: "Fast, clear reports", text: "Professional reporting software, with reports delivered within 6–24 hours." },
-        { title: "Specialized tools & software", text: "Thermal imaging, moisture meters and licensed Spectora reporting for precise, photo-supported reports." },
+        { title: "Advanced tools", text: "Thermal imaging, moisture meters and licensed Spectora reporting for precise, photo-supported reports." },
         { title: "Protects your investment", text: "Catching defects early prevents costly repairs and protects your property's long-term value." },
       ],
     },
@@ -222,9 +226,9 @@ const en = {
       text: "Still unsure? Talk to an engineer on WhatsApp — no obligation.",
       all: "See all FAQs",
       items: [
+        { q: "How much does a snagging inspection cost?", a: "The price is based on the built-up area (sq ft) of your property. Use our instant quote calculator for an estimate, and we confirm the final price before booking." },
         { q: "What is property snagging?", a: "Snagging is a detailed inspection of a newly built property to find defects — from cracks and hollow tiles to AC and plumbing faults — so the developer fixes them before or soon after handover." },
         { q: "When should I book a snagging inspection?", a: "As soon as you receive your handover notice. You can also book during the defect liability period (DLP), near its end (11-month inspection), or before buying a resale home." },
-        { q: "How much does a snagging inspection cost?", a: "The price depends on the property type and number of bedrooms. Use our instant quote calculator for an estimate, and we confirm the final price before booking." },
         { q: "How long does an inspection take?", a: "Most apartments take 2–3 hours and villas 3–5 hours, depending on size and condition." },
         { q: "What does the report include?", a: "Each defect is listed with its location, a description, a photograph, a severity rating and a recommendation, ready to send to your developer." },
         { q: "Should I sign the handover if defects are found?", a: "Many developers let you sign with a snag list attached. Ask for written acknowledgement of our report, and insist that major issues are fixed before you accept." },
@@ -260,25 +264,32 @@ const en = {
     name: "Your name",
     phone: "Mobile number",
     email: "Email (optional)",
-    message: "Handover date or notes (optional)",
+    moreDetails: "Add more details (optional)",
+    handoverDate: "Handover date",
     estimated: "Estimated price",
+    enterArea: "Add the built-up area to see your price",
     onRequest: "Price on request",
     submit: "Get my quote",
     sending: "Sending…",
     success: "Thanks! We've received your request. WhatsApp is opening so you can chat with us now.",
     error: "We couldn't send your request. Please message us on WhatsApp or call us.",
     required: "Please enter your name and mobile number.",
+    reassurance: "No obligation. Your number is never shared.",
     waIntro: "Hi Property Inspectors, I'd like a quote for a snagging inspection.",
   },
   popup: {
-    title: "Get a free callback",
-    text: "Leave your number and one of our engineers will call you back.",
-    name: "Name",
-    phone: "Phone number",
+    title: "Get a quick quote on WhatsApp",
+    text: "Tell us about your property and we'll reply on WhatsApp.",
+    name: "Your name",
+    bedrooms: "No. of bedrooms",
+    studio: "Studio",
+    br: "BR",
+    area: "BUA (sq ft)",
+    areaPlaceholder: "BUA in sq ft (e.g. 1,250)",
     submit: "Submit",
     close: "Close",
-    success: "Thank you! We'll call you shortly.",
-    error: "Something went wrong. Please call or WhatsApp us.",
+    required: "Please enter your name and number of bedrooms.",
+    waIntro: "Hi Property Inspectors, I'd like a quote for a snagging inspection.",
   },
   pageUi: {
     includes: "What's included",
@@ -311,6 +322,12 @@ const en = {
     whatsappTitle: "WhatsApp",
     emailTitle: "Email",
     officeTitle: "Office",
+  },
+  lightbox: {
+    open: "View full photo",
+    close: "Close photo",
+    prev: "Previous photo",
+    next: "Next photo",
   },
   galleryPage: {
     metaTitle: "Inspection Photo Gallery | Real Snagging Photos",
