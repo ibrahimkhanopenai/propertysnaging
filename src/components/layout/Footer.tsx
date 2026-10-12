@@ -54,7 +54,7 @@ export async function Footer({ locale, dict }: { locale: Locale; dict: Dictionar
       <Container className="flex flex-col gap-12 py-16">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-[1.4fr_repeat(4,1fr)_1.3fr]">
           <div className="flex flex-col gap-4">
-            <Logo href={L("/")} inverted />
+            <Logo href={L("/")} inverted large />
             <p className="max-w-xs text-sm leading-relaxed">{dict.footer.tagline}</p>
             <p className="mt-2 font-semibold text-white">{dict.footer.contact}</p>
             <address className="flex flex-col gap-3 text-sm not-italic leading-relaxed">
