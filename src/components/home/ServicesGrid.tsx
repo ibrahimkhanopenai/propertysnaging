@@ -9,6 +9,7 @@ import { localePath, type Locale } from "@/i18n/config";
 import type { PageKey } from "@/content/types";
 import { routePath } from "@/lib/routes";
 import { site } from "@/lib/site";
+import { siteImage } from "@/lib/site-images";
 import { cn } from "@/lib/utils";
 
 type Photo = keyof typeof site.images.scope;
@@ -16,7 +17,7 @@ type Item = keyof Dictionary["home"]["services"]["items"];
 
 /**
  * Featured services (client's order), each paired with a real inspection photo
- * (site.images.scope) and a small inspection marker icon (decorative accent only).
+ * (Admin → Images "Defects we find", defaults in site.images.scope) and a small inspection marker icon (decorative accent only).
  * `page` = existing service page; rows without one link to "#" until that page exists.
  */
 const featured: Array<{ key: Item; page?: PageKey; photo: Photo; marker: IconName }> = [
@@ -49,8 +50,9 @@ const crops = [
  * marker + index fraction, the title and summary, and a varied image crop whose
  * side alternates row to row. No uniform card grid.
  */
-export function ServicesGrid({ locale, dict }: { locale: Locale; dict: Dictionary }) {
+export async function ServicesGrid({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   const t = dict.home.services;
+  const photos = await Promise.all(featured.map((f) => siteImage(`scope.${f.photo}`, locale)));
   const total = `0${featured.length}`;
 
   return (
@@ -78,7 +80,7 @@ export function ServicesGrid({ locale, dict }: { locale: Locale; dict: Dictionar
         </Reveal>
 
         <Reveal as="ul" stagger className="mt-10 md:mt-12">
-          {featured.map(({ key, page, photo, marker }, i) => {
+          {featured.map(({ key, page, marker }, i) => {
             const c = t.items[key];
             const imageRight = i % 2 === 0;
             const last = i === featured.length - 1;
@@ -114,8 +116,8 @@ export function ServicesGrid({ locale, dict }: { locale: Locale; dict: Dictionar
                      * sits close to the copy's height instead of towering over it */}
                     <div className={cn("relative mx-auto w-full max-w-[380px] overflow-hidden rounded-[20px] bg-mist", crops[i], imageRight ? "md:order-2 md:ms-auto" : "md:order-1 md:me-auto")}>
                       <Image
-                        src={site.images.scope[photo]}
-                        alt={t.photoAlt[photo]}
+                        src={photos[i].src}
+                        alt={photos[i].alt}
                         fill
                         sizes="(min-width: 768px) 45vw, 100vw"
                         className="object-cover transition duration-700 ease-out group-hover:scale-[1.05]"

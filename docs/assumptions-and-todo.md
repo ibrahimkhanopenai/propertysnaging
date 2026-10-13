@@ -27,8 +27,8 @@
 ## Admin roadmap (client: "manage content and images from the admin", agreed 2026-10-13)
 Pattern to follow: DB table + admin screen + server reads with a code fallback, so pages render without the DB (see Phase 1: `getSettings()`, `getLocationItems()`, `changelog/2026-10-13-008-admin-locations-settings.md`).
 - [x] **Phase 1:** Admin → Locations (communities + areas per emirate) and Admin → Settings (contact, key figures, Google review + sample report links)
-- [ ] **Phase 2: Images.** Admin → Images: upload/replace + ALT (EN/AR) for the homepage hero, About photo, each location hero (`site.images.locations`), "Defects we find" photos (`site.images.scope`), sample-report collage and finding photos. Reuse the existing upload (`/api/admin/upload/` → `UPLOAD_DIR`, served by `/uploads/`); fall back to the current `/images/` files. Keep `next/image` + real ALT; hero stays the only `priority` image.
-- [ ] **Phase 2: Developer logos.** Admin list (logo upload, name, order, show/hide) for the homepage developer strip (`components/home/DevelopersStrip.tsx`).
+- [x] **Phase 2: Images.** Admin → Images: photo + ALT (EN/AR) for 24 slots (hero, About, location heroes, "Defects we find", sample report, location defect photos), falling back to the `/images/` files (`changelog/2026-10-13-009-admin-images-developer-logos.md`)
+- [x] **Phase 2: Developer logos.** Admin → Developer logos (upload, name EN/AR, order, show/hide) for the homepage strip, falling back to `site.developers`
 - [ ] **Phase 3:** FAQs (homepage + each location/service page), "Defects we find" items (photo, category, defect, recommendation; EN/AR), then location/service body text (hook, intro, sections) as overrides with the content files as fallback.
 - Not for the admin: page URLs, homepage + Dubai/Abu Dhabi/Sharjah `<title>`/meta (SEO rule §5.6), homepage section order (client requirement), colours/design.
 
@@ -39,12 +39,12 @@ Pattern to follow: DB table + admin screen + server reads with a code fallback, 
 - [ ] Replace all DUMMY values above
 - [ ] Native Arabic review
 - [ ] Re-add the 5 old blog posts in Admin with the same slug/meta (table in `docs/seo-migration.md`)
-- [ ] Location photos: Dubai, Ajman, Fujairah and UAQ reuse inspection photos from the scope/gallery sets (2026-10-12) — replace with photos taken in each emirate when the client sends them (`site.images.locations`). The WordPress pages used a stock "house + coins" image (`sale.jpg`), not used here (not an inspection photo)
+- [ ] Location photos: Dubai, Ajman, Fujairah and UAQ reuse inspection photos from the scope/gallery sets (2026-10-12) — replace with photos taken in each emirate when the client sends them (Admin → Images → Location page heroes, or `site.images.locations`). The WordPress pages used a stock "house + coins" image (`sale.jpg`), not used here (not an inspection photo)
 - [ ] About photo (`/images/about/property-handover.jpg`) is an Unsplash+ premium image with a visible watermark — replace with a licensed/real photo
 - [ ] Homepage Sample report collage (`/images/reports/sample-report-page-{1,2,3}.jpg`) is stock photography (hi-vis vest, hard hat), not our jobs — client asked for original photos (2026-10-09)
 
 ### Asked the client, waiting for a reply (2026-10-09)
-- [ ] **Photos:** original inspection photos to replace the Sample report collage and the About photo (the two items above). Replace by overwriting the same file names.
+- [ ] **Photos:** original inspection photos to replace the Sample report collage and the About photo (the two items above). Replace by overwriting the same file names, or in Admin → Images.
 - [ ] **Blue t-shirt photos:** 4 gallery photos show an inspector in a navy t-shirt, not the white branded polo (`gallery/external-works-inspection.jpg`, `mirror-fixture-check.jpg`, `shower-glass-inspection.jpg`, `wall-surface-check.jpg`). Remove them, or keep them?
 - [ ] **Reviews in the header:** the client's mockup has it; their message didn't. Currently footer only (`components/layout/nav.ts`).
 - [ ] **Phone number:** the mockup shows +971 55 608 3671; the site uses +971 58 155 1637 (`site.ts`). Which is correct?

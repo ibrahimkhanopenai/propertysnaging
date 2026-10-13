@@ -4,6 +4,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { type Locale } from "@/i18n/config";
 import { site } from "@/lib/site";
+import { siteImage } from "@/lib/site-images";
 import { FindingsExplorer, type FindingItem } from "./FindingsExplorer";
 
 type ScopeKey = keyof typeof site.images.scope;
@@ -14,12 +15,15 @@ type ScopeKey = keyof typeof site.images.scope;
  * overlapping report-card caption) sits beside an asymmetric "defect log";
  * clicking a row in the log shows that finding in the featured slot (FindingsExplorer).
  */
-export function Findings({ dict }: { locale: Locale; dict: Dictionary }) {
+export async function Findings({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   const t = dict.home.findings;
-  const items: FindingItem[] = t.items.map((it) => {
-    const photo = it.photo as ScopeKey;
-    return { category: it.category, defect: it.defect, fix: it.fix, src: site.images.scope[photo], alt: dict.home.services.photoAlt[photo] };
-  });
+  // Photos: Admin → Images "Defects we find" (same slots as the services list)
+  const items: FindingItem[] = await Promise.all(
+    t.items.map(async (it) => {
+      const photo = await siteImage(`scope.${it.photo as ScopeKey}`, locale);
+      return { category: it.category, defect: it.defect, fix: it.fix, src: photo.src, alt: photo.alt };
+    }),
+  );
 
   return (
     <section className="border-y border-line bg-white py-16 md:py-24">

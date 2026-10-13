@@ -51,18 +51,19 @@ export const site = {
   ],
   /**
    * Developer logos from the current site's homepage strip (white logos — show on a dark background).
+   * Default list only: Admin → Developer logos takes over once it has rows (src/lib/site-images.ts).
    * "Dubai Properties" is left out: its file only contains the red tick, the wordmark is missing.
    */
   developers: [
-    { name: "Atlantis The Royal", logo: "/images/developers/atlantis-the-royal.png", width: 576, height: 223 },
-    { name: "DAMAC", logo: "/images/developers/damac.png", width: 400, height: 92 },
-    { name: "Danube Properties", logo: "/images/developers/danube-properties.png", width: 340, height: 128 },
-    { name: "wasl", logo: "/images/developers/wasl.png", width: 111, height: 84 },
-    { name: "Ellington Properties", logo: "/images/developers/ellington-properties.png", width: 499, height: 189 },
-    { name: "Emaar", logo: "/images/developers/emaar.png", width: 964, height: 245 },
-    { name: "Meraas", logo: "/images/developers/meraas.png", width: 354, height: 142 },
-    { name: "Select Group", logo: "/images/developers/select-group.png", width: 202, height: 87 },
-    { name: "Sobha Realty", logo: "/images/developers/sobha-realty.png", width: 478, height: 190 },
+    { name: "Atlantis The Royal", logo: "/images/developers/atlantis-the-royal.png" },
+    { name: "DAMAC", logo: "/images/developers/damac.png" },
+    { name: "Danube Properties", logo: "/images/developers/danube-properties.png" },
+    { name: "wasl", logo: "/images/developers/wasl.png" },
+    { name: "Ellington Properties", logo: "/images/developers/ellington-properties.png" },
+    { name: "Emaar", logo: "/images/developers/emaar.png" },
+    { name: "Meraas", logo: "/images/developers/meraas.png" },
+    { name: "Select Group", logo: "/images/developers/select-group.png" },
+    { name: "Sobha Realty", logo: "/images/developers/sobha-realty.png" },
   ],
   /** Real inspection photos from the current site — used until Admin → Gallery has images */
   defaultGallery: [

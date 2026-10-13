@@ -291,8 +291,6 @@ const en = {
     /** Location pages: developments list from Admin → Locations */
     communitiesIn: "Communities we inspect in {city}",
     communitiesNote: "A selection of developments where our engineers carry out handover and resale snagging.",
-    priceFrom: "From {price} per sq ft",
-    priceNote: "See your price instantly in the form below",
     waMessage: "Hi, I need a snagging inspection for my [apartment / villa] in [community], {city}. Handover date: [ ]",
     findingPhotosTitle: "From our recent reports",
     /** Same order as site.images.findingPhotos */

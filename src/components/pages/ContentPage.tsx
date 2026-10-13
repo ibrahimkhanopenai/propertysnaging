@@ -13,6 +13,8 @@ import { routePath, staticRoutes } from "@/lib/routes";
 import { serviceSchema } from "@/lib/schema";
 import { getSettings, waLink } from "@/lib/settings";
 import { site } from "@/lib/site";
+import { pageImageSlot } from "@/lib/image-slots";
+import { siteImage } from "@/lib/site-images";
 
 /**
  * Generic renderer for every service, location and info page.
@@ -27,13 +29,17 @@ export async function ContentPage({ pageKey, locale, children }: { pageKey: Page
   const isLocation = staticRoutes.find((r) => r.key === pageKey)?.group === "location";
   // The sample report link is set in Admin → Settings (e.g. a Google Drive view-only link)
   const downloadHref = c.download?.href === site.pdfs.sampleReport ? cfg.sampleReportUrl : c.download?.href;
+  // About / Sample report hero photo: Admin → Images
+  const slot = pageImageSlot(pageKey);
+  const photo = slot ? await siteImage(slot, locale) : c.image ? { src: c.image, alt: c.imageAlt || c.h1 } : null;
 
   return (
     <>
       <PageHero
         h1={c.h1}
         intro={c.intro}
-        image={c.image}
+        image={photo?.src}
+        imageAlt={photo?.alt}
         breadcrumbs={[
           { name: dict.common.home, url: home },
           { name: c.breadcrumb, url: path },

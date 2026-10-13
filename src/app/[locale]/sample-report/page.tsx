@@ -7,8 +7,8 @@ import { Container } from "@/components/ui/Container";
 import { ButtonLink } from "@/components/ui/Button";
 import { getDictionary } from "@/i18n/dictionaries";
 import { isLocale, localePath } from "@/i18n/config";
-import { site } from "@/lib/site";
 import { getSettings } from "@/lib/settings";
+import { siteImage } from "@/lib/site-images";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -22,6 +22,7 @@ export default async function SampleReportPage({ params }: Props) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   const dict = getDictionary(locale);
+  const pages = await Promise.all(([1, 2, 3] as const).map((n) => siteImage(`report.${n}`, locale))); // Admin → Images
   return (
     <ContentPage pageKey="sampleReport" locale={locale}>
       <SampleReportSection locale={locale} dict={dict} />
@@ -32,9 +33,9 @@ export default async function SampleReportPage({ params }: Props) {
             <p className="text-sm text-muted">{dict.sampleReportPage.note}</p>
           </div>
           <ul className="grid gap-6 md:grid-cols-3">
-            {site.images.report.map((src, i) => (
-              <li key={src} className="relative aspect-[3/4] overflow-hidden rounded-2xl border-2 border-brand bg-white">
-                <Image src={src} alt={`${dict.home.report.imageAlt} ${i + 1}`} fill sizes="(min-width: 768px) 380px, 100vw" className="object-contain" />
+            {pages.map((p) => (
+              <li key={p.src} className="relative aspect-[3/4] overflow-hidden rounded-2xl border-2 border-brand bg-white">
+                <Image src={p.src} alt={p.alt} fill sizes="(min-width: 768px) 380px, 100vw" className="object-contain" />
               </li>
             ))}
           </ul>

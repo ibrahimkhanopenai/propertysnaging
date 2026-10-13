@@ -12,6 +12,9 @@ import { normalizePath, slugify } from "@/lib/utils";
 import { staticRoutes } from "@/lib/routes";
 import { settingFields, validateSetting } from "@/lib/settings-fields";
 import { defaultAreas, isLocationKey, suggestedCommunities } from "@/content/location-defaults";
+import { getImageSlot, isImagePath } from "@/lib/image-slots";
+import { slotFormValues, type SlotFormValues } from "@/lib/site-images";
+import { site } from "@/lib/site";
 
 async function requireAdmin() {
   const s = await getSession();
@@ -301,11 +304,26 @@ export async function saveLocationItemAction(fd: FormData) {
     nameAr: optional(fd.get("nameAr"))?.slice(0, 160) ?? null,
     developer: kind === "COMMUNITY" ? (optional(fd.get("developer"))?.slice(0, 120) ?? null) : null,
     published: fd.get("published") === "on",
-    sortOrder: Number(fd.get("sortOrder") || 0) || 0,
   } as const;
+  // Order is set by dragging (reorderLocationItemsAction); a new row goes to the end of its list
   if (id) await prisma.locationItem.update({ where: { id }, data });
-  else await prisma.locationItem.create({ data });
+  else {
+    const { _max } = await prisma.locationItem.aggregate({ where: { emirate, kind }, _max: { sortOrder: true } });
+    await prisma.locationItem.create({ data: { ...data, sortOrder: (_max.sortOrder ?? 0) + 1 } });
+  }
   revalidateLocation(emirate);
+}
+
+/** Drag-to-reorder: `ids` = one emirate's AREA or COMMUNITY list in its new order → sortOrder 1…n. */
+export async function reorderLocationItemsAction(ids: number[]): Promise<{ ok: boolean }> {
+  await requireAdmin();
+  if (!Array.isArray(ids) || !ids.length || !ids.every(Number.isInteger) || new Set(ids).size !== ids.length) return { ok: false };
+  const rows = await prisma.locationItem.findMany({ where: { id: { in: ids } }, select: { emirate: true, kind: true } });
+  // All rows must exist and belong to the same list
+  if (rows.length !== ids.length || new Set(rows.map((r) => `${r.emirate}|${r.kind}`)).size !== 1) return { ok: false };
+  await prisma.$transaction(ids.map((id, i) => prisma.locationItem.update({ where: { id }, data: { sortOrder: i + 1 } })));
+  revalidateLocation(rows[0].emirate);
+  return { ok: true };
 }
 
 export async function deleteLocationItemAction(fd: FormData) {
@@ -357,4 +375,79 @@ export async function loadLocationDefaultsAction(fd: FormData) {
       : suggestedCommunities[emirate];
   await prisma.locationItem.createMany({ data: items.map((x, i) => ({ ...x, emirate, kind, sortOrder: i + 1 })) });
   revalidateLocation(emirate);
+}
+
+/* ─────────── Images (photo + ALT per slot, src/lib/image-slots.ts) ─────────── */
+
+export type ImageSlotState = { error?: string; saved?: boolean; values?: SlotFormValues };
+
+/** Saves one slot. Values equal to the default store nothing; intent=reset deletes the row (back to the default photo + ALT). */
+export async function saveSiteImageAction(_prev: ImageSlotState, fd: FormData): Promise<ImageSlotState> {
+  await requireAdmin();
+  const slot = getImageSlot(String(fd.get("key") ?? ""));
+  if (!slot) return { error: "Unknown image." };
+
+  if (fd.get("intent") === "reset") {
+    await prisma.siteImage.deleteMany({ where: { key: slot.key } });
+    revalidatePath("/", "layout");
+    return { saved: true, values: slotFormValues(slot, undefined) };
+  }
+
+  const url = String(fd.get("url") ?? "").trim();
+  const alt = String(fd.get("alt") ?? "").trim().slice(0, 255);
+  const altAr = String(fd.get("altAr") ?? "").trim().slice(0, 255);
+  if (url && !isImagePath(url)) return { error: "Upload a JPG, PNG, WebP or AVIF image." };
+  const data = {
+    url: url && url !== slot.src ? url : null,
+    alt: alt && alt !== slot.alt("en") ? alt : null,
+    altAr: altAr && altAr !== slot.alt("ar") ? altAr : null,
+  };
+  // The default ALT describes the default photo (client rule: descriptive ALT for every image)
+  if (data.url && !data.alt) return { error: "New photo: write an English ALT text that describes it." };
+
+  const row = data.url || data.alt || data.altAr ? { key: slot.key, ...data } : undefined;
+  if (row) await prisma.siteImage.upsert({ where: { key: slot.key }, update: data, create: row });
+  else await prisma.siteImage.deleteMany({ where: { key: slot.key } });
+  // Slots appear on many pages (sample report on every location page, OG images) → regenerate all
+  revalidatePath("/", "layout");
+  return { saved: true, values: slotFormValues(slot, row) };
+}
+
+/* ─────────── Developer logos (homepage strip) ─────────── */
+
+const revalidateDevelopers = () => {
+  revalidatePath("/[locale]", "page"); // homepage, EN (/en internally) + AR
+  revalidatePath("/admin/developers/");
+};
+
+export async function saveDeveloperAction(fd: FormData) {
+  await requireAdmin();
+  const id = Number(fd.get("id") || 0) || null;
+  const name = String(fd.get("name") ?? "").trim().slice(0, 120);
+  const logo = String(fd.get("logo") ?? "").trim();
+  if (!name || !isImagePath(logo)) return;
+  const data = {
+    name,
+    nameAr: optional(fd.get("nameAr"))?.slice(0, 120) ?? null,
+    logo,
+    published: fd.get("published") === "on",
+    sortOrder: Number(fd.get("sortOrder") || 0) || 0,
+  };
+  if (id) await prisma.developerLogo.update({ where: { id }, data });
+  else await prisma.developerLogo.create({ data });
+  revalidateDevelopers();
+}
+
+export async function deleteDeveloperAction(fd: FormData) {
+  await requireAdmin();
+  await prisma.developerLogo.delete({ where: { id: Number(fd.get("id")) } });
+  revalidateDevelopers();
+}
+
+/** Copies the default logos (site.developers) into the empty list so they can be edited. */
+export async function loadDefaultDevelopersAction() {
+  await requireAdmin();
+  if (await prisma.developerLogo.count()) return;
+  await prisma.developerLogo.createMany({ data: site.developers.map((d, i) => ({ name: d.name, logo: d.logo, sortOrder: i + 1 })) });
+  revalidateDevelopers();
 }

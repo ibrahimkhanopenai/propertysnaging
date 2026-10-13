@@ -6,15 +6,16 @@ import { Icon } from "@/components/ui/Icon";
 import { Reveal } from "@/components/ui/Reveal";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { localePath, type Locale } from "@/i18n/config";
-import { site } from "@/lib/site";
+import { siteImage } from "@/lib/site-images";
 
 /**
  * "About us" editorial dossier: an oversized statement headline, a tall asymmetric
  * portrait of the handover with copper inspection-marker annotations, and the genuine
  * 10,000+ inspection-hours fact set as an outsized pull-stat beside the story.
  */
-export function AboutSection({ locale, dict }: { locale: Locale; dict: Dictionary }) {
+export async function AboutSection({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   const t = dict.home.about;
+  const photo = await siteImage("about", locale); // Admin → Images
   return (
     <section className="relative overflow-hidden border-y border-line bg-mist py-16 md:py-24">
       <Container>
@@ -34,8 +35,8 @@ export function AboutSection({ locale, dict }: { locale: Locale; dict: Dictionar
             <figure className="relative">
               <div className="relative aspect-[4/5] overflow-hidden rounded-[28px] border border-line bg-white sm:aspect-[16/11] lg:aspect-[4/5]">
                 <Image
-                  src={site.images.about}
-                  alt={t.imageAlt}
+                  src={photo.src}
+                  alt={photo.alt}
                   fill
                   sizes="(min-width: 1024px) 50vw, 100vw"
                   className="object-cover"

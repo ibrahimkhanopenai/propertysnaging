@@ -12,6 +12,8 @@ const links = [
   { href: "/admin/leads/", label: "Leads" },
   { href: "/admin/reviews/", label: "Reviews" },
   { href: "/admin/gallery/", label: "Gallery" },
+  { href: "/admin/images/", label: "Images" },
+  { href: "/admin/developers/", label: "Developer logos" },
   { href: "/admin/locations/", label: "Locations" },
   { href: "/admin/redirects/", label: "Redirects" },
   { href: "/admin/settings/", label: "Settings" },

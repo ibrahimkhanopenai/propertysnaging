@@ -12,6 +12,7 @@ import { getReviews } from "@/lib/content-db";
 import { buildMetadata } from "@/lib/seo";
 import { site } from "@/lib/site";
 import { getSettings } from "@/lib/settings";
+import { siteImage } from "@/lib/site-images";
 
 export const revalidate = 3600;
 type Props = { params: Promise<{ locale: string }> };
@@ -30,6 +31,7 @@ export default async function ReviewsPage({ params }: Props) {
   if (!isLocale(locale)) notFound();
   const d = getDictionary(locale);
   const reviews = await getReviews();
+  const reportThumb = await siteImage("report.1", locale);
   return (
     <>
       <PageHero
@@ -66,7 +68,7 @@ export default async function ReviewsPage({ params }: Props) {
           </ul>
           <div className="mt-12 flex flex-wrap items-center justify-between gap-6 rounded-3xl bg-ink p-8 text-white">
             <div className="flex items-center gap-4">
-              <span className="relative block size-14 overflow-hidden rounded-xl bg-white/10"><Image src={site.images.report[0]} alt="" fill sizes="56px" className="object-cover" /></span>
+              <span className="relative block size-14 overflow-hidden rounded-xl bg-white/10"><Image src={reportThumb.src} alt="" fill sizes="56px" className="object-cover" /></span>
               <div>
                 <p className="font-display text-xl font-extrabold">{d.reviewsPage.writeTitle}</p>
                 <p className="text-zinc-400">{d.reviewsPage.writeText}</p>

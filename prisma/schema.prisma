@@ -195,3 +195,29 @@ model Setting {
   value     String   @db.VarChar(1000)
   updatedAt DateTime @updatedAt
 }
+
+/// Image overrides edited in Admin → Images. `key` = slot from src/lib/image-slots.ts (hero, about,
+/// location.dubai, scope.hvac, report.1, finding.1 …). A null field (or no row) uses the code default.
+model SiteImage {
+  key       String   @id @db.VarChar(64)
+  /// /uploads/… (Admin upload) or /images/…
+  url       String?  @db.VarChar(500)
+  alt       String?  @db.VarChar(255)
+  altAr     String?  @db.VarChar(255)
+  updatedAt DateTime @updatedAt
+}
+
+/// Homepage developer logo strip, managed in Admin → Developer logos.
+/// With no rows the strip shows site.developers (src/lib/site.ts).
+model DeveloperLogo {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(120)
+  nameAr    String?  @db.VarChar(120)
+  logo      String   @db.VarChar(500)
+  published Boolean  @default(true)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([published, sortOrder])
+}

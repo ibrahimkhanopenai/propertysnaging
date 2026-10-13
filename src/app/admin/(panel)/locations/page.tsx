@@ -4,7 +4,8 @@ import { prisma } from "@/lib/db";
 import { getPageContent } from "@/content/pages";
 import { defaultAreas, isLocationKey } from "@/content/location-defaults";
 import { staticRoutes } from "@/lib/routes";
-import { deleteLocationItemAction, loadLocationDefaultsAction, saveLocationItemAction } from "../../actions";
+import { SortableList } from "@/components/admin/SortableList";
+import { deleteLocationItemAction, loadLocationDefaultsAction, reorderLocationItemsAction, saveLocationItemAction } from "../../actions";
 
 export const metadata = { title: "Locations" };
 const input = "h-10 w-full rounded-lg border border-zinc-300 bg-white px-3 text-sm";
@@ -63,7 +64,6 @@ export default async function LocationsAdmin({ searchParams }: { searchParams: P
 }
 
 function ItemList({ emirate, kind, title, help, rows, fallback }: { emirate: string; kind: "AREA" | "COMMUNITY"; title: string; help: string; rows: LocationItem[]; fallback?: string[] }) {
-  const nextOrder = (rows.at(-1)?.sortOrder ?? 0) + 1;
   return (
     <section className="flex flex-col gap-4 rounded-2xl border border-line bg-white p-5">
       <div>
@@ -78,9 +78,8 @@ function ItemList({ emirate, kind, title, help, rows, fallback }: { emirate: str
         <label className={label}>Name (English) *<input name="name" required maxLength={160} className={input} /></label>
         <label className={label}>Name (Arabic)<input name="nameAr" dir="rtl" maxLength={160} className={input} /></label>
         {kind === "COMMUNITY" ? <label className={label}>Developer<input name="developer" placeholder="e.g. Emaar" maxLength={120} className={input} /></label> : null}
-        <label className={label}>Order<input type="number" name="sortOrder" defaultValue={nextOrder} className={input} /></label>
         <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="published" defaultChecked /> Show on site</label>
-        <button className="h-10 rounded-lg bg-ink px-4 text-sm font-semibold text-white sm:col-start-2">Add</button>
+        <button className="h-10 rounded-lg bg-ink px-4 text-sm font-semibold text-white sm:col-start-2">Add to the end</button>
       </form>
 
       {rows.length === 0 ? (
@@ -100,27 +99,29 @@ function ItemList({ emirate, kind, title, help, rows, fallback }: { emirate: str
         </div>
       ) : null}
 
-      {/* Existing rows — each is its own edit form */}
-      <ul className="flex flex-col gap-2">
-        {rows.map((r) => (
-          <li key={r.id}>
-            <form action={saveLocationItemAction} className={`grid items-end gap-2 rounded-xl border p-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_5rem] ${r.published ? "border-line" : "border-dashed border-line bg-mist/60"}`}>
+      {/* Existing rows — each is its own edit form; order = drag (SortableList) */}
+      <SortableList
+        onReorder={reorderLocationItemsAction}
+        items={rows.map((r) => ({
+          id: r.id,
+          label: r.name,
+          node: (
+            <form action={saveLocationItemAction} className={`grid items-end gap-2 rounded-xl border p-3 sm:grid-cols-2 ${r.published ? "border-line bg-white" : "border-dashed border-line bg-mist/60"}`}>
               <input type="hidden" name="id" value={r.id} />
               <input type="hidden" name="emirate" value={emirate} />
               <input type="hidden" name="kind" value={kind} />
               <label className={label}>English<input name="name" defaultValue={r.name} required maxLength={160} className={input} /></label>
               <label className={label}>Arabic<input name="nameAr" defaultValue={r.nameAr ?? ""} dir="rtl" maxLength={160} className={input} /></label>
-              <label className={label}>Order<input type="number" name="sortOrder" defaultValue={r.sortOrder} className={input} /></label>
               {kind === "COMMUNITY" ? <label className={`${label} sm:col-span-2`}>Developer<input name="developer" defaultValue={r.developer ?? ""} maxLength={120} className={input} /></label> : null}
-              <div className="flex flex-wrap items-center gap-3 sm:col-span-3">
+              <div className="flex flex-wrap items-center gap-3 sm:col-span-2">
                 <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="published" defaultChecked={r.published} /> Show on site</label>
                 <button className="ms-auto h-9 rounded-lg bg-ink px-4 text-sm font-semibold text-white">Save</button>
                 <button formAction={deleteLocationItemAction} className="h-9 px-2 text-sm text-snag">Delete</button>
               </div>
             </form>
-          </li>
-        ))}
-      </ul>
+          ),
+        }))}
+      />
     </section>
   );
 }

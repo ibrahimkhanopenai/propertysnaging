@@ -5,14 +5,16 @@ import { ButtonLink } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { localePath, type Locale } from "@/i18n/config";
-import { site } from "@/lib/site";
 import { getSettings } from "@/lib/settings";
+import { siteImage } from "@/lib/site-images";
 
 /** Dark showcase: how each defect is documented (accent-numbered list) + a layered report composition. */
 /** quoteHref: where "Book your inspection" goes — "#quote" on pages that have the quote form, else the homepage form. */
 export async function SampleReportSection({ locale, dict, headingLevel = "h2", quoteHref }: { locale: Locale; dict: Dictionary; headingLevel?: "h2" | "h3"; quoteHref?: string }) {
   const cfg = await getSettings();
   const t = dict.home.report;
+  // Admin → Images "Sample report"
+  const [p1, p2, p3] = await Promise.all([siteImage("report.1", locale), siteImage("report.2", locale), siteImage("report.3", locale)]);
   const H = headingLevel;
   return (
     <section className="bg-ink py-16 text-white md:py-24">
@@ -43,13 +45,13 @@ export async function SampleReportSection({ locale, dict, headingLevel = "h2", q
         <Reveal delay={120} className="relative mx-auto w-full max-w-sm lg:max-w-md">
           <div className="relative aspect-[5/5]">
             <div className="absolute left-1/2 top-1/2 z-20 h-[80%] w-[60%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl border border-white/15 shadow-[0_30px_70px_rgba(0,0,0,0.55)] ring-1 ring-brand/40">
-              <Image src={site.images.report[1]} alt={`${t.imageAlt} 1`} fill sizes="300px" className="object-cover object-top" />
+              <Image src={p2.src} alt={p2.alt} fill sizes="300px" className="object-cover object-top" />
             </div>
             <div className="absolute left-0 top-1 z-10 h-[44%] w-[44%] -rotate-3 overflow-hidden rounded-xl border border-white/15 shadow-[0_18px_40px_rgba(0,0,0,0.5)]">
-              <Image src={site.images.report[0]} alt={`${t.imageAlt} 2`} fill sizes="180px" className="object-cover" />
+              <Image src={p1.src} alt={p1.alt} fill sizes="180px" className="object-cover" />
             </div>
             <div className="absolute bottom-1 right-0 z-30 h-[44%] w-[44%] rotate-3 overflow-hidden rounded-xl border border-white/15 shadow-[0_18px_40px_rgba(0,0,0,0.5)]">
-              <Image src={site.images.report[2]} alt={`${t.imageAlt} 3`} fill sizes="180px" className="object-cover" />
+              <Image src={p3.src} alt={p3.alt} fill sizes="180px" className="object-cover" />
             </div>
           </div>
         </Reveal>

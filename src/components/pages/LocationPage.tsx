@@ -15,16 +15,16 @@ import { RelatedLinks } from "./RelatedLinks";
 import { getDictionary } from "@/i18n/dictionaries";
 import { localePath, type Locale } from "@/i18n/config";
 import { getPageContent, type PageKey } from "@/content/pages";
-import { getPricing } from "@/lib/pricing";
 import { getLocationItems } from "@/lib/content-db";
 import { routePath } from "@/lib/routes";
 import { serviceSchema } from "@/lib/schema";
-import { site } from "@/lib/site";
 import { getSettings, waLink } from "@/lib/settings";
+import { pageImageSlot } from "@/lib/image-slots";
+import { siteImage } from "@/lib/site-images";
 
 /**
  * Location page (Dubai, Abu Dhabi … UAQ) built as an organic-search landing page (CRO audit 2026-10):
- * hero with hook, proofs, one copper CTA + WhatsApp, real photo and the per-sq-ft price → key figures →
+ * hero with hook, proofs, one copper CTA + WhatsApp and a real photo → key figures →
  * why snagging matters here + defects we find (with report photos) → local tips → communities + areas (Admin → Locations) →
  * why choose us → process → sample report → city FAQ → related links → quote form (#quote).
  * URLs, <title> and meta description are unchanged (legacy SEO). Copy: content/locations.{en,ar}.ts.
@@ -35,10 +35,12 @@ export async function LocationPage({ pageKey, locale }: { pageKey: PageKey; loca
   const ui = dict.pageUi;
   const c = getPageContent(pageKey, locale);
   const { areas, communities } = await getLocationItems(pageKey, locale, c.communities ?? []);
+  // Photos: Admin → Images (hero = "Location page heroes", defect photos = "From our recent reports")
+  const slot = pageImageSlot(pageKey);
+  const hero = slot ? await siteImage(slot, locale) : c.image ? { src: c.image, alt: c.imageAlt || c.h1 } : null;
+  const findingPhotos = await Promise.all(([1, 2, 3, 4] as const).map((n) => siteImage(`finding.${n}`, locale)));
   const path = localePath(locale, routePath(pageKey));
   const city = c.navLabel ?? c.city ?? "";
-  const { ratePerSqft, currency } = getPricing();
-  const price = ratePerSqft !== null ? `${currency} ${ratePerSqft.toFixed(2)}` : null;
 
   return (
     <>
@@ -75,20 +77,11 @@ export async function LocationPage({ pageKey, locale }: { pageKey: PageKey; loca
             </a>
           </div>
 
-          {c.image ? (
+          {hero ? (
             <div className="relative lg:col-span-5">
               <div className="relative aspect-[4/3] overflow-hidden rounded-[22px] bg-mist sm:aspect-[16/11] lg:aspect-[4/5]">
-                <Image src={c.image} alt={c.imageAlt || c.h1} fill priority sizes="(min-width: 1024px) 40vw, 100vw" className="object-cover" />
+                <Image src={hero.src} alt={hero.alt} fill priority sizes="(min-width: 1024px) 40vw, 100vw" className="object-cover" />
               </div>
-              {price ? (
-                <a
-                  href="#quote"
-                  className="absolute -bottom-5 start-5 flex flex-col rounded-2xl border border-line bg-white px-5 py-3.5 shadow-[0_18px_40px_rgba(10,10,10,0.14)] transition-colors hover:border-brand-line"
-                >
-                  <span className="font-display text-lg font-extrabold text-brand-dark" dir="auto">{ui.priceFrom.replace("{price}", price)}</span>
-                  <span className="text-[13px] text-muted">{ui.priceNote}</span>
-                </a>
-              ) : null}
             </div>
           ) : null}
         </Container>
@@ -147,13 +140,13 @@ export async function LocationPage({ pageKey, locale }: { pageKey: PageKey; loca
             <Reveal className="flex flex-col gap-5">
               <Kicker>{ui.findingPhotosTitle}</Kicker>
               <ul className="grid grid-cols-2 gap-4 md:grid-cols-4">
-                {site.images.findingPhotos.map((src, i) => {
+                {findingPhotos.map((photo, i) => {
                   const p = ui.findingPhotos[i];
                   return (
-                    <li key={src}>
+                    <li key={i}>
                       <figure className="flex flex-col gap-2.5">
                         <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-mist">
-                          <Image src={src} alt={p.alt} fill sizes="(min-width: 768px) 22vw, 45vw" className="object-cover" />
+                          <Image src={photo.src} alt={photo.alt} fill sizes="(min-width: 768px) 22vw, 45vw" className="object-cover" />
                         </div>
                         <figcaption className="text-[14px] leading-snug text-muted">{p.caption}</figcaption>
                       </figure>

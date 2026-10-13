@@ -73,7 +73,7 @@ changelog/                 One file per completed task (see §8)
 7. Structured data only through `src/lib/schema.ts`. **No Review/AggregateRating schema** while `site.reviews.isPlaceholder` is true.
 8. One `<h1>` per page. Section headings are `<h2>`.
 9. Images: `next/image` with real `alt`, `sizes`; only the hero is `priority`.
-10. Images live in `public/images/<section>/`, PDFs in `public/downloads/` (lowercase-hyphen names, paths only in `site.ts`). Old asset URLs are indexed and linked: every one we use 301s via `src/lib/legacy-redirects.ts` — never delete an entry; update it if a file is renamed. Replace an image by overwriting the same file name.
+10. Images live in `public/images/<section>/`, PDFs in `public/downloads/` (lowercase-hyphen names, paths only in `site.ts`). Old asset URLs are indexed and linked: every one we use 301s via `src/lib/legacy-redirects.ts` — never delete an entry; update it if a file is renamed. Replace an image by overwriting the same file name. Photos listed in `src/lib/image-slots.ts` (and the developer logos) can also be replaced from the admin; read them with `siteImage()` / `getDeveloperLogos()`, not `site.images` directly.
 
 ## 6. Coding conventions
 - Server Components by default; `"use client"` only for interactivity (QuoteForm, MobileMenu, LanguageSwitch, admin forms).

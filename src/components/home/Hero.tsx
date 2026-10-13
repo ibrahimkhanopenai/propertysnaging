@@ -5,8 +5,8 @@ import { Icon } from "@/components/ui/Icon";
 import { Reveal } from "@/components/ui/Reveal";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { type Locale } from "@/i18n/config";
-import { site } from "@/lib/site";
 import { getSettings, waLink } from "@/lib/settings";
+import { siteImage } from "@/lib/site-images";
 
 /**
  * Cinematic hero recreated from the client's reference mockup: the supplied
@@ -17,8 +17,9 @@ import { getSettings, waLink } from "@/lib/settings";
  * CRO audit (2026-10): hook line under the H1, three hard proofs, ONE copper primary
  * action ("Get my free quote") + WhatsApp with a pre-filled message, phone as a text link.
  */
-export async function Hero({ dict }: { locale: Locale; dict: Dictionary }) {
+export async function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   const cfg = await getSettings();
+  const photo = await siteImage("hero", locale); // Admin → Images
   const t = dict.home.hero;
   return (
     <section className="relative isolate flex min-h-[620px] items-center overflow-hidden bg-white md:min-h-[clamp(600px,50vw,900px)]">
@@ -29,8 +30,8 @@ export async function Hero({ dict }: { locale: Locale; dict: Dictionary }) {
           photo is mirrored at xl so the hand reaches in from the right, away from the text (no lettering in it). */}
       <div className="hero-photo absolute inset-0 -z-20 xl:inset-auto xl:end-0 xl:top-0 xl:h-full xl:aspect-[1671/941] xl:rtl:-scale-x-100">
         <Image
-          src={site.images.hero}
-          alt={t.imageAlt}
+          src={photo.src}
+          alt={photo.alt}
           fill
           priority
           sizes="(min-width: 1280px) 1600px, 100vw"

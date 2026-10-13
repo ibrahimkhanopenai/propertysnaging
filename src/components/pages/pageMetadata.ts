@@ -3,9 +3,14 @@ import { getPageContent, type PageKey } from "@/content/pages";
 import { isLocale } from "@/i18n/config";
 import { routePath } from "@/lib/routes";
 import { buildMetadata } from "@/lib/seo";
+import { pageImageSlot } from "@/lib/image-slots";
+import { siteImage } from "@/lib/site-images";
 
-export function pageMetadata(pageKey: PageKey, locale: string): Metadata {
+export async function pageMetadata(pageKey: PageKey, locale: string): Promise<Metadata> {
   if (!isLocale(locale)) return {};
   const c = getPageContent(pageKey, locale);
-  return buildMetadata({ locale, path: routePath(pageKey), title: c.metaTitle, absoluteTitle: c.metaTitleAbsolute, description: c.metaDescription, image: c.image });
+  // OG image follows the hero photo replaced in Admin → Images
+  const slot = pageImageSlot(pageKey);
+  const image = slot ? (await siteImage(slot, locale)).src : c.image;
+  return buildMetadata({ locale, path: routePath(pageKey), title: c.metaTitle, absoluteTitle: c.metaTitleAbsolute, description: c.metaDescription, image });
 }

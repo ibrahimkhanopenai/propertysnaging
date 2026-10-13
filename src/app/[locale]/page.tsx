@@ -54,7 +54,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <Process dict={dict} />
       <AboutSection locale={locale} dict={dict} />
       <WhyChoose dict={dict} />
-      <DevelopersStrip dict={dict} />
+      <DevelopersStrip locale={locale} dict={dict} />
       <Emirates locale={locale} dict={dict} />
       <ReviewsMarquee dict={dict} />
       <Faq title={dict.home.faq.title} text={dict.home.faq.text} items={dict.home.faq.items} link={{ href: localePath(locale, "/faqs/"), label: dict.home.faq.all }} />
