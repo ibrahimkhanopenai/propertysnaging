@@ -1,14 +1,14 @@
 "use client";
 
 import { useActionState, useMemo, useState } from "react";
-import { marked } from "marked";
 import type { Category, Post } from "@prisma/client";
 import { savePostAction, type PostState } from "@/app/admin/actions";
 import { slugify } from "@/lib/utils";
+import { RichTextEditor } from "./RichTextEditor";
 
 /**
  * Blog editor with full SEO panel. Docs: docs/admin-cms.md
- * Content is Markdown (headings ##/###, lists, links, images, tables).
+ * Content is stored as Markdown; RichTextEditor edits it visually or as source.
  */
 
 type Faq = { q: string; a: string };
@@ -83,7 +83,6 @@ export function PostForm({ post, categories, services }: { post?: Post; categori
   const [slug, setSlug] = useState(post?.slug ?? "");
   const [slugTouched, setSlugTouched] = useState(Boolean(post));
   const [content, setContent] = useState(post?.content ?? "");
-  const [tab, setTab] = useState<"write" | "preview">("write");
   const [excerpt, setExcerpt] = useState(post?.excerpt ?? "");
   const [metaTitle, setMetaTitle] = useState(post?.metaTitle ?? "");
   const [metaDescription, setMetaDescription] = useState(post?.metaDescription ?? "");
@@ -152,29 +151,10 @@ export function PostForm({ post, categories, services }: { post?: Post; categori
         </div>
 
         <div className={card}>
-          <div className="flex items-center justify-between">
-            <p className="text-sm font-semibold">Content (Markdown)</p>
-            <div className="flex rounded-lg border border-line p-0.5 text-sm">
-              {(["write", "preview"] as const).map((t) => (
-                <button key={t} type="button" onClick={() => setTab(t)} className={`rounded-md px-3 py-1 capitalize ${tab === t ? "bg-ink text-white" : ""}`}>
-                  {t}
-                </button>
-              ))}
-            </div>
-          </div>
-          <textarea
-            name="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            rows={26}
-            dir={locale === "ar" ? "rtl" : "ltr"}
-            className={`${input} h-auto py-3 font-mono text-[13px] leading-relaxed ${tab === "preview" ? "hidden" : ""}`}
-            placeholder={"## Section heading\n\nParagraph text with a [link to Dubai snagging](/snagging-services-in-dubai/).\n\n- Bullet one\n- Bullet two\n\n![Alt text](/uploads/2026/10/photo.jpg)"}
-          />
-          {tab === "preview" ? (
-            <div className="article-body min-h-96 rounded-lg border border-line p-5" dir={locale === "ar" ? "rtl" : "ltr"} dangerouslySetInnerHTML={{ __html: marked.parse(content || "*Nothing to preview*", { async: false }) as string }} />
-          ) : null}
-          <p className="text-xs text-muted">Tip: use ## for H2 and ### for H3 (the page H1 is the title). Upload images in the sidebar, then paste the URL as ![alt](url).</p>
+          <p className="text-sm font-semibold">Content</p>
+          <input type="hidden" name="content" value={content} />
+          <RichTextEditor value={content} onChange={setContent} dir={locale === "ar" ? "rtl" : "ltr"} uploadImage={uploadImage} />
+          <p className="text-xs text-muted">Use Heading 2 / Heading 3 for sections (the page H1 is the title). Pasted text from Word or Google Docs is cleaned up automatically. The Markdown tab shows the saved source.</p>
         </div>
 
         <div className={card}>

@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { PostForm } from "@/components/admin/PostForm";
 import { prisma } from "@/lib/db";
 import { staticRoutes } from "@/lib/routes";
-import { deletePostAction } from "../../../actions";
+import { DeletePostButton } from "@/components/admin/PostListControls";
 
 export const metadata = { title: "Edit post" };
 
@@ -18,10 +18,7 @@ export default async function EditPostPage({ params, searchParams }: { params: P
     <div className="flex flex-col gap-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h1 className="text-2xl font-bold">Edit post</h1>
-        <form action={deletePostAction}>
-          <input type="hidden" name="id" value={post.id} />
-          <button className="rounded-xl border border-snag px-4 py-2 text-sm font-semibold text-snag">Delete post</button>
-        </form>
+        <DeletePostButton id={post.id} title={post.title} live={post.status !== "DRAFT" && Boolean(post.publishedAt) && post.publishedAt! <= new Date()} className="rounded-xl border border-snag px-4 py-2 text-sm font-semibold text-snag" />
       </div>
       {saved ? <p className="rounded-xl bg-white p-3 text-sm text-wa-dark">Post created.</p> : null}
       <PostForm post={post} categories={categories} services={staticRoutes.map((r) => r.path)} />

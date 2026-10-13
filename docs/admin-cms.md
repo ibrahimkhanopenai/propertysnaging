@@ -12,7 +12,7 @@ URL: `/admin/` (login at `/admin/login/`). Admin is `noindex` and blocked in rob
 | Screen | Path |
 |---|---|
 | Dashboard | `/admin/` |
-| Posts list / new / edit | `/admin/posts/`, `/admin/posts/new/`, `/admin/posts/{id}/` |
+| Posts list (each row: **Published/Draft switch**, **Edit**, **View ↗**, **Delete**) / new / edit | `/admin/posts/`, `/admin/posts/new/`, `/admin/posts/{id}/` |
 | Leads (quote form) | `/admin/leads/` |
 | Redirects | `/admin/redirects/` |
 | Reviews (genuine only) | `/admin/reviews/` |
@@ -61,9 +61,24 @@ URL: `/admin/` (login at `/admin/login/`). Admin is `noindex` and blocked in rob
   (`content/pages.*.ts`), price per sq ft (`PRICE_PER_SQFT` env).
 
 ## Blog post fields
-**Content:** title (H1), slug (auto from title, editable), excerpt, Markdown content with preview, FAQ repeater, featured image (upload) + alt, category, tags, location, related service (end CTA), author, table of contents toggle, language (EN/AR), status (Draft/Published/Scheduled), publish date.
+**Content:** title (H1), slug (auto from title, editable), excerpt, content (visual editor or Markdown, see below), FAQ repeater, featured image (upload) + alt, category, tags, location, related service (end CTA), author, table of contents toggle, language (EN/AR), status (Draft/Published/Scheduled), publish date.
 
 **SEO:** SEO title (30–60 counter), meta description (120–160 counter), live Google preview, focus keyword, secondary keywords, canonical URL, robots index/follow, schema type (BlogPosting/Article/HowTo), breadcrumb title, OG title/description/image. Live SEO checklist (keyword in title/description/slug/intro, H2 present, internal link, alt text, 600+ words).
+
+## Post editor (`RichTextEditor`)
+- **Visual** mode (default): the content looks like the live article. Toolbar: Paragraph / Heading 2–4 / Quote, Bold, Italic,
+  bulleted and numbered lists, Link (`/path/` for site pages), Unlink, Image (upload, asks for ALT text; images can also be
+  pasted or dropped), horizontal line, Clear formatting, Undo/Redo.
+- **Markdown** mode: the saved source, for tables, embeds and fine edits.
+- Content is always **stored as Markdown**. Visual edits are converted back by `src/lib/html-to-markdown.ts`
+  (tests: `tests/unit/html-to-markdown.test.ts`). Opening a post does not change it; only typing in the visual editor does.
+- Pasting from Word / Google Docs keeps headings, bold, italic, links, lists and tables and drops fonts, colours and styles.
+  An H1 in the content becomes an H2 (the page H1 is the title).
+
+## Blog list
+- **Switch** in the Status column: on = Published (live now; an earlier publish date is kept), off = Draft (asks first:
+  the URL goes offline, so add a 301 in Redirects if the post ranks). A future-dated post shows "Scheduled dd/mm/yyyy".
+- **Delete** asks for confirmation (also on the edit screen) and warns when the post is live.
 
 ## Behaviour
 - Scheduled posts go live automatically once `publishedAt` passes (pages revalidate hourly).

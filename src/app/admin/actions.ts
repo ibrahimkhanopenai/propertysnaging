@@ -77,6 +77,13 @@ const postSchema = z.object({
   type: z.enum(["POST", "DEVELOPER"]),
 });
 
+/** Drops the cached pages that show a post. EN is served from /en/... internally (middleware rewrite), so the route patterns are revalidated too. */
+function revalidatePost(locale: string, slug: string) {
+  const prefix = locale === "ar" ? "/ar" : "";
+  for (const p of [`${prefix}/${slug}/`, `${prefix}/blog/`, `${prefix}/snagging-by-developer/`, `${prefix}/`, "/sitemap.xml", "/admin/posts/"]) revalidatePath(p);
+  for (const r of ["/[locale]/[...slug]", "/[locale]/blog", "/[locale]/snagging-by-developer", "/[locale]"]) revalidatePath(r, "page");
+}
+
 export async function savePostAction(_prev: PostState, fd: FormData): Promise<PostState> {
   await requireAdmin();
   const id = Number(fd.get("id") || 0) || null;
@@ -164,11 +171,7 @@ export async function savePostAction(_prev: PostState, fd: FormData): Promise<Po
     savedId = created.id;
   }
 
-  revalidatePath(`${prefix}/${v.slug}/`);
-  revalidatePath(`${prefix}/blog/`);
-  revalidatePath(`${prefix}/snagging-by-developer/`);
-  revalidatePath(`${prefix}/`);
-  revalidatePath("/sitemap.xml");
+  revalidatePost(v.locale, v.slug);
 
   if (!id) redirect(`/admin/posts/${savedId}/?saved=1`);
   return { saved: true };
@@ -178,11 +181,23 @@ export async function deletePostAction(fd: FormData) {
   await requireAdmin();
   const id = Number(fd.get("id"));
   const post = await prisma.post.delete({ where: { id } });
-  const prefix = post.locale === "ar" ? "/ar" : "";
-  revalidatePath(`${prefix}/${post.slug}/`);
-  revalidatePath(`${prefix}/blog/`);
-  revalidatePath("/sitemap.xml");
+  revalidatePost(post.locale, post.slug);
   redirect("/admin/posts/");
+}
+
+/** Blog list toggle. Publish = live now (keeps an earlier publish date); unpublish = back to Draft. */
+export async function setPostPublishedAction(id: number, published: boolean): Promise<{ ok: boolean; error?: string }> {
+  await requireAdmin();
+  if (!Number.isInteger(id) || id <= 0) return { ok: false, error: "Invalid post." };
+  const post = await prisma.post.findUnique({ where: { id } });
+  if (!post) return { ok: false, error: "Post not found." };
+  const now = new Date();
+  await prisma.post.update({
+    where: { id },
+    data: published ? { status: "PUBLISHED", publishedAt: post.publishedAt && post.publishedAt <= now ? post.publishedAt : now } : { status: "DRAFT" },
+  });
+  revalidatePost(post.locale, post.slug);
+  return { ok: true };
 }
 
 /* ─────────── Redirects ─────────── */
