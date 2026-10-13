@@ -8,22 +8,26 @@ import { PageHero } from "./PageHero";
 import { RelatedLinks } from "./RelatedLinks";
 import { getDictionary } from "@/i18n/dictionaries";
 import { localePath, type Locale } from "@/i18n/config";
-import { getPageContent, type PageKey } from "@/content/pages";
+import type { PageKey } from "@/content/pages";
 import { routePath, staticRoutes } from "@/lib/routes";
 import { serviceSchema } from "@/lib/schema";
 import { getSettings, waLink } from "@/lib/settings";
 import { site } from "@/lib/site";
 import { pageImageSlot } from "@/lib/image-slots";
 import { siteImage } from "@/lib/site-images";
+import { getPageContentWithText } from "@/lib/page-text";
+import { getFaqs, isFaqPage } from "@/lib/faqs";
 
 /**
  * Generic renderer for every service, location and info page.
- * Copy lives in src/content/{services,locations,pages}.{en,ar}.ts
+ * Copy lives in src/content/{services,locations,pages}.{en,ar}.ts; for service pages the intro, sections
+ * (Admin → Page text) and FAQs (Admin → FAQs) can be overridden from the admin.
  */
 export async function ContentPage({ pageKey, locale, children }: { pageKey: PageKey; locale: Locale; children?: React.ReactNode }) {
   const cfg = await getSettings();
   const dict = getDictionary(locale);
-  const c = getPageContent(pageKey, locale);
+  const c = await getPageContentWithText(pageKey, locale);
+  const faqs = isFaqPage(pageKey) ? await getFaqs(pageKey, locale) : (c.faqs ?? []);
   const path = localePath(locale, routePath(pageKey));
   const home = localePath(locale, "/");
   const isLocation = staticRoutes.find((r) => r.key === pageKey)?.group === "location";
@@ -72,16 +76,16 @@ export async function ContentPage({ pageKey, locale, children }: { pageKey: Page
       {c.sections.length > 0 ? (
         <section className="py-16 md:py-20">
           <Container className="grid gap-x-16 gap-y-12 md:grid-cols-2">
-            {c.sections.map((s) => (
-              <div key={s.title} id={s.id} className="flex scroll-mt-28 flex-col gap-4">
+            {c.sections.map((s, i) => (
+              <div key={i} id={s.id} className="flex scroll-mt-28 flex-col gap-4">
                 <h2 className="font-display text-2xl font-extrabold leading-tight">{s.title}</h2>
-                {s.paragraphs?.map((p) => (
-                  <p key={p} className="leading-relaxed text-muted">{p}</p>
+                {s.paragraphs?.map((p, j) => (
+                  <p key={j} className="leading-relaxed text-muted">{p}</p>
                 ))}
                 {s.bullets ? (
                   <ul className="flex flex-col gap-2.5">
-                    {s.bullets.map((b) => (
-                      <li key={b} className="flex gap-3 leading-relaxed">
+                    {s.bullets.map((b, j) => (
+                      <li key={j} className="flex gap-3 leading-relaxed">
                         <Icon name="check" size={20} className="mt-0.5 shrink-0" />
                         <span>{b}</span>
                       </li>
@@ -97,7 +101,7 @@ export async function ContentPage({ pageKey, locale, children }: { pageKey: Page
       {children}
 
 
-      {c.faqs?.length ? <Faq title={dict.common.faqTitle} items={c.faqs} /> : null}
+      {faqs.length ? <Faq title={dict.common.faqTitle} items={faqs} /> : null}
 
       <RelatedLinks pageKey={pageKey} locale={locale} related={c.related} showEmirates={isLocation} />
 

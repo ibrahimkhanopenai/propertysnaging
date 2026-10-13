@@ -19,6 +19,7 @@ import { Faq } from "@/components/pages/Faq";
 import { getDictionary } from "@/i18n/dictionaries";
 import { isLocale, localePath } from "@/i18n/config";
 import { buildMetadata } from "@/lib/seo";
+import { getFaqs } from "@/lib/faqs";
 
 /**
  * Homepage — section ORDER is a client requirement (docs/client-requirements.md §2):
@@ -57,7 +58,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <DevelopersStrip locale={locale} dict={dict} />
       <Emirates locale={locale} dict={dict} />
       <ReviewsMarquee dict={dict} />
-      <Faq title={dict.home.faq.title} text={dict.home.faq.text} items={dict.home.faq.items} link={{ href: localePath(locale, "/faqs/"), label: dict.home.faq.all }} />
+      <Faq title={dict.home.faq.title} text={dict.home.faq.text} items={await getFaqs("home", locale)} link={{ href: localePath(locale, "/faqs/"), label: dict.home.faq.all }} />
       <FinalCta locale={locale} dict={dict} />
     </>
   );

@@ -70,7 +70,7 @@ export function Faq({
         {/* Ledger — hairline-ruled numbered accordion */}
         <Reveal as="ul" stagger className="border-t border-line">
           {items.map((f, i) => (
-            <li key={f.q} style={{ ["--i" as string]: i } as React.CSSProperties}>
+            <li key={i} style={{ ["--i" as string]: i } as React.CSSProperties}>
               <details
                 className="group relative border-b border-line ps-5 transition-colors sm:ps-6"
                 open={i === 0}

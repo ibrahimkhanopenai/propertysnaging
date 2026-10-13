@@ -21,6 +21,9 @@ URL: `/admin/` (login at `/admin/login/`). Admin is `noindex` and blocked in rob
 | Developer logos — homepage logo strip (upload, name EN/AR, order, show/hide) | `/admin/developers/` |
 | Locations — per emirate: communities + areas lists on the location pages | `/admin/locations/` |
 | Settings — phone, WhatsApp, email, address, key figures, Google review + sample report links | `/admin/settings/` |
+| FAQs — homepage + each service/location page (EN/AR, drag order, show/hide); homepage + service FAQs also feed /faqs/ | `/admin/faqs/` |
+| Defects we find — homepage "Real findings" items (photo + ALT, category, defect, recommendation; EN/AR, drag order) | `/admin/findings/` |
+| Page text — service/location pages: hook (locations), intro, sections; per language | `/admin/page-text/` |
 
 ## Locations (`LocationItem`)
 - Per emirate (location page key: `dubai`, `abudhabi`, `sharjah`, `ajman`, `rak`, `fujairah`, `uaq`) two lists:
@@ -34,7 +37,7 @@ URL: `/admin/` (login at `/admin/login/`). Admin is `noindex` and blocked in rob
 
 ## Images (`SiteImage`, one row per slot)
 - Slots (key, default file from `site.ts`, default ALT from the dictionaries / content files): `src/lib/image-slots.ts`. 24 slots:
-  `hero`, `about`, `location.{dubai…uaq}` (7), `scope.{hvac…roof}` (8, used by the homepage services list **and** "Real findings"),
+  `hero`, `about`, `location.{dubai…uaq}` (7), `scope.{hvac…roof}` (8, used by the homepage services list, and by "Real findings" until Admin → Defects we find has items),
   `report.{1-3}` (sample report collage, /sample-report/ examples; `report.1` is also the /sample-report/ hero and the /reviews/ thumbnail),
   `finding.{1-4}` (location pages, "From our recent reports" — captions stay in the dictionaries).
 - Read on the site with `await siteImage(key, locale)` → `{ src, alt }` (`src/lib/site-images.ts`, React `cache`, defaults when MySQL is down).
@@ -51,6 +54,32 @@ URL: `/admin/` (login at `/admin/login/`). Admin is `noindex` and blocked in rob
 - No rows at all (or DB down) → the default `site.developers` list. **Load the default logos** copies it into the table to edit it.
   Deleting every row brings the defaults back; to hide the strip, untick "Show on site" on every logo.
 - Logos sit in a fixed 128×48 box (`object-contain`), so uploads need no width/height. Upload white logos on a transparent PNG (dark band).
+
+## FAQs (`FaqItem`)
+- `page` = `home` or a service/location page key (list: `faqPages` in `src/lib/faqs.ts`). Read with `await getFaqs(page, locale)`:
+  homepage, `ContentPage` (service pages), `LocationPage` and `/faqs/` (homepage set + one block per service page). The FAQPage JSON-LD follows.
+- A page with **no rows** shows its FAQs from the code (`home.faq.items` in the dictionaries, `faqs` in `content/{services,locations}.*.ts`).
+  **Load these FAQs** copies them into the table (EN + AR paired by position); the add form appears once the page has rows.
+  Deleting every row brings the code list back; to show none, untick "Show on site" on each. MySQL down → code list.
+- The Arabic page shows only rows with an Arabic question **and** answer (the admin marks the others "Not on the Arabic page").
+- Order = drag (same `SortableList` as Locations). Saving regenerates that page (EN + AR) and `/faqs/` for homepage/service FAQs.
+
+## Defects we find (`Finding`)
+- Homepage "Real findings" (`Findings` → `FindingsExplorer`). Read with `await getFindings(locale)` (`src/lib/findings.ts`).
+- No rows (or DB down) → `home.findings.items` from the dictionaries with the Admin → Images `scope.*` photos. **Load these findings**
+  copies them, with the current scope photo + ALT, into the table; from then on each finding has its own photo (upload, English ALT required).
+- The Arabic page shows only rows with Arabic category, defect and recommendation; with no Arabic ALT it uses the English one.
+- All rows hidden → the section is hidden. The first finding is featured. The copper annotation dot only shows on the default wall photo
+  (`/images/scope/paint-and-walls.jpg`), because it is positioned for that photo.
+
+## Page text (`PageText`, one row per page + language)
+- Service + location pages (`editablePages`, `src/lib/admin-pages.ts`). Fields: hook (location pages only), intro, sections
+  (`[{ id?, title, paragraphs?, bullets? }]`, max 12; each needs a heading and a paragraph or bullet; headings must be unique).
+- Read with `await getPageContentWithText(pageKey, locale)` (`src/lib/page-text.ts`) in `ContentPage` / `LocationPage`. A null field (or no row,
+  or MySQL down) uses the content file. Text equal to the content file stores null, so later code edits still show; **Reset to default** deletes the row.
+- Not editable here (SEO, AGENTS.md §5): URL, `<title>`, meta description, H1, breadcrumb. Location "Why snagging matters" + defect groups,
+  card summaries and info pages are still code.
+- Client rule: every service/location page keeps unique copy (no keyword-swapped clones).
 
 ## Settings (`Setting`, key/value)
 - Fields, defaults and validation: `src/lib/settings-fields.ts`. Read on the site with `await getSettings()` (`src/lib/settings.ts`).

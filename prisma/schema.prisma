@@ -221,3 +221,59 @@ model DeveloperLogo {
 
   @@index([published, sortOrder])
 }
+
+/// FAQs managed in Admin → FAQs. `page` = "home" or a service/location page key (src/lib/faqs.ts).
+/// With no rows for a page, the FAQs from the dictionaries / content files are shown. Arabic page: only
+/// rows with an Arabic question + answer.
+model FaqItem {
+  id         Int      @id @default(autoincrement())
+  page       String   @db.VarChar(40)
+  question   String   @db.VarChar(500)
+  answer     String   @db.Text
+  questionAr String?  @db.VarChar(500)
+  answerAr   String?  @db.Text
+  published  Boolean  @default(true)
+  sortOrder  Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([page, sortOrder])
+}
+
+/// Homepage "Defects we find" (Real findings), managed in Admin → Defects we find.
+/// With no rows the section shows home.findings from the dictionaries with the Admin → Images scope photos.
+/// Arabic page: only rows with Arabic category + defect + recommendation.
+model Finding {
+  id         Int      @id @default(autoincrement())
+  category   String   @db.VarChar(80)
+  categoryAr String?  @db.VarChar(80)
+  defect     String   @db.VarChar(500)
+  defectAr   String?  @db.VarChar(500)
+  fix        String   @db.VarChar(500)
+  fixAr      String?  @db.VarChar(500)
+  /// /uploads/… or /images/…
+  photo      String   @db.VarChar(500)
+  alt        String   @db.VarChar(255)
+  altAr      String?  @db.VarChar(255)
+  published  Boolean  @default(true)
+  sortOrder  Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([published, sortOrder])
+}
+
+/// Body text overrides for service + location pages, edited in Admin → Page text (src/lib/page-text.ts).
+/// One row per page + language; a null field uses the text from content/{services,locations}.*.ts.
+/// URLs, <title>, meta description and H1 stay in code (SEO rules).
+model PageText {
+  page      String   @db.VarChar(40)
+  locale    Locale
+  hook      String?  @db.VarChar(300)
+  intro     String?  @db.Text
+  /// [{ id?, title, paragraphs?, bullets? }] — same shape as PageSection in src/content/types.ts
+  sections  Json?
+  updatedAt DateTime @updatedAt
+
+  @@id([page, locale])
+}

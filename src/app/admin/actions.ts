@@ -13,8 +13,15 @@ import { staticRoutes } from "@/lib/routes";
 import { settingFields, validateSetting } from "@/lib/settings-fields";
 import { defaultAreas, isLocationKey, suggestedCommunities } from "@/content/location-defaults";
 import { getImageSlot, isImagePath } from "@/lib/image-slots";
-import { slotFormValues, type SlotFormValues } from "@/lib/site-images";
+import { siteImage, slotFormValues, type SlotFormValues } from "@/lib/site-images";
 import { site } from "@/lib/site";
+import { Prisma } from "@prisma/client";
+import { getPageContent } from "@/content/pages";
+import { getEditablePage } from "@/lib/admin-pages";
+import { defaultFaqs, faqPages, isFaqPage, type FaqPageKey } from "@/lib/faqs";
+import { cleanSections, pageTextFormValues, pageTextLimits, sameSections, type PageTextFormValues } from "@/lib/page-text";
+import en from "@/i18n/dictionaries/en";
+import ar from "@/i18n/dictionaries/ar";
 
 async function requireAdmin() {
   const s = await getSession();
@@ -465,4 +472,201 @@ export async function loadDefaultDevelopersAction() {
   if (await prisma.developerLogo.count()) return;
   await prisma.developerLogo.createMany({ data: site.developers.map((d, i) => ({ name: d.name, logo: d.logo, sortOrder: i + 1 })) });
   revalidateDevelopers();
+}
+
+/* ─────────── Phase 3: FAQs, "Defects we find", page text ─────────── */
+
+/** Regenerates one public page (EN + AR). EN is served from /en/... internally (middleware rewrite), so the route pattern is revalidated too. */
+function revalidatePublicPage(path: string) {
+  revalidatePath(path === "/" ? "/[locale]" : `/[locale]${path.replace(/\/$/, "")}`, "page");
+  revalidatePath(path);
+  revalidatePath(`/ar${path}`);
+}
+
+/** Same checks as the Locations drag order: integer ids, no duplicates. */
+const validIds = (ids: unknown): ids is number[] =>
+  Array.isArray(ids) && ids.length > 0 && ids.every(Number.isInteger) && new Set(ids).size === ids.length;
+
+const text = (fd: FormData, key: string, max: number) => String(fd.get(key) ?? "").trim().slice(0, max);
+
+/* FAQs (homepage + service/location pages) */
+
+const revalidateFaqs = (page: FaqPageKey) => {
+  const p = faqPages.find((x) => x.key === page)!;
+  revalidatePublicPage(p.path);
+  if (p.group !== "location") revalidatePublicPage("/faqs/"); // /faqs/ lists the homepage + service FAQs
+  revalidatePath("/admin/faqs/");
+};
+
+export async function saveFaqAction(fd: FormData) {
+  await requireAdmin();
+  const id = Number(fd.get("id") || 0) || null;
+  const page = String(fd.get("page") ?? "");
+  const question = text(fd, "question", 500);
+  const answer = text(fd, "answer", 5000);
+  if (!isFaqPage(page) || !question || !answer) return;
+  const data = {
+    page,
+    question,
+    answer,
+    questionAr: text(fd, "questionAr", 500) || null,
+    answerAr: text(fd, "answerAr", 5000) || null,
+    published: fd.get("published") === "on",
+  };
+  // Order is set by dragging (reorderFaqsAction); a new FAQ goes to the end of its page
+  if (id) await prisma.faqItem.update({ where: { id }, data });
+  else {
+    const { _max } = await prisma.faqItem.aggregate({ where: { page }, _max: { sortOrder: true } });
+    await prisma.faqItem.create({ data: { ...data, sortOrder: (_max.sortOrder ?? 0) + 1 } });
+  }
+  revalidateFaqs(page);
+}
+
+export async function reorderFaqsAction(ids: number[]): Promise<{ ok: boolean }> {
+  await requireAdmin();
+  if (!validIds(ids)) return { ok: false };
+  const rows = await prisma.faqItem.findMany({ where: { id: { in: ids } }, select: { page: true } });
+  if (rows.length !== ids.length || new Set(rows.map((r) => r.page)).size !== 1 || !isFaqPage(rows[0].page)) return { ok: false };
+  await prisma.$transaction(ids.map((id, i) => prisma.faqItem.update({ where: { id }, data: { sortOrder: i + 1 } })));
+  revalidateFaqs(rows[0].page);
+  return { ok: true };
+}
+
+export async function deleteFaqAction(fd: FormData) {
+  await requireAdmin();
+  const item = await prisma.faqItem.delete({ where: { id: Number(fd.get("id")) } });
+  if (isFaqPage(item.page)) revalidateFaqs(item.page);
+}
+
+/** Copies a page's FAQs from the code (dictionaries / content files, EN + AR paired by position) into the empty list. */
+export async function loadDefaultFaqsAction(fd: FormData) {
+  await requireAdmin();
+  const page = String(fd.get("page") ?? "");
+  if (!isFaqPage(page) || (await prisma.faqItem.count({ where: { page } }))) return;
+  const arFaqs = defaultFaqs(page, "ar");
+  await prisma.faqItem.createMany({
+    data: defaultFaqs(page, "en").map((f, i) => ({ page, question: f.q, answer: f.a, questionAr: arFaqs[i]?.q ?? null, answerAr: arFaqs[i]?.a ?? null, sortOrder: i + 1 })),
+  });
+  revalidateFaqs(page);
+}
+
+/* "Defects we find" (homepage Real findings) */
+
+const revalidateFindings = () => {
+  revalidatePublicPage("/");
+  revalidatePath("/admin/findings/");
+};
+
+export async function saveFindingAction(fd: FormData) {
+  await requireAdmin();
+  const id = Number(fd.get("id") || 0) || null;
+  const data = {
+    category: text(fd, "category", 80),
+    categoryAr: text(fd, "categoryAr", 80) || null,
+    defect: text(fd, "defect", 500),
+    defectAr: text(fd, "defectAr", 500) || null,
+    fix: text(fd, "fix", 500),
+    fixAr: text(fd, "fixAr", 500) || null,
+    photo: text(fd, "photo", 500),
+    alt: text(fd, "alt", 255),
+    altAr: text(fd, "altAr", 255) || null,
+    published: fd.get("published") === "on",
+  };
+  // Photo + English ALT are required (client rule: descriptive ALT on every image)
+  if (!data.category || !data.defect || !data.fix || !data.alt || !isImagePath(data.photo)) return;
+  if (id) await prisma.finding.update({ where: { id }, data });
+  else {
+    const { _max } = await prisma.finding.aggregate({ _max: { sortOrder: true } });
+    await prisma.finding.create({ data: { ...data, sortOrder: (_max.sortOrder ?? 0) + 1 } });
+  }
+  revalidateFindings();
+}
+
+export async function reorderFindingsAction(ids: number[]): Promise<{ ok: boolean }> {
+  await requireAdmin();
+  if (!validIds(ids) || (await prisma.finding.count({ where: { id: { in: ids } } })) !== ids.length) return { ok: false };
+  await prisma.$transaction(ids.map((id, i) => prisma.finding.update({ where: { id }, data: { sortOrder: i + 1 } })));
+  revalidateFindings();
+  return { ok: true };
+}
+
+export async function deleteFindingAction(fd: FormData) {
+  await requireAdmin();
+  await prisma.finding.delete({ where: { id: Number(fd.get("id")) } });
+  revalidateFindings();
+}
+
+/** Copies the current list (dictionaries + the Admin → Images "Defects we find" photos) into the empty table. */
+export async function loadDefaultFindingsAction() {
+  await requireAdmin();
+  if (await prisma.finding.count()) return;
+  type ScopeKey = keyof typeof site.images.scope;
+  const data = await Promise.all(
+    en.home.findings.items.map(async (it, i) => {
+      const a = ar.home.findings.items[i];
+      const photoEn = await siteImage(`scope.${it.photo as ScopeKey}`, "en");
+      const photoAr = await siteImage(`scope.${it.photo as ScopeKey}`, "ar");
+      return {
+        category: it.category,
+        categoryAr: a?.category ?? null,
+        defect: it.defect,
+        defectAr: a?.defect ?? null,
+        fix: it.fix,
+        fixAr: a?.fix ?? null,
+        photo: photoEn.src,
+        alt: photoEn.alt,
+        altAr: photoAr.alt !== photoEn.alt ? photoAr.alt : null,
+        sortOrder: i + 1,
+      };
+    }),
+  );
+  await prisma.finding.createMany({ data });
+  revalidateFindings();
+}
+
+/* Page text (service + location pages: hook, intro, sections) */
+
+export type PageTextState = { error?: string; saved?: boolean; values?: PageTextFormValues };
+
+/** Saves one page + language. A field equal to the content file stores null (so later code edits flow through); intent=reset deletes the row. */
+export async function savePageTextAction(_prev: PageTextState, fd: FormData): Promise<PageTextState> {
+  await requireAdmin();
+  const page = getEditablePage(String(fd.get("page") ?? ""));
+  if (!page) return { error: "Unknown page." };
+  const locale = fd.get("locale") === "ar" ? "ar" : "en";
+  const c = getPageContent(page.key, locale);
+
+  if (fd.get("intent") === "reset") {
+    await prisma.pageText.deleteMany({ where: { page: page.key, locale } });
+    revalidatePublicPage(page.path);
+    return { saved: true, values: pageTextFormValues(c, null) };
+  }
+
+  const L = pageTextLimits;
+  const hook = page.group === "location" ? String(fd.get("hook") ?? "").trim() : "";
+  const intro = String(fd.get("intro") ?? "").trim();
+  if (hook.length > L.hook) return { error: `The hook is too long (max ${L.hook} characters).` };
+  if (intro.length > L.intro) return { error: `The intro is too long (max ${L.intro} characters).` };
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(String(fd.get("sections") ?? ""));
+  } catch {
+    return { error: "Section data is invalid." };
+  }
+  const cleaned = cleanSections(parsed);
+  if ("error" in cleaned) return { error: cleaned.error };
+
+  // Empty or equal to the content file → null = the default
+  const data = {
+    hook: hook && hook !== (c.hook ?? "") ? hook : null,
+    intro: intro && intro !== c.intro ? intro : null,
+    sections: sameSections(cleaned.sections, c.sections) ? null : cleaned.sections,
+  };
+  if (data.hook === null && data.intro === null && data.sections === null) await prisma.pageText.deleteMany({ where: { page: page.key, locale } });
+  else {
+    const row = { hook: data.hook, intro: data.intro, sections: data.sections ?? Prisma.DbNull };
+    await prisma.pageText.upsert({ where: { page_locale: { page: page.key, locale } }, update: row, create: { page: page.key, locale, ...row } });
+  }
+  revalidatePublicPage(page.path);
+  return { saved: true, values: pageTextFormValues(c, data) };
 }

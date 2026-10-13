@@ -15,6 +15,9 @@ const links = [
   { href: "/admin/images/", label: "Images" },
   { href: "/admin/developers/", label: "Developer logos" },
   { href: "/admin/locations/", label: "Locations" },
+  { href: "/admin/faqs/", label: "FAQs" },
+  { href: "/admin/findings/", label: "Defects we find" },
+  { href: "/admin/page-text/", label: "Page text" },
   { href: "/admin/redirects/", label: "Redirects" },
   { href: "/admin/settings/", label: "Settings" },
 ];

@@ -6,19 +6,28 @@ import { Icon } from "@/components/ui/Icon";
 import { Reveal } from "@/components/ui/Reveal";
 import { cn } from "@/lib/utils";
 
-export type FindingItem = { category: string; defect: string; fix: string; src: string; alt: string };
+export type FindingItem = {
+  category: string;
+  defect: string;
+  fix: string;
+  src: string;
+  alt: string;
+  /** Show the annotation dot: it is placed for the default wall photo (src/lib/findings.ts) */
+  marker?: boolean;
+};
 
 /**
  * Interactive part of "Defects we find": the featured photo + report card show the
  * selected finding; every row in the defect log is a button that swaps it in
  * (client request 2026-10-13). Photos are stacked and cross-faded so a click never
  * shows an empty frame. Severity uses `snag` red (red = defects only); copper `brand`
- * tokens carry markers, ordinals and the active-row rule.
+ * tokens carry markers, ordinals and the active-row rule. Items come from Admin → Defects we find
+ * (src/lib/findings.ts); two items may share a photo, so keys are positions, not photo URLs.
  */
 export function FindingsExplorer({ items, defectLabel, fixLabel }: { items: FindingItem[]; defectLabel: string; fixLabel: string }) {
   const [active, setActive] = useState(0);
   const figureRef = useRef<HTMLElement>(null);
-  const current = items[active];
+  const current = items[Math.min(active, items.length - 1)];
 
   function select(i: number) {
     setActive(i);
@@ -38,7 +47,7 @@ export function FindingsExplorer({ items, defectLabel, fixLabel }: { items: Find
           <div className="relative aspect-[4/5] overflow-hidden rounded-[22px] bg-ink sm:aspect-[16/11]">
             {items.map((it, i) => (
               <Image
-                key={it.src}
+                key={i}
                 src={it.src}
                 alt={i === active ? it.alt : ""}
                 aria-hidden={i === active ? undefined : true}
@@ -62,9 +71,9 @@ export function FindingsExplorer({ items, defectLabel, fixLabel }: { items: Find
             </span>
 
             {/* copper annotation marker + leader line + category callout (md+), placed for the
-                first photo only: the dot sits on the wall where the inspector's torch is lit.
+                default wall photo only: the dot sits on the wall where the inspector's torch is lit.
                 Physical right/ltr on purpose: the photo is not mirrored in RTL. */}
-            {active === 0 ? (
+            {current.marker ? (
               <div
                 aria-hidden="true"
                 dir="ltr"
@@ -119,7 +128,7 @@ export function FindingsExplorer({ items, defectLabel, fixLabel }: { items: Find
         {items.map((it, i) => {
           const isActive = i === active;
           return (
-            <li key={it.src} style={{ ["--i" as string]: i } as React.CSSProperties}>
+            <li key={i} style={{ ["--i" as string]: i } as React.CSSProperties}>
               <button
                 type="button"
                 onClick={() => select(i)}

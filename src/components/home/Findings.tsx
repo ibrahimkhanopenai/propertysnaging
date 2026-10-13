@@ -3,11 +3,8 @@ import { Kicker } from "@/components/ui/Kicker";
 import { Reveal } from "@/components/ui/Reveal";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { type Locale } from "@/i18n/config";
-import { site } from "@/lib/site";
-import { siteImage } from "@/lib/site-images";
-import { FindingsExplorer, type FindingItem } from "./FindingsExplorer";
-
-type ScopeKey = keyof typeof site.images.scope;
+import { getFindings } from "@/lib/findings";
+import { FindingsExplorer } from "./FindingsExplorer";
 
 /**
  * "Real findings" — an annotated inspection-report moment, not a card grid.
@@ -17,13 +14,9 @@ type ScopeKey = keyof typeof site.images.scope;
  */
 export async function Findings({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   const t = dict.home.findings;
-  // Photos: Admin → Images "Defects we find" (same slots as the services list)
-  const items: FindingItem[] = await Promise.all(
-    t.items.map(async (it) => {
-      const photo = await siteImage(`scope.${it.photo as ScopeKey}`, locale);
-      return { category: it.category, defect: it.defect, fix: it.fix, src: photo.src, alt: photo.alt };
-    }),
-  );
+  // Items: Admin → Defects we find; until it has items, the dictionary list with the Admin → Images "Defects we find" photos
+  const items = await getFindings(locale);
+  if (!items.length) return null;
 
   return (
     <section className="border-y border-line bg-white py-16 md:py-24">

@@ -39,7 +39,7 @@ export type ImageSlot = {
 export const imageGroups: Array<{ key: ImageGroup; title: string; help: string }> = [
   { key: "home", title: "Homepage", help: "Hero photo (the first thing visitors see) and the About us photo." },
   { key: "locations", title: "Location page heroes", help: "The large photo at the top of each emirate page. Use a photo taken in that emirate where possible." },
-  { key: "scope", title: "Defects we find", help: "Inspection photos on the homepage service list and in \"Real findings\". Each photo is used in both places." },
+  { key: "scope", title: "Defects we find", help: "Inspection photos on the homepage service list. \"Real findings\" uses them too until its items are loaded in Admin → Defects we find (then each finding has its own photo)." },
   { key: "report", title: "Sample report", help: "The 3-page report collage (homepage, location pages, /sample-report/). Remove all client personal data first." },
   { key: "findings", title: "Location pages: \"From our recent reports\"", help: "The 4 defect photos on every location page. Captions stay as they are; describe the new photo in the ALT text." },
 ];
@@ -92,7 +92,7 @@ export const imageSlots: ImageSlot[] = [
       key: `scope.${k}`,
       group: "scope",
       label: scopeLabels[k],
-      where: "Homepage → services list and \"Real findings\".",
+      where: "Homepage → services list (and \"Real findings\" while Admin → Defects we find is empty).",
       src: site.images.scope[k],
       alt: (l) => dict(l).home.services.photoAlt[k],
     }),

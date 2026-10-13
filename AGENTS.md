@@ -78,7 +78,7 @@ changelog/                 One file per completed task (see §8)
 ## 6. Coding conventions
 - Server Components by default; `"use client"` only for interactivity (QuoteForm, MobileMenu, LanguageSwitch, admin forms).
 - No new UI/icon libraries — use `components/ui` (`Icon` has inline SVGs). Keep JS small for speed.
-- All copy in `content/` or `i18n/dictionaries/` — no hard-coded strings in components (admin excepted, English only).
+- All copy in `content/` or `i18n/dictionaries/` — no hard-coded strings in components (admin excepted, English only). FAQs, the homepage "Defects we find" items and service/location body text (hook, intro, sections) can be overridden from the admin: render them with `getFaqs()`, `getFindings()` and `getPageContentWithText()`, not the dictionaries / `getPageContent()` directly.
 - Business data (phone, address, PDFs, images, stats) only in `src/lib/site.ts`.
 - DB reads for public pages go through `src/lib/posts.ts` (wrapped in try/catch so pages render without DB).
 - Admin mutations = server actions in `src/app/admin/actions.ts`, each starting with `requireAdmin()`.

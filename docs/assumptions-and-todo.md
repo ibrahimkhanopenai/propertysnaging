@@ -29,7 +29,8 @@ Pattern to follow: DB table + admin screen + server reads with a code fallback, 
 - [x] **Phase 1:** Admin → Locations (communities + areas per emirate) and Admin → Settings (contact, key figures, Google review + sample report links)
 - [x] **Phase 2: Images.** Admin → Images: photo + ALT (EN/AR) for 24 slots (hero, About, location heroes, "Defects we find", sample report, location defect photos), falling back to the `/images/` files (`changelog/2026-10-13-009-admin-images-developer-logos.md`)
 - [x] **Phase 2: Developer logos.** Admin → Developer logos (upload, name EN/AR, order, show/hide) for the homepage strip, falling back to `site.developers`
-- [ ] **Phase 3:** FAQs (homepage + each location/service page), "Defects we find" items (photo, category, defect, recommendation; EN/AR), then location/service body text (hook, intro, sections) as overrides with the content files as fallback.
+- [x] **Phase 3:** Admin → FAQs (homepage + each service/location page; also feeds /faqs/), Admin → Defects we find (photo, category, defect, recommendation; EN/AR) and Admin → Page text (service/location hook, intro, sections), all as overrides with the dictionaries / content files as fallback (`changelog/2026-10-13-013-admin-faqs-findings-page-text.md`)
+- Not done yet (if the client asks): location "Why snagging matters" + defect groups, the "From our recent reports" captions, info pages (About, Scope of work…), homepage section copy.
 - Not for the admin: page URLs, homepage + Dubai/Abu Dhabi/Sharjah `<title>`/meta (SEO rule §5.6), homepage section order (client requirement), colours/design.
 
 ## Open tasks

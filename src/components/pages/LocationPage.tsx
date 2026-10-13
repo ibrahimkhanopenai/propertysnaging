@@ -14,26 +14,30 @@ import { Faq } from "./Faq";
 import { RelatedLinks } from "./RelatedLinks";
 import { getDictionary } from "@/i18n/dictionaries";
 import { localePath, type Locale } from "@/i18n/config";
-import { getPageContent, type PageKey } from "@/content/pages";
+import type { PageKey } from "@/content/pages";
 import { getLocationItems } from "@/lib/content-db";
 import { routePath } from "@/lib/routes";
 import { serviceSchema } from "@/lib/schema";
 import { getSettings, waLink } from "@/lib/settings";
 import { pageImageSlot } from "@/lib/image-slots";
 import { siteImage } from "@/lib/site-images";
+import { getPageContentWithText } from "@/lib/page-text";
+import { getFaqs, isFaqPage } from "@/lib/faqs";
 
 /**
  * Location page (Dubai, Abu Dhabi … UAQ) built as an organic-search landing page (CRO audit 2026-10):
  * hero with hook, proofs, one copper CTA + WhatsApp and a real photo → key figures →
  * why snagging matters here + defects we find (with report photos) → local tips → communities + areas (Admin → Locations) →
  * why choose us → process → sample report → city FAQ → related links → quote form (#quote).
- * URLs, <title> and meta description are unchanged (legacy SEO). Copy: content/locations.{en,ar}.ts.
+ * URLs, <title> and meta description are unchanged (legacy SEO). Copy: content/locations.{en,ar}.ts;
+ * hook, intro and local tips can be overridden in Admin → Page text, the FAQs in Admin → FAQs.
  */
 export async function LocationPage({ pageKey, locale }: { pageKey: PageKey; locale: Locale }) {
   const cfg = await getSettings();
   const dict = getDictionary(locale);
   const ui = dict.pageUi;
-  const c = getPageContent(pageKey, locale);
+  const c = await getPageContentWithText(pageKey, locale);
+  const faqs = isFaqPage(pageKey) ? await getFaqs(pageKey, locale) : (c.faqs ?? []);
   const { areas, communities } = await getLocationItems(pageKey, locale, c.communities ?? []);
   // Photos: Admin → Images (hero = "Location page heroes", defect photos = "From our recent reports")
   const slot = pageImageSlot(pageKey);
@@ -165,16 +169,16 @@ export async function LocationPage({ pageKey, locale }: { pageKey: PageKey; loca
         <Container className="flex flex-col gap-12 md:gap-14">
           {c.sections.length ? (
             <div className="grid gap-10 md:grid-cols-2 md:gap-12">
-              {c.sections.map((s) => (
-                <Reveal key={s.title} className="flex flex-col gap-3">
+              {c.sections.map((s, i) => (
+                <Reveal key={i} className="flex flex-col gap-3">
                   <h2 className="font-display text-2xl font-extrabold leading-tight">{s.title}</h2>
-                  {s.paragraphs?.map((p) => (
-                    <p key={p} className="leading-relaxed text-muted">{p}</p>
+                  {s.paragraphs?.map((p, j) => (
+                    <p key={j} className="leading-relaxed text-muted">{p}</p>
                   ))}
                   {s.bullets ? (
                     <ul className="flex flex-col gap-2.5">
-                      {s.bullets.map((b) => (
-                        <li key={b} className="flex gap-3 leading-relaxed">
+                      {s.bullets.map((b, j) => (
+                        <li key={j} className="flex gap-3 leading-relaxed">
                           <Icon name="check" size={20} className="mt-0.5 shrink-0 text-brand-dark" />
                           <span>{b}</span>
                         </li>
@@ -232,7 +236,7 @@ export async function LocationPage({ pageKey, locale }: { pageKey: PageKey; loca
       <Process dict={dict} />
       <SampleReportSection locale={locale} dict={dict} quoteHref="#quote" />
 
-      {c.faqs?.length ? <Faq title={dict.common.faqTitle} items={c.faqs} /> : null}
+      {faqs.length ? <Faq title={dict.common.faqTitle} items={faqs} /> : null}
 
       <RelatedLinks pageKey={pageKey} locale={locale} related={c.related} showEmirates />
 
