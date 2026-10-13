@@ -8,6 +8,7 @@ import { getPageContent } from "@/content/pages";
 import type { PageKey } from "@/content/types";
 import { routePath } from "@/lib/routes";
 import { site } from "@/lib/site";
+import { getSettings } from "@/lib/settings";
 import { getGallery } from "@/lib/content-db";
 import { Logo } from "./Logo";
 import { locationOrder } from "./nav";
@@ -15,6 +16,7 @@ import { locationOrder } from "./nav";
 const footerServices: PageKey[] = ["handoverInspection", "apartmentSnagging", "villaSnagging", "dlpInspection", "elevenMonth", "prePurchase", "thermalImaging", "hvacMep"];
 
 export async function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
+  const cfg = await getSettings();
   const photos = await getGallery({ take: 6 });
   const L = (p: string) => localePath(locale, p);
   const pageLink = (k: PageKey) => {
@@ -58,17 +60,17 @@ export async function Footer({ locale, dict }: { locale: Locale; dict: Dictionar
             <p className="max-w-xs text-sm leading-relaxed">{dict.footer.tagline}</p>
             <p className="mt-2 font-semibold text-white">{dict.footer.contact}</p>
             <address className="flex flex-col gap-3 text-sm not-italic leading-relaxed">
-              <a href={site.mapsUrl} target="_blank" rel="noopener noreferrer" className="flex gap-3 hover:text-white">
+              <a href={cfg.mapsUrl} target="_blank" rel="noopener noreferrer" className="flex gap-3 hover:text-white">
                 <Icon name="pin" size={18} className="mt-0.5 shrink-0 text-white" />
-                <span>{site.address.street}, {site.address.locality}, {site.address.city}, UAE</span>
+                <span>{cfg.address.street}, {cfg.address.locality}, {cfg.address.city}, UAE</span>
               </a>
-              <a href={`tel:${site.phone}`} data-track="footer" className="flex gap-3 font-semibold text-white">
+              <a href={`tel:${cfg.phone}`} data-track="footer" className="flex gap-3 font-semibold text-white">
                 <Icon name="phone" size={18} className="mt-0.5 shrink-0" />
-                <span dir="ltr">{site.phoneDisplay}</span>
+                <span dir="ltr">{cfg.phoneDisplay}</span>
               </a>
-              <a href={`mailto:${site.email}`} className="flex gap-3 text-white">
+              <a href={`mailto:${cfg.email}`} className="flex gap-3 text-white">
                 <Icon name="mail" size={18} className="mt-0.5 shrink-0" />
-                <span>{site.email}</span>
+                <span>{cfg.email}</span>
               </a>
             </address>
           </div>

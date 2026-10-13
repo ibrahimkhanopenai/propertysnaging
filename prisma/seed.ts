@@ -1,6 +1,8 @@
-/* Creates the first admin user + default categories. Safe to run multiple times. */
+/* Creates the first admin user, default categories, gallery and location lists. Safe to run multiple times. */
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import { defaultAreas, suggestedCommunities } from "../src/content/location-defaults";
+import type { LocationKey } from "../src/content/locations.en";
 
 const prisma = new PrismaClient();
 
@@ -41,6 +43,19 @@ async function main() {
       { url: "/images/reports/sample-report-page-1.jpg", alt: "Page from a snagging report showing defect photos", category: "reporting" },
     ];
     await prisma.galleryImage.createMany({ data: photos.map((p, i) => ({ ...p, featured: i < 8, sortOrder: i })) });
+  }
+
+  // Location pages (Admin → Locations): areas from content/locations.*.ts + suggested communities.
+  // Only fills an emirate's list when it is empty, so admin edits are never overwritten.
+  for (const emirate of Object.keys(suggestedCommunities) as LocationKey[]) {
+    const lists = {
+      AREA: defaultAreas(emirate).map((a) => ({ name: a.name, nameAr: a.nameAr, developer: null })),
+      COMMUNITY: suggestedCommunities[emirate],
+    } as const;
+    for (const kind of ["AREA", "COMMUNITY"] as const) {
+      if (lists[kind].length === 0 || (await prisma.locationItem.count({ where: { emirate, kind } }))) continue;
+      await prisma.locationItem.createMany({ data: lists[kind].map((x, i) => ({ ...x, emirate, kind, sortOrder: i + 1 })) });
+    }
   }
 
   console.log(`Seed complete. Admin: ${email}`);

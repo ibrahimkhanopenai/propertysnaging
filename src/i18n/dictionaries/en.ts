@@ -96,18 +96,6 @@ const en = {
       more: "More about us",
       imageAlt: "Two people holding a small model house during a property handover",
     },
-    /** Certification block — copy from the current site's "Certified by InterNACHI" section */
-    certified: {
-      label: "Certified by",
-      title: "InterNACHI",
-      text:
-        "We are certified by InterNACHI, known worldwide as the leading association for home inspectors. For reliable home inspection services, search for the InterNACHI seal, a symbol of trust and quality.",
-      badges: {
-        internachi1: "InterNACHI Certified seal",
-        internachi2: "InterNACHI Certified Professional Inspector (CPI) seal",
-        ded: "Government of Dubai logo — Property Inspectors is DED licensed",
-      },
-    },
     /** Developer logo strip (logos from the current site) */
     developers: {
       title: "We snag homes by the UAE's leading developers",
@@ -297,6 +285,23 @@ const en = {
     communities: "Areas we cover",
     otherEmirates: "Other emirates we cover",
     bookCta: "Book an inspection",
+    /** Location pages ({city} = the page's city) */
+    areasIn: "Areas we cover in {city}",
+    areasNote: "Not on the list? We cover the whole emirate. Just tell us your community when you book.",
+    /** Location pages: developments list from Admin → Locations */
+    communitiesIn: "Communities we inspect in {city}",
+    communitiesNote: "A selection of developments where our engineers carry out handover and resale snagging.",
+    priceFrom: "From {price} per sq ft",
+    priceNote: "See your price instantly in the form below",
+    waMessage: "Hi, I need a snagging inspection for my [apartment / villa] in [community], {city}. Handover date: [ ]",
+    findingPhotosTitle: "From our recent reports",
+    /** Same order as site.images.findingPhotos */
+    findingPhotos: [
+      { alt: "Thermal camera screen showing a cold, damp patch on a wall", caption: "Moisture behind a wall, found with a thermal camera" },
+      { alt: "Floor with arrows marking uneven tiles", caption: "Floor defects marked for the developer" },
+      { alt: "Red arrow pointing at paint left on a sliding door lock", caption: "Paint left on a door lock, marked in the report" },
+      { alt: "Roof surface with arrows showing the water falls that were checked", caption: "Roof falls and drainage checked" },
+    ],
   },
   reviewsPage: {
     metaTitle: "Customer Reviews | Property Inspectors UAE",

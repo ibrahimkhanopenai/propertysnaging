@@ -4,7 +4,7 @@ import { ButtonLink } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { localePath, type Locale } from "@/i18n/config";
-import { site, whatsappLink } from "@/lib/site";
+import { getSettings, waLink } from "@/lib/settings";
 import { Logo } from "./Logo";
 import { LanguageSwitch } from "./LanguageSwitch";
 import { MobileMenu } from "./MobileMenu";
@@ -13,7 +13,8 @@ import { getNav, type NavItem } from "./nav";
 const dropdown =
   "invisible absolute top-full z-50 translate-y-1 rounded-2xl border border-line bg-white p-3 opacity-0 shadow-[0_18px_40px_rgba(10,10,10,0.08)] transition group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100";
 
-export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
+export async function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
+  const cfg = await getSettings();
   const L = (p: string) => localePath(locale, p);
   const nav: NavItem[] = getNav(dict, locale).map((item) => ({
     ...item,
@@ -70,12 +71,12 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
 
         <div className="flex items-center gap-2">
           {/* Hidden at xl, where the 9-item nav needs the room; the top bar always shows the number */}
-          <a href={`tel:${site.phone}`} data-track="header" className="hidden items-center gap-2 whitespace-nowrap rounded-full px-3 py-2 text-[15px] font-semibold hover:bg-mist md:inline-flex xl:hidden 2xl:inline-flex" dir="ltr">
+          <a href={`tel:${cfg.phone}`} data-track="header" className="hidden items-center gap-2 whitespace-nowrap rounded-full px-3 py-2 text-[15px] font-semibold hover:bg-mist md:inline-flex xl:hidden 2xl:inline-flex" dir="ltr">
             <Icon name="phone" size={18} />
-            {site.phoneDisplay}
+            {cfg.phoneDisplay}
           </a>
           <LanguageSwitch locale={locale} label={dict.nav.switchLanguage} ariaLabel={dict.nav.switchLanguageLabel} />
-          <ButtonLink href={whatsappLink(dict.quote.waIntro)} variant="whatsapp" icon="whatsapp" external className="whitespace-nowrap rounded-full max-lg:hidden">
+          <ButtonLink href={waLink(cfg, dict.quote.waIntro)} variant="whatsapp" icon="whatsapp" external className="whitespace-nowrap rounded-full max-lg:hidden">
             {dict.nav.whatsapp}
           </ButtonLink>
           <ButtonLink href={`${L("/")}#quote`} className="whitespace-nowrap rounded-full max-sm:hidden">{dict.nav.getQuote}</ButtonLink>

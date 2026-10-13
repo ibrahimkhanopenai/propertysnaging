@@ -5,7 +5,8 @@ import { Icon } from "@/components/ui/Icon";
 import { Reveal } from "@/components/ui/Reveal";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { type Locale } from "@/i18n/config";
-import { site, whatsappLink } from "@/lib/site";
+import { site } from "@/lib/site";
+import { getSettings, waLink } from "@/lib/settings";
 
 /**
  * Cinematic hero recreated from the client's reference mockup: the supplied
@@ -16,19 +17,24 @@ import { site, whatsappLink } from "@/lib/site";
  * CRO audit (2026-10): hook line under the H1, three hard proofs, ONE copper primary
  * action ("Get my free quote") + WhatsApp with a pre-filled message, phone as a text link.
  */
-export function Hero({ dict }: { locale: Locale; dict: Dictionary }) {
+export async function Hero({ dict }: { locale: Locale; dict: Dictionary }) {
+  const cfg = await getSettings();
   const t = dict.home.hero;
   return (
     <section className="relative isolate flex min-h-[620px] items-center overflow-hidden bg-white md:min-h-[clamp(600px,50vw,900px)]">
-      {/* Full-bleed supplied hero image */}
-      <div className="absolute inset-0 -z-20">
+      {/* Supplied hero image. Below xl it runs full-bleed. From xl up the frame takes the photo's own
+          aspect ratio at full hero height, anchored to the end edge, so the whole photo shows uncropped
+          and the hand is never cut (client 2026-10-13: "a little smaller, hand fully visible").
+          `.hero-photo` fades its inner edge into the white behind the text (globals.css). In Arabic the
+          photo is mirrored at xl so the hand reaches in from the right, away from the text (no lettering in it). */}
+      <div className="hero-photo absolute inset-0 -z-20 xl:inset-auto xl:end-0 xl:top-0 xl:h-full xl:aspect-[1671/941] xl:rtl:-scale-x-100">
         <Image
           src={site.images.hero}
           alt={t.imageAlt}
           fill
           priority
-          sizes="100vw"
-          className="object-cover object-[72%_20%] md:object-[right_65%]"
+          sizes="(min-width: 1280px) 1600px, 100vw"
+          className="object-cover object-[72%_20%] md:object-[right_65%] xl:object-center"
         />
       </div>
 
@@ -76,15 +82,15 @@ export function Hero({ dict }: { locale: Locale; dict: Dictionary }) {
             <ButtonLink href="#quote" variant="cta" size="lg" icon="arrow" className="rounded-full [&_svg]:order-last rtl:[&_svg]:rotate-180">
               {t.getQuote}
             </ButtonLink>
-            <ButtonLink href={whatsappLink(t.waMessage)} variant="whatsapp" icon="whatsapp" size="lg" external className="rounded-full">
+            <ButtonLink href={waLink(cfg, t.waMessage)} variant="whatsapp" icon="whatsapp" size="lg" external className="rounded-full">
               {t.whatsapp}
             </ButtonLink>
           </div>
 
-          <a href={`tel:${site.phone}`} data-track="hero" className="inline-flex w-fit items-center gap-2 text-[15px] text-muted hover:text-ink">
+          <a href={`tel:${cfg.phone}`} data-track="hero" className="inline-flex w-fit items-center gap-2 text-[15px] text-muted hover:text-ink">
             <Icon name="phone" size={16} />
             <span>{t.callUs}</span>
-            <span dir="ltr" className="font-semibold text-ink underline-offset-4 hover:underline">{site.phoneDisplay}</span>
+            <span dir="ltr" className="font-semibold text-ink underline-offset-4 hover:underline">{cfg.phoneDisplay}</span>
           </a>
         </Reveal>
       </Container>

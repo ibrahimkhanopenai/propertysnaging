@@ -1,17 +1,20 @@
 import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
+import { Icon } from "@/components/ui/Icon";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { site } from "@/lib/site";
+import { getSettings } from "@/lib/settings";
 
 /**
  * Trust band directly after the hero (client rule). Redesigned as a "credibility
  * moment": an asymmetric editorial header (statement + company intro) over an
  * OVERSIZED key-figures ledger — full-width rows, huge numerals, copper ordinals
- * and hairline rules — closed by a refined licensed-&-certified line.
- * Only genuine stats are flagged in site.stats; numbers are shown as authored.
+ * and hairline rules — closed by the licensed & certified seals as large plates.
+ * Key figures come from Admin → Settings (defaults in site.stats); genuine numbers only (client rule).
  */
-export function TrustSection({ dict }: { dict: Dictionary }) {
+export async function TrustSection({ dict }: { dict: Dictionary }) {
+  const cfg = await getSettings();
   const t = dict.home.trust;
   return (
     <section aria-labelledby="trust-title" className="border-b border-line bg-white py-16 md:py-24">
@@ -38,7 +41,7 @@ export function TrustSection({ dict }: { dict: Dictionary }) {
           as="ul"
           className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-3 md:mt-16 lg:grid-cols-5"
         >
-          {site.stats.map((s, i) => (
+          {cfg.stats.map((s, i) => (
             <li
               key={s.key}
               style={{ ["--i" as string]: i } as React.CSSProperties}
@@ -60,22 +63,33 @@ export function TrustSection({ dict }: { dict: Dictionary }) {
           ))}
         </Reveal>
 
-        {/* Licensed & certified — refined footer line */}
-        <Reveal className="mt-10 flex flex-col gap-x-10 gap-y-6 border-t border-line pt-8 sm:flex-row sm:flex-wrap sm:items-center sm:justify-center">
-          <span aria-hidden="true" className="hidden h-6 w-0.5 shrink-0 bg-brand sm:block" />
-          <ul className="flex flex-wrap items-center gap-x-8 gap-y-5">
-            {site.credentials.map((c) => {
-              const label = t.credentials[c.key as keyof typeof t.credentials];
-              return (
-                <li key={c.key} className="flex items-center gap-3">
-                  <span className="relative block h-11 w-14 shrink-0 overflow-hidden rounded-md border border-line bg-white">
-                    <Image src={c.image} alt={label} fill sizes="56px" className="object-contain p-1" />
-                  </span>
-                  <span className="max-w-[13rem] text-[13px] font-medium leading-snug text-muted">{label}</span>
-                </li>
-              );
-            })}
-          </ul>
+        {/* Licensed & certified — the official seals as large plates (replaces the separate
+         * "Certified by InterNACHI" section, removed on client request 2026-10-13). Same full
+         * width and hairline-divided panel as the key-figures row above, on mist so the white
+         * plates stand out. */}
+        <Reveal
+          stagger
+          as="ul"
+          className="mt-6 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-3"
+        >
+          {site.credentials.map((c, i) => {
+            const label = t.credentials[c.key as keyof typeof t.credentials];
+            return (
+              <li
+                key={c.key}
+                style={{ ["--i" as string]: i } as React.CSSProperties}
+                className="flex flex-col items-center gap-5 bg-mist px-6 py-9 text-center md:py-11"
+              >
+                <span className="relative flex aspect-[4/3] w-full max-w-[15rem] items-center justify-center rounded-xl border border-line bg-white shadow-[0_8px_24px_rgba(10,10,10,0.06)]">
+                  <Image src={c.image} alt={label} fill sizes="(max-width: 640px) 70vw, 240px" className="object-contain p-5" />
+                </span>
+                <span className="flex items-start gap-2">
+                  <Icon name="check" size={15} className="mt-0.5 shrink-0 text-brand" />
+                  <span className="max-w-[15rem] text-start text-sm font-medium leading-snug text-ink">{label}</span>
+                </span>
+              </li>
+            );
+          })}
         </Reveal>
       </Container>
     </section>

@@ -11,6 +11,7 @@ import { isLocale, localePath } from "@/i18n/config";
 import { getReviews } from "@/lib/content-db";
 import { buildMetadata } from "@/lib/seo";
 import { site } from "@/lib/site";
+import { getSettings } from "@/lib/settings";
 
 export const revalidate = 3600;
 type Props = { params: Promise<{ locale: string }> };
@@ -24,6 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 /** Layout follows the client's reference image: hero + Google rating badge, review cards, "write a review" banner. */
 export default async function ReviewsPage({ params }: Props) {
+  const cfg = await getSettings();
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   const d = getDictionary(locale);
@@ -42,7 +44,7 @@ export default async function ReviewsPage({ params }: Props) {
             <span className="text-sm text-zinc-400">{d.home.reviews.basedOn}</span>
           </span>
         </span>
-        <ButtonLink href={site.googleReviewUrl} variant="outline" size="lg" external>{d.home.reviews.google}</ButtonLink>
+        <ButtonLink href={cfg.googleReviewUrl} variant="outline" size="lg" external>{d.home.reviews.google}</ButtonLink>
       </PageHero>
       <section className="py-16 md:py-20">
         <Container>
@@ -70,7 +72,7 @@ export default async function ReviewsPage({ params }: Props) {
                 <p className="text-zinc-400">{d.reviewsPage.writeText}</p>
               </div>
             </div>
-            <ButtonLink href={site.googleReviewUrl} variant="ghostLight" external>{d.reviewsPage.writeButton}</ButtonLink>
+            <ButtonLink href={cfg.googleReviewUrl} variant="ghostLight" external>{d.reviewsPage.writeButton}</ButtonLink>
           </div>
         </Container>
       </section>

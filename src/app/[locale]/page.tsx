@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import { Hero } from "@/components/home/Hero";
 import { BookingBar } from "@/components/home/BookingBar";
 import { AboutSection } from "@/components/home/AboutSection";
-import { CertifiedSection } from "@/components/home/CertifiedSection";
 import { DevelopersStrip } from "@/components/home/DevelopersStrip";
 import { TrustSection } from "@/components/home/TrustSection";
 import { ServicesGrid } from "@/components/home/ServicesGrid";
@@ -27,7 +26,7 @@ import { buildMetadata } from "@/lib/seo";
  * Why choose us → Emirates → Reviews → FAQ → Final booking CTA
  * Sections carried over from the current site on client request (2026-10-02) are slotted in
  * without moving the 12 above: booking bar (attached to the hero), About us,
- * Certified by InterNACHI, developer logos.
+ * developer logos. (Certified by InterNACHI removed on client request 2026-10-13 — seals are in the trust section.)
  */
 export const revalidate = 3600;
 
@@ -55,7 +54,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <Process dict={dict} />
       <AboutSection locale={locale} dict={dict} />
       <WhyChoose dict={dict} />
-      <CertifiedSection dict={dict} />
       <DevelopersStrip dict={dict} />
       <Emirates locale={locale} dict={dict} />
       <ReviewsMarquee dict={dict} />

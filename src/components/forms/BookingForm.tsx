@@ -70,7 +70,7 @@ export function BookingForm({ t, types, locale }: Props) {
           <option value="apartment">{types.apartment}</option>
           <option value="commercial">{types.commercial}</option>
         </select>
-        <button type="submit" disabled={status === "sending"} className="min-h-12 rounded-xl bg-brand-dark px-8 font-semibold text-white transition hover:bg-brand-deep disabled:opacity-60 sm:col-span-3 lg:col-span-1">
+        <button type="submit" disabled={status === "sending"} className="min-h-12 rounded-xl bg-ink px-8 font-semibold text-white transition hover:bg-ink-soft disabled:opacity-60 sm:col-span-3 lg:col-span-1">
           {status === "sending" ? t.sending : t.submit}
         </button>
         <div aria-hidden="true" className="absolute start-[-9999px] h-0 w-0 overflow-hidden">

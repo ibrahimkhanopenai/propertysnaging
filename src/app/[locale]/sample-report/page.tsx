@@ -8,6 +8,7 @@ import { ButtonLink } from "@/components/ui/Button";
 import { getDictionary } from "@/i18n/dictionaries";
 import { isLocale, localePath } from "@/i18n/config";
 import { site } from "@/lib/site";
+import { getSettings } from "@/lib/settings";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -17,6 +18,7 @@ export async function generateMetadata({ params }: Props) {
 
 /** Client requirement §6: real report examples (personal data removed) + how defects are documented + "Book Your Inspection". */
 export default async function SampleReportPage({ params }: Props) {
+  const cfg = await getSettings();
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   const dict = getDictionary(locale);
@@ -38,7 +40,7 @@ export default async function SampleReportPage({ params }: Props) {
           </ul>
           <div className="flex flex-wrap gap-3">
             <ButtonLink href={`${localePath(locale, "/")}#quote`} size="lg">{dict.home.report.book}</ButtonLink>
-            <ButtonLink href={site.pdfs.sampleReport} variant="outline" icon="download" size="lg" external>{dict.home.report.download}</ButtonLink>
+            <ButtonLink href={cfg.sampleReportUrl} variant="outline" icon="download" size="lg" external>{dict.home.report.download}</ButtonLink>
           </div>
         </Container>
       </section>

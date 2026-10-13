@@ -6,8 +6,8 @@ type Variant = "primary" | "cta" | "outline" | "whatsapp" | "light" | "ghostLigh
 
 const variants: Record<Variant, string> = {
   primary: "bg-ink text-white hover:bg-ink-soft",
-  /** The one lead action per section ("Get my free quote") — same copper as the form submit buttons */
-  cta: "bg-brand-dark text-white hover:bg-brand-deep",
+  /** The one lead action per section ("Get my free quote") — black like the form submit buttons (client 2026-10-13: no copper buttons) */
+  cta: "bg-ink text-white hover:bg-ink-soft",
   outline: "border-[1.5px] border-ink text-ink hover:bg-ink hover:text-white",
   whatsapp: "bg-wa text-white hover:bg-wa-dark",
   light: "bg-white text-ink hover:bg-mist",

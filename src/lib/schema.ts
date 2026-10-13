@@ -1,10 +1,11 @@
 import { site } from "@/lib/site";
 import { absoluteUrl } from "@/lib/seo";
+import type { SiteSettings } from "@/lib/settings";
 
 const orgId = `${site.url}/#organization`;
 
-/** Sitewide LocalBusiness (ProfessionalService) */
-export function organizationSchema() {
+/** Sitewide LocalBusiness (ProfessionalService). Contact details come from Admin → Settings (defaults: site.ts). */
+export function organizationSchema(cfg: Pick<SiteSettings, "phone" | "email" | "address" | "hours"> = site) {
   return {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
@@ -13,16 +14,16 @@ export function organizationSchema() {
     url: `${site.url}/`,
     logo: absoluteUrl(site.images.logo),
     image: absoluteUrl(site.images.og),
-    telephone: site.phone,
-    email: site.email,
+    telephone: cfg.phone,
+    email: cfg.email,
     priceRange: "AED",
     address: {
       "@type": "PostalAddress",
-      streetAddress: site.address.street,
-      addressLocality: `${site.address.locality}, ${site.address.city}`,
-      addressCountry: site.address.country,
+      streetAddress: cfg.address.street,
+      addressLocality: `${cfg.address.locality}, ${cfg.address.city}`,
+      addressCountry: cfg.address.country,
     },
-    openingHours: site.hours,
+    openingHours: cfg.hours,
     areaServed: site.areaServed.map((name) => ({ "@type": "City", name })),
     ...(site.socialIsPlaceholder ? {} : { sameAs: Object.values(site.social) }),
     // No aggregateRating/Review markup: self-served reviews are not eligible and our rating is not yet verified

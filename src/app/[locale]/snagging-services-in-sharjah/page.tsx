@@ -1,7 +1,10 @@
 import { notFound } from "next/navigation";
-import { ContentPage } from "@/components/pages/ContentPage";
+import { LocationPage } from "@/components/pages/LocationPage";
 import { pageMetadata } from "@/components/pages/pageMetadata";
 import { isLocale } from "@/i18n/config";
+
+// Areas + communities come from Admin → Locations (saves revalidate at once; this is a safety net)
+export const revalidate = 3600;
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -12,5 +15,5 @@ export async function generateMetadata({ params }: Props) {
 export default async function Page({ params }: Props) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
-  return <ContentPage pageKey="sharjah" locale={locale} />;
+  return <LocationPage pageKey="sharjah" locale={locale} />;
 }

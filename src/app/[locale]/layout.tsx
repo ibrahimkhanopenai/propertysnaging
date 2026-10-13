@@ -16,6 +16,7 @@ import { JsonLd } from "@/components/seo/JsonLd";
 import { getDictionary } from "@/i18n/dictionaries";
 import { isLocale, localeDir, locales } from "@/i18n/config";
 import { organizationSchema, websiteSchema } from "@/lib/schema";
+import { getSettings } from "@/lib/settings";
 import { site } from "@/lib/site";
 
 const manrope = Manrope({ subsets: ["latin"], weight: ["600", "700", "800"], variable: "--font-manrope", display: "swap" });
@@ -49,6 +50,7 @@ export default async function LocaleLayout({ children, params }: { children: Rea
   const gtm = process.env.NEXT_PUBLIC_GTM_ID;
   const ga = process.env.NEXT_PUBLIC_GA_ID;
   const clarity = process.env.NEXT_PUBLIC_CLARITY_ID;
+  const cfg = await getSettings();
 
   return (
     <html lang={locale} dir={localeDir[locale]} className={fonts}>
@@ -69,10 +71,10 @@ export default async function LocaleLayout({ children, params }: { children: Rea
         <main id="main">{children}</main>
         <Footer locale={locale} dict={dict} />
         <FloatingContact dict={dict} />
-        <LeadPopup t={dict.popup} whatsapp={site.whatsapp} />
+        <LeadPopup t={dict.popup} whatsapp={cfg.whatsapp} />
         <TrackClicks />
         <SectionReveal />
-        <JsonLd data={[organizationSchema(), websiteSchema()]} />
+        <JsonLd data={[organizationSchema(cfg), websiteSchema()]} />
       </body>
       {ga ? <GoogleAnalytics gaId={ga} /> : null}
     </html>

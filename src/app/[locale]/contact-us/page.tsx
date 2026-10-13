@@ -8,7 +8,8 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { isLocale, localePath } from "@/i18n/config";
 import { getPricing } from "@/lib/pricing";
 import { buildMetadata } from "@/lib/seo";
-import { site, whatsappLink } from "@/lib/site";
+import { site } from "@/lib/site";
+import { getSettings, waLink } from "@/lib/settings";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -20,15 +21,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ContactPage({ params }: Props) {
+  const cfg = await getSettings();
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   const d = getDictionary(locale);
   const pricing = getPricing();
   const cards = [
-    { icon: "phone" as const, title: d.contactPage.callTitle, value: site.phoneDisplay, href: `tel:${site.phone}`, ltr: true },
-    { icon: "whatsapp" as const, title: d.contactPage.whatsappTitle, value: site.phoneDisplay, href: whatsappLink(d.quote.waIntro), ltr: true },
-    { icon: "mail" as const, title: d.contactPage.emailTitle, value: site.email, href: `mailto:${site.email}`, ltr: true },
-    { icon: "pin" as const, title: d.contactPage.officeTitle, value: `${site.address.street}, ${site.address.locality}, ${site.address.city}`, href: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${site.name} ${site.address.locality} ${site.address.city}`)}`, ltr: false },
+    { icon: "phone" as const, title: d.contactPage.callTitle, value: cfg.phoneDisplay, href: `tel:${cfg.phone}`, ltr: true },
+    { icon: "whatsapp" as const, title: d.contactPage.whatsappTitle, value: cfg.phoneDisplay, href: waLink(cfg, d.quote.waIntro), ltr: true },
+    { icon: "mail" as const, title: d.contactPage.emailTitle, value: cfg.email, href: `mailto:${cfg.email}`, ltr: true },
+    { icon: "pin" as const, title: d.contactPage.officeTitle, value: `${cfg.address.street}, ${cfg.address.locality}, ${cfg.address.city}`, href: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${site.name} ${cfg.address.locality} ${cfg.address.city}`)}`, ltr: false },
   ];
   return (
     <>
@@ -50,7 +52,7 @@ export default async function ContactPage({ params }: Props) {
           </ul>
           <div id="quote" className="scroll-mt-24 rounded-[22px] border-t-4 border-brand bg-white p-6 shadow-[0_10px_40px_rgba(10,10,10,0.06)] md:p-9">
             <h2 className="mb-5 font-display text-2xl font-extrabold">{d.quote.title}</h2>
-            <QuoteForm t={d.quote} locale={locale} ratePerSqft={pricing.ratePerSqft} currency={pricing.currency} whatsapp={site.whatsapp} source="contact_page" />
+            <QuoteForm t={d.quote} locale={locale} ratePerSqft={pricing.ratePerSqft} currency={pricing.currency} whatsapp={cfg.whatsapp} source="contact_page" />
           </div>
         </Container>
       </section>

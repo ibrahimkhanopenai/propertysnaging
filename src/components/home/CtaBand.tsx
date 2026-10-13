@@ -1,10 +1,11 @@
 import { Container } from "@/components/ui/Container";
 import { ButtonLink } from "@/components/ui/Button";
 import type { Dictionary } from "@/i18n/dictionaries";
-import { site, whatsappLink } from "@/lib/site";
+import { getSettings, waLink } from "@/lib/settings";
 
 /** Compact closing CTA used on inner pages (homepage uses FinalCta with the form). */
-export function CtaBand({ dict, quoteHref }: { dict: Dictionary; quoteHref: string }) {
+export async function CtaBand({ dict, quoteHref }: { dict: Dictionary; quoteHref: string }) {
+  const cfg = await getSettings();
   return (
     <section className="pb-20 pt-4">
       <Container>
@@ -15,8 +16,8 @@ export function CtaBand({ dict, quoteHref }: { dict: Dictionary; quoteHref: stri
           </div>
           <div className="flex flex-wrap gap-3">
             <ButtonLink href={quoteHref} variant="light" size="lg">{dict.nav.getQuote}</ButtonLink>
-            <ButtonLink href={whatsappLink(dict.quote.waIntro)} variant="whatsapp" size="lg" icon="whatsapp" external>{dict.home.hero.whatsapp}</ButtonLink>
-            <ButtonLink href={`tel:${site.phone}`} variant="ghostLight" size="lg" icon="phone">{dict.nav.call}</ButtonLink>
+            <ButtonLink href={waLink(cfg, dict.quote.waIntro)} variant="whatsapp" size="lg" icon="whatsapp" external>{dict.home.hero.whatsapp}</ButtonLink>
+            <ButtonLink href={`tel:${cfg.phone}`} variant="ghostLight" size="lg" icon="phone">{dict.nav.call}</ButtonLink>
           </div>
         </div>
       </Container>

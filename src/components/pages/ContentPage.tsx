@@ -1,29 +1,32 @@
-import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { ButtonLink } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { CtaBand } from "@/components/home/CtaBand";
-import { locationOrder } from "@/components/layout/nav";
 import { Faq } from "./Faq";
 import { PageHero } from "./PageHero";
+import { RelatedLinks } from "./RelatedLinks";
 import { getDictionary } from "@/i18n/dictionaries";
 import { localePath, type Locale } from "@/i18n/config";
 import { getPageContent, type PageKey } from "@/content/pages";
 import { routePath, staticRoutes } from "@/lib/routes";
 import { serviceSchema } from "@/lib/schema";
-import { whatsappLink } from "@/lib/site";
+import { getSettings, waLink } from "@/lib/settings";
+import { site } from "@/lib/site";
 
 /**
  * Generic renderer for every service, location and info page.
  * Copy lives in src/content/{services,locations,pages}.{en,ar}.ts
  */
-export function ContentPage({ pageKey, locale, children }: { pageKey: PageKey; locale: Locale; children?: React.ReactNode }) {
+export async function ContentPage({ pageKey, locale, children }: { pageKey: PageKey; locale: Locale; children?: React.ReactNode }) {
+  const cfg = await getSettings();
   const dict = getDictionary(locale);
   const c = getPageContent(pageKey, locale);
   const path = localePath(locale, routePath(pageKey));
   const home = localePath(locale, "/");
   const isLocation = staticRoutes.find((r) => r.key === pageKey)?.group === "location";
+  // The sample report link is set in Admin → Settings (e.g. a Google Drive view-only link)
+  const downloadHref = c.download?.href === site.pdfs.sampleReport ? cfg.sampleReportUrl : c.download?.href;
 
   return (
     <>
@@ -36,12 +39,12 @@ export function ContentPage({ pageKey, locale, children }: { pageKey: PageKey; l
           { name: c.breadcrumb, url: path },
         ]}
       >
-        {c.download ? (
-          <ButtonLink href={c.download.href} icon="download" size="lg" external>{dict.common.download}</ButtonLink>
+        {downloadHref ? (
+          <ButtonLink href={downloadHref} icon="download" size="lg" external>{dict.common.download}</ButtonLink>
         ) : (
           <ButtonLink href={`${home}#quote`} size="lg">{dict.nav.getQuote}</ButtonLink>
         )}
-        <ButtonLink href={whatsappLink(dict.quote.waIntro)} variant="whatsapp" icon="whatsapp" size="lg" external>{dict.nav.whatsapp}</ButtonLink>
+        <ButtonLink href={waLink(cfg, dict.quote.waIntro)} variant="whatsapp" icon="whatsapp" size="lg" external>{dict.nav.whatsapp}</ButtonLink>
       </PageHero>
 
       {c.includes?.length || c.communities?.length ? (
@@ -90,44 +93,7 @@ export function ContentPage({ pageKey, locale, children }: { pageKey: PageKey; l
 
       {c.faqs?.length ? <Faq title={dict.common.faqTitle} items={c.faqs} /> : null}
 
-      {c.related?.length || isLocation ? (
-        <section className="border-t border-line py-16">
-          <Container className="grid gap-10 md:grid-cols-2">
-            {c.related?.length ? (
-              <nav aria-labelledby="related-title">
-                <h2 id="related-title" className="mb-4 font-display text-xl font-extrabold">{dict.pageUi.related}</h2>
-                <ul className="flex flex-col divide-y divide-line border-y border-line">
-                  {c.related.map((k) => {
-                    const rc = getPageContent(k as PageKey, locale);
-                    return (
-                      <li key={k}>
-                        <Link href={localePath(locale, routePath(k))} className="flex items-center justify-between gap-4 py-3.5 hover:underline">
-                          {rc.navLabel || rc.breadcrumb}
-                          <Icon name="arrow" size={18} className="shrink-0 rtl:rotate-180" />
-                        </Link>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </nav>
-            ) : null}
-            {isLocation ? (
-              <nav aria-labelledby="emirates-title">
-                <h2 id="emirates-title" className="mb-4 font-display text-xl font-extrabold">{dict.pageUi.otherEmirates}</h2>
-                <ul className="flex flex-wrap gap-2">
-                  {locationOrder.filter((k) => k !== pageKey).map((k) => (
-                    <li key={k}>
-                      <Link href={localePath(locale, routePath(k))} className="inline-flex min-h-11 items-center rounded-full border border-line px-4 hover:border-ink">
-                        {getPageContent(k, locale).navLabel}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </nav>
-            ) : null}
-          </Container>
-        </section>
-      ) : null}
+      <RelatedLinks pageKey={pageKey} locale={locale} related={c.related} showEmirates={isLocation} />
 
       <CtaBand dict={dict} quoteHref={`${home}#quote`} />
 

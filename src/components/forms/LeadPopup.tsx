@@ -99,7 +99,7 @@ export function LeadPopup({ t, whatsapp }: { t: Dictionary["popup"]; whatsapp: s
           </select>
           <label className="sr-only" htmlFor="popup-area">{t.area}</label>
           <input id="popup-area" name="area" inputMode="numeric" placeholder={t.areaPlaceholder} className={input} />
-          <button type="submit" className="min-h-12 rounded-xl bg-brand-dark font-semibold text-white hover:bg-brand-deep">{t.submit}</button>
+          <button type="submit" className="min-h-12 rounded-xl bg-ink font-semibold text-white hover:bg-ink-soft">{t.submit}</button>
           {invalid ? <p role="alert" className="text-sm text-snag">{t.required}</p> : null}
         </form>
       </div>

@@ -10,6 +10,8 @@ import { prisma } from "@/lib/db";
 import { clientIp, createRateLimiter } from "@/lib/rate-limit";
 import { normalizePath, slugify } from "@/lib/utils";
 import { staticRoutes } from "@/lib/routes";
+import { settingFields, validateSetting } from "@/lib/settings-fields";
+import { defaultAreas, isLocationKey, suggestedCommunities } from "@/content/location-defaults";
 
 async function requireAdmin() {
   const s = await getSession();
@@ -270,4 +272,89 @@ export async function deleteGalleryImageAction(fd: FormData) {
   await requireAdmin();
   await prisma.galleryImage.delete({ where: { id: Number(fd.get("id")) } });
   revalidateGallery();
+}
+
+/* ─────────── Locations: areas + communities ─────────── */
+
+const locationPaths = (emirate: string) => {
+  const path = staticRoutes.find((r) => r.key === emirate && r.group === "location")?.path;
+  return path ? [path, `/ar${path}`] : [];
+};
+
+const revalidateLocation = (emirate: string) => {
+  const [path] = locationPaths(emirate);
+  if (path) revalidatePath(`/[locale]${path.replace(/\/$/, "")}`, "page"); // EN is served from /en/... internally (middleware rewrite)
+  for (const p of [...locationPaths(emirate), "/admin/locations/"]) revalidatePath(p);
+};
+
+export async function saveLocationItemAction(fd: FormData) {
+  await requireAdmin();
+  const id = Number(fd.get("id") || 0) || null;
+  const emirate = String(fd.get("emirate") ?? "");
+  const kind = fd.get("kind") === "COMMUNITY" ? "COMMUNITY" : "AREA";
+  const name = String(fd.get("name") ?? "").trim().slice(0, 160);
+  if (!locationPaths(emirate).length || !name) return;
+  const data = {
+    emirate,
+    kind,
+    name,
+    nameAr: optional(fd.get("nameAr"))?.slice(0, 160) ?? null,
+    developer: kind === "COMMUNITY" ? (optional(fd.get("developer"))?.slice(0, 120) ?? null) : null,
+    published: fd.get("published") === "on",
+    sortOrder: Number(fd.get("sortOrder") || 0) || 0,
+  } as const;
+  if (id) await prisma.locationItem.update({ where: { id }, data });
+  else await prisma.locationItem.create({ data });
+  revalidateLocation(emirate);
+}
+
+export async function deleteLocationItemAction(fd: FormData) {
+  await requireAdmin();
+  const item = await prisma.locationItem.delete({ where: { id: Number(fd.get("id")) } });
+  revalidateLocation(item.emirate);
+}
+
+/* ─────────── Settings ─────────── */
+
+export type SettingsState = { error?: string; saved?: boolean };
+
+export async function saveSettingsAction(_prev: SettingsState, fd: FormData): Promise<SettingsState> {
+  await requireAdmin();
+  const errors: string[] = [];
+  const upserts: Array<{ key: string; value: string }> = [];
+  const resets: string[] = [];
+  for (const f of settingFields) {
+    const value = String(fd.get(f.key) ?? "").trim();
+    // Empty or equal to the default → no row, so the site.ts default applies (and future default changes flow through)
+    if (value === "" || value === f.defaultValue) {
+      resets.push(f.key);
+      continue;
+    }
+    const err = validateSetting(f, value);
+    if (err) errors.push(err);
+    else upserts.push({ key: f.key, value });
+  }
+  if (errors.length) return { error: errors.join(" ") };
+  await prisma.$transaction([
+    prisma.setting.deleteMany({ where: { key: { in: resets } } }),
+    ...upserts.map((u) => prisma.setting.upsert({ where: { key: u.key }, update: { value: u.value }, create: u })),
+  ]);
+  // Contact details and key figures appear on every page (header, footer, schema) → regenerate all
+  revalidatePath("/", "layout");
+  return { saved: true };
+}
+
+/** Fills an empty list with the defaults (content/location-defaults.ts). Never touches a list that has rows. */
+export async function loadLocationDefaultsAction(fd: FormData) {
+  await requireAdmin();
+  const emirate = String(fd.get("emirate") ?? "");
+  const kind = fd.get("kind") === "COMMUNITY" ? "COMMUNITY" : "AREA";
+  if (!isLocationKey(emirate)) return;
+  if (await prisma.locationItem.count({ where: { emirate, kind } })) return;
+  const items =
+    kind === "AREA"
+      ? defaultAreas(emirate).map((a) => ({ name: a.name, nameAr: a.nameAr, developer: null }))
+      : suggestedCommunities[emirate];
+  await prisma.locationItem.createMany({ data: items.map((x, i) => ({ ...x, emirate, kind, sortOrder: i + 1 })) });
+  revalidateLocation(emirate);
 }

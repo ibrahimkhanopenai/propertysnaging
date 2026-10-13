@@ -6,9 +6,12 @@ import { Reveal } from "@/components/ui/Reveal";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { localePath, type Locale } from "@/i18n/config";
 import { site } from "@/lib/site";
+import { getSettings } from "@/lib/settings";
 
 /** Dark showcase: how each defect is documented (accent-numbered list) + a layered report composition. */
-export function SampleReportSection({ locale, dict, headingLevel = "h2" }: { locale: Locale; dict: Dictionary; headingLevel?: "h2" | "h3" }) {
+/** quoteHref: where "Book your inspection" goes — "#quote" on pages that have the quote form, else the homepage form. */
+export async function SampleReportSection({ locale, dict, headingLevel = "h2", quoteHref }: { locale: Locale; dict: Dictionary; headingLevel?: "h2" | "h3"; quoteHref?: string }) {
+  const cfg = await getSettings();
   const t = dict.home.report;
   const H = headingLevel;
   return (
@@ -30,9 +33,9 @@ export function SampleReportSection({ locale, dict, headingLevel = "h2" }: { loc
             ))}
           </ol>
           <div className="flex flex-wrap gap-3 pt-1">
-            <ButtonLink href={`${localePath(locale, "/")}#quote`} variant="cta" size="lg" className="rounded-full">{t.book}</ButtonLink>
+            <ButtonLink href={quoteHref ?? `${localePath(locale, "/")}#quote`} variant="light" size="lg" className="rounded-full">{t.book}</ButtonLink>
             {/* The real sample PDF (CRO audit 2026-10: "Download a sample report") — the /sample-report/ page stays in the header nav */}
-            <ButtonLink href={site.pdfs.sampleReport} variant="ghostLight" icon="download" size="lg" external className="rounded-full">{t.download}</ButtonLink>
+            <ButtonLink href={cfg.sampleReportUrl} variant="ghostLight" icon="download" size="lg" external className="rounded-full">{t.download}</ButtonLink>
           </div>
         </Reveal>
 

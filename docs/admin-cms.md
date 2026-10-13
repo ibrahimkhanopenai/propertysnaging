@@ -17,6 +17,25 @@ URL: `/admin/` (login at `/admin/login/`). Admin is `noindex` and blocked in rob
 | Redirects | `/admin/redirects/` |
 | Reviews (genuine only) | `/admin/reviews/` |
 | Gallery (upload, ALT required, feature on homepage) | `/admin/gallery/` |
+| Locations — per emirate: communities + areas lists on the location pages | `/admin/locations/` |
+| Settings — phone, WhatsApp, email, address, key figures, Google review + sample report links | `/admin/settings/` |
+
+## Locations (`LocationItem`)
+- Per emirate (location page key: `dubai`, `abudhabi`, `sharjah`, `ajman`, `rak`, `fujairah`, `uaq`) two lists:
+  **Communities we inspect in {city}** (`COMMUNITY`: name EN/AR + developer) and **Areas we cover in {city}** (`AREA`: name EN/AR).
+  On the page: local tips on top, then communities (left) + areas (right).
+- Each row: show/hide, order, edit, delete. Saving regenerates that location page (EN + AR) at once.
+- Empty list: areas fall back to `content/locations.*.ts`; communities are hidden. The **Load defaults** buttons (and `npm run db:seed`) fill an
+  empty list from `src/content/location-defaults.ts` — they never touch a list that already has rows.
+- Arabic name is optional; the Arabic page uses the English name when it is empty.
+
+## Settings (`Setting`, key/value)
+- Fields, defaults and validation: `src/lib/settings-fields.ts`. Read on the site with `await getSettings()` (`src/lib/settings.ts`).
+- A key with no row uses its default from `src/lib/site.ts`; saving an empty value (or the default) deletes the row.
+- Saving revalidates every page (`revalidatePath("/", "layout")`): header, top bar, footer, floating buttons, contact page, hero,
+  final CTA, trust stats, location pages, reviews links, sample report button and the Organization JSON-LD.
+- Not in Settings (still code): logo/images, social links, PDFs other than the sample report, the privacy-policy email sentence
+  (`content/pages.*.ts`), price per sq ft (`PRICE_PER_SQFT` env).
 
 ## Blog post fields
 **Content:** title (H1), slug (auto from title, editable), excerpt, Markdown content with preview, FAQ repeater, featured image (upload) + alt, category, tags, location, related service (end CTA), author, table of contents toggle, language (EN/AR), status (Draft/Published/Scheduled), publish date.

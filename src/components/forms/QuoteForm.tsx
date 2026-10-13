@@ -166,7 +166,7 @@ export function QuoteForm({ t, locale, ratePerSqft, currency, whatsapp, source =
             {priceLabel}
           </p>
         </div>
-        <button type="submit" disabled={status === "sending"} className="inline-flex min-h-12 items-center justify-center rounded-xl bg-brand-dark px-7 font-semibold text-white transition hover:bg-brand-deep disabled:opacity-60">
+        <button type="submit" disabled={status === "sending"} className="inline-flex min-h-12 items-center justify-center rounded-xl bg-ink px-7 font-semibold text-white transition hover:bg-ink-soft disabled:opacity-60">
           {status === "sending" ? t.sending : t.submit}
         </button>
       </div>

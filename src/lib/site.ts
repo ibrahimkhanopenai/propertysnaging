@@ -33,7 +33,7 @@ export const site = {
    * genuine:true = taken from the current company site; false = DUMMY, must be confirmed before launch.
    */
   stats: [
-    { key: "inspections", value: "1,500+", genuine: false }, // DUMMY
+    { key: "inspections", value: "15,000+", genuine: true }, // client-supplied figure (2026-10-13)
     { key: "years", value: "10+", genuine: false }, // DUMMY
     { key: "points", value: "300+", genuine: false }, // DUMMY — inspection points per property
     { key: "turnaround", value: "6–24h", genuine: true },
@@ -79,15 +79,8 @@ export const site = {
     "/images/gallery/tiling-inspection.png",
     "/images/gallery/roof-inspection.png",
   ],
-  /**
-   * Real testimonials carried over from the current site — shown until Admin → Reviews has entries.
-   * DUMMY ratings: the source quotes had no star value, represented here as 5★; confirm before launch.
-   */
-  defaultReviews: [
-    { name: "Norah", location: "Marina, Dubai", rating: 5, text: "Excellent snagging service — they caught issues I wouldn't have noticed. Highly professional and detailed." },
-    { name: "Marshal J.", location: "JVT, Dubai", rating: 5, text: "The report was so detailed and clear. It helped us get our developer to fix many issues before handover." },
-    { name: "Eldo R.", location: "Al Furjan, Dubai", rating: 5, text: "Professional, responsive and thorough. Their snagging report saved me from expensive repairs later." },
-  ],
+  /** Live Google reviews on the homepage — SociableKit widget for PropertyInspectors.me (client, 2026-10-13) */
+  googleReviewsWidget: { embedId: "25661949", src: "https://widgets.sociablekit.com/google-reviews/widget.js" },
   areaServed: ["Dubai", "Abu Dhabi", "Sharjah", "Ras Al Khaimah", "Ajman"],
   pdfs: {
     profile: "/downloads/property-inspectors-company-profile.pdf",
@@ -122,12 +115,23 @@ export const site = {
       exterior: "/images/scope/exterior.jpg",
       roof: "/images/scope/roof.png",
     },
-    /** No Dubai photo yet (the old file was already deleted) — add `dubai` here and in content/locations.*.ts */
+    /** Location page heroes. Dubai, Ajman, Fujairah and UAQ reuse inspection photos until the client sends local ones */
     locations: {
+      dubai: "/images/scope/tiling.jpg",
       abudhabi: "/images/locations/abu-dhabi.jpg",
       sharjah: "/images/locations/sharjah.jpg",
       rak: "/images/locations/ras-al-khaimah.jpg",
+      ajman: "/images/gallery/plumbing-inspection.jpg",
+      fujairah: "/images/scope/electrical.jpg",
+      uaq: "/images/gallery/hvac-inspection.jpg",
     },
+    /** Defect photos on location pages ("What we find"); captions/ALT in dict.pageUi.findingPhotos (same order) */
+    findingPhotos: [
+      "/images/gallery/wall-finish-defect.jpg",
+      "/images/gallery/tiling-inspection.png",
+      "/images/scope/windows-and-doors.png",
+      "/images/gallery/roof-inspection.png",
+    ],
   },
 };
 

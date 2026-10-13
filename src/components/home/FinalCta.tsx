@@ -7,7 +7,7 @@ import { QuoteForm } from "@/components/forms/QuoteForm";
 import type { Dictionary } from "@/i18n/dictionaries";
 import type { Locale } from "@/i18n/config";
 import { getPricing } from "@/lib/pricing";
-import { site, whatsappLink } from "@/lib/site";
+import { getSettings, waLink } from "@/lib/settings";
 
 /**
  * Final booking CTA (anchor #quote — every "Get a quote" button points here).
@@ -16,14 +16,15 @@ import { site, whatsappLink } from "@/lib/site";
  * the end column from the top so the dark field is filled, with the office/phone/email
  * running as a numbered colophon across the foot.
  */
-export function FinalCta({ locale, dict }: { locale: Locale; dict: Dictionary }) {
+export async function FinalCta({ locale, dict }: { locale: Locale; dict: Dictionary }) {
+  const cfg = await getSettings();
   const pricing = getPricing();
 
   const assurances = [dict.topbar.ded, dict.topbar.internachi, `${dict.home.trust.stats.turnaround}: 6–24h`];
   const contacts = [
-    { icon: "pin" as const, label: dict.home.cta.address, value: `${site.address.street}, ${site.address.locality}, ${site.address.city}`, href: site.mapsUrl, external: true },
-    { icon: "phone" as const, label: dict.home.cta.phone, value: site.phoneDisplay, href: `tel:${site.phone}`, ltr: true },
-    { icon: "mail" as const, label: dict.home.cta.email, value: site.email, href: `mailto:${site.email}` },
+    { icon: "pin" as const, label: dict.home.cta.address, value: `${cfg.address.street}, ${cfg.address.locality}, ${cfg.address.city}`, href: cfg.mapsUrl, external: true },
+    { icon: "phone" as const, label: dict.home.cta.phone, value: cfg.phoneDisplay, href: `tel:${cfg.phone}`, ltr: true },
+    { icon: "mail" as const, label: dict.home.cta.email, value: cfg.email, href: `mailto:${cfg.email}` },
   ];
 
   return (
@@ -45,8 +46,8 @@ export function FinalCta({ locale, dict }: { locale: Locale; dict: Dictionary })
             <p className="mt-7 max-w-md text-lg leading-relaxed text-zinc-400">{dict.home.cta.text}</p>
 
             <div className="mt-8 flex flex-wrap gap-3">
-              <ButtonLink href={`tel:${site.phone}`} variant="light" icon="phone" size="lg" className="rounded-full">{site.phoneDisplay}</ButtonLink>
-              <ButtonLink href={whatsappLink(dict.home.hero.waMessage)} variant="whatsapp" icon="whatsapp" size="lg" external className="rounded-full">{dict.home.hero.whatsapp}</ButtonLink>
+              <ButtonLink href={`tel:${cfg.phone}`} variant="light" icon="phone" size="lg" className="rounded-full">{cfg.phoneDisplay}</ButtonLink>
+              <ButtonLink href={waLink(cfg, dict.home.hero.waMessage)} variant="whatsapp" icon="whatsapp" size="lg" external className="rounded-full">{dict.home.hero.whatsapp}</ButtonLink>
             </div>
 
             <ul className="mt-9 flex flex-wrap gap-2.5">
@@ -77,7 +78,7 @@ export function FinalCta({ locale, dict }: { locale: Locale; dict: Dictionary })
                     <Icon name="file" size={22} />
                   </span>
                 </div>
-                <QuoteForm t={dict.quote} locale={locale} ratePerSqft={pricing.ratePerSqft} currency={pricing.currency} whatsapp={site.whatsapp} />
+                <QuoteForm t={dict.quote} locale={locale} ratePerSqft={pricing.ratePerSqft} currency={pricing.currency} whatsapp={cfg.whatsapp} />
                 {/* Survey tick tying the card into the page's inspection system */}
                 <span aria-hidden="true" className="pointer-events-none absolute end-4 top-4 size-5 border-e-2 border-t-2 border-brand/50" />
               </div>

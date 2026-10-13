@@ -7,10 +7,10 @@
 | Opening hours | Mo-Sa 08:00-20:00 | `site.hours` |
 | DED licence no. | DED-000000 | `site.dedLicense` |
 | Social links | guessed URLs | `site.social` |
-| Stats | 1,500+ inspections, 10+ years, 300+ points | `site.stats` (`genuine:false`) — client requires GENUINE numbers. ⚠️ Live site (mypropertysnagging.com) states **60,000+ inspections / 12,000+ hrs** — big discrepancy, confirm real figures (not changed/fabricated) |
+| Stats | 15,000+ inspections (client figure, 2026-10-13), 10+ years, 300+ points | Editable in **Admin → Settings** (defaults: `site.stats`; years/points still `genuine:false`) — client requires GENUINE numbers. ⚠️ Live site (mypropertysnagging.com) states **60,000+ inspections / 12,000+ hrs** — big discrepancy, confirm real figures (not changed/fabricated) |
 | Google rating | 4.9 placeholder | `site.reviews.rating` — now **hidden on the homepage** while `isPlaceholder` is true |
 | Google review link | Maps search URL | `site.googleReviewUrl` — use the real profile / review link |
-| Reviews | 3 real testimonials carried from the live site | `site.defaultReviews` (shown until Admin → Reviews has entries); ratings represented as 5★ (source had none) — confirm |
+| Reviews | Homepage: live Google reviews (SociableKit widget, free plan) | `site.googleReviewsWidget`; `/reviews/` still lists Admin → Reviews entries |
 | Homepage "Real findings" | defect/recommendation copy cleaned from the live site | `home.findings` in `en.ts`/`ar.ts` — confirm wording |
 | Price | AED 0.70 per sq ft of built-up area (client, 2026-10-12) | `.env PRICE_PER_SQFT` — same rate for commercial (confirmed 2026-10-12) |
 | GTM / GA / Clarity IDs | empty locally | production `.env`: `NEXT_PUBLIC_GTM_ID=GTM-N2BF4B58` and `NEXT_PUBLIC_CLARITY_ID=v5f8ri65o1` — same as the WordPress site truecheckinspection.com (confirmed final 2026-10-12; `GTM-MCTLKNHC` is not used). Leave `NEXT_PUBLIC_GA_ID` empty if GA4 is set up inside GTM (else double counting). The live site currently loads NO GTM (env not set on the server) |
@@ -24,6 +24,14 @@
 - Images reuse the old site's photos, renamed into `public/images/<section>/` (paths in `site.images`, old URLs 301 via `src/lib/legacy-redirects.ts`); hero = client-supplied `/images/hero-city-in-hand.jpg`. The client will replace images by hand (same file name).
 - Logo = client-supplied transparent PNG (2026-10-09, cropped from `Black-Logo-Transperant.png`): `/images/logo.png`, white version `/images/logo-white.png` for the footer (same alpha, white fill). Favicon `src/app/icon.jpg` / `apple-icon.jpg` from the client's icon file. Swap for an SVG if one becomes available.
 
+## Admin roadmap (client: "manage content and images from the admin", agreed 2026-10-13)
+Pattern to follow: DB table + admin screen + server reads with a code fallback, so pages render without the DB (see Phase 1: `getSettings()`, `getLocationItems()`, `changelog/2026-10-13-008-admin-locations-settings.md`).
+- [x] **Phase 1:** Admin → Locations (communities + areas per emirate) and Admin → Settings (contact, key figures, Google review + sample report links)
+- [ ] **Phase 2: Images.** Admin → Images: upload/replace + ALT (EN/AR) for the homepage hero, About photo, each location hero (`site.images.locations`), "Defects we find" photos (`site.images.scope`), sample-report collage and finding photos. Reuse the existing upload (`/api/admin/upload/` → `UPLOAD_DIR`, served by `/uploads/`); fall back to the current `/images/` files. Keep `next/image` + real ALT; hero stays the only `priority` image.
+- [ ] **Phase 2: Developer logos.** Admin list (logo upload, name, order, show/hide) for the homepage developer strip (`components/home/DevelopersStrip.tsx`).
+- [ ] **Phase 3:** FAQs (homepage + each location/service page), "Defects we find" items (photo, category, defect, recommendation; EN/AR), then location/service body text (hook, intro, sections) as overrides with the content files as fallback.
+- Not for the admin: page URLs, homepage + Dubai/Abu Dhabi/Sharjah `<title>`/meta (SEO rule §5.6), homepage section order (client requirement), colours/design.
+
 ## Open tasks
 - [ ] **Confirm domain**: report says propertyinspectors.ae, live site is .me (see `docs/client-requirements.md`)
 - [ ] Confirm sample report images have all client personal data removed
@@ -31,7 +39,7 @@
 - [ ] Replace all DUMMY values above
 - [ ] Native Arabic review
 - [ ] Re-add the 5 old blog posts in Admin with the same slug/meta (table in `docs/seo-migration.md`)
-- [ ] Dubai location photo: the old file no longer exists — `/snagging-services-in-dubai/` shows no image until one is added (`site.images.locations`)
+- [ ] Location photos: Dubai, Ajman, Fujairah and UAQ reuse inspection photos from the scope/gallery sets (2026-10-12) — replace with photos taken in each emirate when the client sends them (`site.images.locations`). The WordPress pages used a stock "house + coins" image (`sale.jpg`), not used here (not an inspection photo)
 - [ ] About photo (`/images/about/property-handover.jpg`) is an Unsplash+ premium image with a visible watermark — replace with a licensed/real photo
 - [ ] Homepage Sample report collage (`/images/reports/sample-report-page-{1,2,3}.jpg`) is stock photography (hi-vis vest, hard hat), not our jobs — client asked for original photos (2026-10-09)
 
@@ -41,7 +49,7 @@
 - [ ] **Reviews in the header:** the client's mockup has it; their message didn't. Currently footer only (`components/layout/nav.ts`).
 - [ ] **Phone number:** the mockup shows +971 55 608 3671; the site uses +971 58 155 1637 (`site.ts`). Which is correct?
 - [ ] **Hero H1:** "Property Inspection Services in UAE" (mockup) or "Property Snagging & Inspection Services in the UAE" (message, live now)?
-- [ ] Real Google reviews (Places API or manual)
+- [x] Real Google reviews — homepage uses the SociableKit widget (2026-10-13)
 - [ ] Optional: Arabic translations of the 5 old blog posts
 - [ ] Confirm the developer logo strip wording ("We snag homes by the UAE's leading developers") — logos imply inspections in those projects, not a partnership
 - [ ] Re-export the "Dubai Properties" logo (current PNG only contains the red tick, so it is hidden)

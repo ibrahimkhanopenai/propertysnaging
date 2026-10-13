@@ -162,3 +162,36 @@ model GalleryImage {
   sortOrder Int      @default(0)
   createdAt DateTime @default(now())
 }
+
+/// AREA = "Areas we cover in {city}" chips; COMMUNITY = "Communities we inspect in {city}" (projects/developments)
+enum LocationItemKind {
+  AREA
+  COMMUNITY
+}
+
+/// Location page lists, managed in Admin → Locations. `emirate` = location page key
+/// (dubai | abudhabi | sharjah | ajman | rak | fujairah | uaq). With no rows for an emirate+kind,
+/// AREA falls back to content/locations.*.ts and COMMUNITY is hidden.
+model LocationItem {
+  id        Int              @id @default(autoincrement())
+  emirate   String           @db.VarChar(20)
+  kind      LocationItemKind
+  name      String           @db.VarChar(160)
+  nameAr    String?          @db.VarChar(160)
+  /// COMMUNITY only, e.g. "Emaar"
+  developer String?          @db.VarChar(120)
+  published Boolean          @default(true)
+  sortOrder Int              @default(0)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  @@index([emirate, kind, sortOrder])
+}
+
+/// Site settings edited in Admin → Settings (contact details, key figures, links).
+/// Key/value; a missing key falls back to the default in src/lib/site.ts. Keys: src/lib/settings-fields.ts
+model Setting {
+  key       String   @id @db.VarChar(64)
+  value     String   @db.VarChar(1000)
+  updatedAt DateTime @updatedAt
+}

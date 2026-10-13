@@ -13,8 +13,12 @@ export type PageContent = {
   /** One-line summary for service/location cards */
   summary?: string;
   h1: string;
+  /** Location pages: one-line hook under the H1 */
+  hook?: string;
   intro: string;
   image?: string;
+  /** Descriptive ALT for `image` (defaults to the H1) */
+  imageAlt?: string;
   /** Adds Service JSON-LD */
   schema?: "service";
   /** For location pages: City in Service JSON-LD */
@@ -25,6 +29,10 @@ export type PageContent = {
   includes?: string[];
   /** For download pages */
   download?: { href: string };
+  /** Location pages: "Why snagging matters in {city}" */
+  why?: PageSection;
+  /** Location pages: defects we find there, grouped (based on the WordPress site's list, written per city) */
+  defects?: { title: string; groups: Array<{ title: string; items: string[] }> };
   sections: PageSection[];
   faqs?: Array<{ q: string; a: string }>;
   /** Internal links shown as "Related services" */
