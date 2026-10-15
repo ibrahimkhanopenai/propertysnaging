@@ -83,13 +83,20 @@ body {
 .article-body th, .article-body td { border: 1px solid var(--color-line); padding: 0.6em 0.8em; text-align: start; }
 .article-body strong { color: var(--color-ink); }
 
-/* Homepage hero photo (xl+): the uncropped photo sits at the end edge; fade its inner edge into the
-   white behind the text. In Arabic the frame is mirrored (rtl:-scale-x-100 in Hero.tsx), which flips
-   this mask with it, so one rule covers both directions. */
+/* Homepage hero photo: its bottom edge (which stops above the booking card) fades softly into the white.
+   From xl the uncropped photo sits at the end edge, so its inner edge fades into the white behind the
+   text too. In Arabic the xl frame is mirrored (rtl:-scale-x-100 in Hero.tsx), which flips this mask
+   with it, so one rule covers both directions. */
+.hero-photo {
+  -webkit-mask-image: linear-gradient(to top, transparent, #000 0.75rem);
+  mask-image: linear-gradient(to top, transparent, #000 0.75rem);
+}
 @media (min-width: 80rem) {
   .hero-photo {
-    -webkit-mask-image: linear-gradient(to right, transparent, #000 28%);
-    mask-image: linear-gradient(to right, transparent, #000 28%);
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 28%), linear-gradient(to top, transparent, #000 0.75rem);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(to right, transparent, #000 28%), linear-gradient(to top, transparent, #000 0.75rem);
+    mask-composite: intersect;
   }
 }
 

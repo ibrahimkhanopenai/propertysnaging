@@ -98,8 +98,8 @@ export const site = {
     logo: "/images/logo.png",
     logoWhite: "/images/logo-white.png",
     og: "/images/brand/og-image.png",
-    /** Hero image supplied by the client (2026-10-02), 1200×919, white background */
-    hero: "/images/hero-city-in-hand.jpg",
+    /** Hero image supplied by the client ("Properties in Dubai.png"), 1671×941 PNG, served as-is (unoptimized in Hero.tsx) */
+    hero: "/images/hero-city-in-hand.png",
     about: "/images/about/property-handover.jpg",
     report: [
       "/images/reports/sample-report-page-1.jpg",

@@ -27,15 +27,19 @@ export async function Hero({ locale, dict }: { locale: Locale; dict: Dictionary 
           aspect ratio at full hero height, anchored to the end edge, so the whole photo shows uncropped
           and the hand is never cut (client 2026-10-13: "a little smaller, hand fully visible").
           `.hero-photo` fades its inner edge into the white behind the text (globals.css). In Arabic the
-          photo is mirrored at xl so the hand reaches in from the right, away from the text (no lettering in it). */}
-      <div className="hero-photo absolute inset-0 -z-20 xl:inset-auto xl:end-0 xl:top-0 xl:h-full xl:aspect-[1671/941] xl:rtl:-scale-x-100">
+          photo is mirrored at xl so the hand reaches in from the right, away from the text (no lettering in it).
+          The photo stops above the BookingBar overlap (-mt-10 / md:-mt-14) plus 1rem, so the card never covers
+          the bottom of the hand (client 2026-10-15: "more space under the hand"). `unoptimized`: the client's
+          file is served as-is, not re-encoded by next/image (client 2026-10-15: "don't compress it"). */}
+      <div className="hero-photo absolute inset-x-0 top-0 bottom-14 -z-20 md:bottom-[4.5rem] xl:inset-auto xl:end-0 xl:top-0 xl:h-[calc(100%-4.5rem)] xl:aspect-[1671/941] xl:rtl:-scale-x-100">
         <Image
           src={photo.src}
           alt={photo.alt}
           fill
           priority
+          unoptimized
           sizes="(min-width: 1280px) 1600px, 100vw"
-          className="object-cover object-[72%_20%] md:object-[right_65%] xl:object-center"
+          className="object-cover object-[72%_20%] md:object-[right_bottom] xl:object-center"
         />
       </div>
 

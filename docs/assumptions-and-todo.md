@@ -21,7 +21,7 @@
 - MySQL is required, so Payload CMS was not used (it has no MySQL adapter); admin is custom.
 - Download pages (`/sample-report/` etc.) link straight to the existing PDFs.
 - `/download-brochure/` uses the company profile PDF (no separate brochure PDF found).
-- Images reuse the old site's photos, renamed into `public/images/<section>/` (paths in `site.images`, old URLs 301 via `src/lib/legacy-redirects.ts`); hero = client-supplied `/images/hero-city-in-hand.jpg`. The client will replace images by hand (same file name).
+- Images reuse the old site's photos, renamed into `public/images/<section>/` (paths in `site.images`, old URLs 301 via `src/lib/legacy-redirects.ts`); hero = client-supplied `/images/hero-city-in-hand.png` (served as-is, `unoptimized`). The client will replace images by hand (same file name).
 - Logo = client-supplied transparent PNG (2026-10-09, cropped from `Black-Logo-Transperant.png`): `/images/logo.png`, white version `/images/logo-white.png` for the footer (same alpha, white fill). Favicon `src/app/icon.jpg` / `apple-icon.jpg` from the client's icon file. Swap for an SVG if one becomes available.
 
 ## Admin roadmap (client: "manage content and images from the admin", agreed 2026-10-13)
