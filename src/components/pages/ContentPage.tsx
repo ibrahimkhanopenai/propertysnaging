@@ -32,7 +32,8 @@ export async function ContentPage({ pageKey, locale, children }: { pageKey: Page
   const home = localePath(locale, "/");
   const isLocation = staticRoutes.find((r) => r.key === pageKey)?.group === "location";
   // The sample report link is set in Admin → Settings (e.g. a Google Drive view-only link)
-  const downloadHref = c.download?.href === site.pdfs.sampleReport ? cfg.sampleReportUrl : c.download?.href;
+  const isSampleReport = c.download?.href === site.pdfs.sampleReport;
+  const downloadHref = isSampleReport ? cfg.sampleReportUrl : c.download?.href;
   // About / Sample report hero photo: Admin → Images
   const slot = pageImageSlot(pageKey);
   const photo = slot ? await siteImage(slot, locale) : c.image ? { src: c.image, alt: c.imageAlt || c.h1 } : null;
@@ -50,7 +51,7 @@ export async function ContentPage({ pageKey, locale, children }: { pageKey: Page
         ]}
       >
         {downloadHref ? (
-          <ButtonLink href={downloadHref} icon="download" size="lg" external>{dict.common.download}</ButtonLink>
+          <ButtonLink href={downloadHref} icon="download" size="lg" external>{isSampleReport ? dict.home.report.download : dict.common.download}</ButtonLink>
         ) : (
           <ButtonLink href={`${home}#quote`} size="lg">{dict.nav.getQuote}</ButtonLink>
         )}

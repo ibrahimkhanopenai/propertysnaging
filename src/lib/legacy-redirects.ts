@@ -6,6 +6,8 @@
  *  - Moved or renamed a file? Update its new path here (and in src/lib/site.ts).
  * Old SEO values (reference only): docs/legacy-seo.json
  */
+import { site } from "./site";
+
 const OLD = "/wp-content/uploads/";
 
 /** [old path under OLD, new public path] */
@@ -13,7 +15,7 @@ const moved: Array<[string, string]> = [
   // downloads
   ["2026/02/PROFILE-Property-Inspectors.pdf", "/downloads/property-inspectors-company-profile.pdf"],
   ["2026/02/INSPECTION-TOOLS-PropertyInspectors.pdf", "/downloads/property-inspectors-inspection-tools.pdf"],
-  ["2026/02/Sample-Report-PropertyInspectors.pdf", "/downloads/property-inspectors-sample-snagging-report.pdf"],
+  ["2026/02/Sample-Report-PropertyInspectors.pdf", site.pdfs.sampleReport], // now a Google Drive link
   ["2026/02/CHECKLIST-Property-Inspector.pdf", "/downloads/property-inspectors-snagging-checklist.pdf"],
   // brand
   ["2025/12/cropped-property-inspectors-fav-icon-270x270.jpg", "/icon.jpg"],
@@ -86,4 +88,12 @@ const moved: Array<[string, string]> = [
   ["2025/11/20251122_141146-scaled.jpg", "/images/locations/sharjah.jpg"],
 ];
 
-export const legacyAssetRedirects = moved.map(([from, to]) => ({ source: OLD + from, destination: to, statusCode: 301 as const }));
+/** [path, new URL] — files this site served itself that now live elsewhere (the links may have been shared) */
+const offSite: Array<[string, string]> = [
+  ["/downloads/property-inspectors-sample-snagging-report.pdf", site.pdfs.sampleReport],
+];
+
+export const legacyAssetRedirects = [
+  ...moved.map(([from, to]) => ({ source: OLD + from, destination: to, statusCode: 301 as const })),
+  ...offSite.map(([from, to]) => ({ source: from, destination: to, statusCode: 301 as const })),
+];

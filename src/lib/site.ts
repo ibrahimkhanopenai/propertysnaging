@@ -85,7 +85,8 @@ export const site = {
   areaServed: ["Dubai", "Abu Dhabi", "Sharjah", "Ras Al Khaimah", "Ajman"],
   pdfs: {
     profile: "/downloads/property-inspectors-company-profile.pdf",
-    sampleReport: "/downloads/property-inspectors-sample-snagging-report.pdf",
+    /** Google Drive view link (client, 2026-10-16) — opens in a new tab. Admin → Settings can override it. */
+    sampleReport: "https://drive.google.com/file/d/11ATB3locz3A632ZqWODD07VX1IakglRj/view?usp=sharing",
     checklist: "/downloads/property-inspectors-snagging-checklist.pdf",
     tools: "/downloads/property-inspectors-inspection-tools.pdf",
   },

@@ -28,11 +28,17 @@ describe("site assets", () => {
 });
 
 describe("legacy asset redirects (old URLs are indexed — never drop one)", () => {
-  it("are 301s to files that exist", () => {
+  it("are 301s to files that exist (or to the sample report's Google Drive link)", () => {
     for (const r of legacyAssetRedirects) {
       expect(r.statusCode).toBe(301);
-      expect(fs.existsSync(fileFor(r.destination)), `${r.source} → ${r.destination}`).toBe(true);
+      if (/^https:/.test(r.destination)) expect(r.destination, r.source).toBe(site.pdfs.sampleReport);
+      else expect(fs.existsSync(fileFor(r.destination)), `${r.source} → ${r.destination}`).toBe(true);
     }
+  });
+  it("the removed sample report PDF 301s to Google Drive", () => {
+    const r = legacyAssetRedirects.find((x) => x.source === "/downloads/property-inspectors-sample-snagging-report.pdf");
+    expect(r?.destination).toMatch(/^https:\/\/drive\.google\.com\//);
+    expect(fs.existsSync(path.join(process.cwd(), "public", r!.source))).toBe(false);
   });
   it("sources are unique", () => {
     const sources = legacyAssetRedirects.map((r) => r.source);

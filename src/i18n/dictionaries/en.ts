@@ -160,7 +160,7 @@ const en = {
         { title: "Recommendation", text: "What the developer should do to fix it" },
       ],
       book: "Book your inspection",
-      download: "Download sample report (PDF)",
+      download: "View sample report",
       imageAlt: "Page from a Property Inspectors snagging report",
     },
     findings: {

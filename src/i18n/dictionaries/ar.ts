@@ -151,7 +151,7 @@ const ar: Dictionary = {
         { title: "التوصية", text: "ما يجب على المطور فعله للإصلاح" },
       ],
       book: "احجز فحصك",
-      download: "حمّل نموذج التقرير (PDF)",
+      download: "اعرض نموذج التقرير",
       imageAlt: "صفحة من تقرير فحص العيوب",
     },
     findings: {
