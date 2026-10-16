@@ -41,7 +41,7 @@ const en = {
       label: "Independent property snagging engineers",
       title: "Property Snagging & Inspection Services in the UAE",
       /** Hook under the H1 (CRO audit 2026-10, "fear of loss" angle) — the H1 itself stays for SEO */
-      hook: "Don't sign your handover until an engineer has checked it.",
+      hook: "Don't sign your handover until are engineer has checked it.",
       intro:
         "We identify defects before handover, during the defect liability period (DLP) or before you buy a property — and send you a photo report within 6–24 hours.",
       /** Company description from the current site (shown under the statement) */
