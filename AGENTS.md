@@ -105,6 +105,7 @@ what changed, files touched, decisions, follow-ups. Read the latest 3 changelog 
 | `docs/seo-migration.md` | Touching URLs, redirects, metadata, sitemap, launch |
 | `docs/design-system.md` | Any UI work |
 | `docs/admin-cms.md` | Blog/admin/auth/DB work |
+| `docs/blog-post-fields.md` | Adding/editing a blog post: what each field means and how to fill it |
 | `docs/forms-and-leads.md` | Quote form, WhatsApp, SMTP |
 | `docs/i18n.md` | Arabic / translations |
 | `docs/deployment-local.md` | Install, build, run, MySQL setup |

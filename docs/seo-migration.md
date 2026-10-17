@@ -20,11 +20,11 @@ Every URL that exists on the old site must return **200 with the same path** or 
 | `/developers/` | same | 200 |
 | `/blog/` | `blog/` | 200 |
 | `/company-profile/`, `/sample-report/`, `/check-list/`, `/inspection-tools/`, `/download-brochure/` | same (download pages) | 200 |
-| `/property-snagging-electrical-plumbing-mep-guide/` | blog post (DB) | 200 once re-added in Admin (see below) |
-| `/civil-structural-property-snagging-guide/` | blog post | 200 once re-added in Admin |
-| `/property-snagging-interior-finishes-fitout-guide/` | blog post | 200 once re-added in Admin |
-| `/property-snagging-inspection-dubai-abudhabi-sharjah/` | blog post | 200 once re-added in Admin |
-| `/property-snagging-checklist-before-handover-dubai/` | blog post | 200 once re-added in Admin |
+| `/property-snagging-electrical-plumbing-mep-guide/` | blog post (DB) | 200 (re-added in Admin, see below) |
+| `/civil-structural-property-snagging-guide/` | blog post | 200 (re-added in Admin) |
+| `/property-snagging-interior-finishes-fitout-guide/` | blog post | 200 (re-added in Admin) |
+| `/property-snagging-inspection-dubai-abudhabi-sharjah/` | blog post | 200 (re-added in Admin) |
+| `/property-snagging-checklist-before-handover-dubai/` | blog post | 200 (re-added in Admin) |
 | `/sample-page/` | → `/` | 301 |
 | `/category/*`, `/author/*`, `/feed/` | → `/blog/` | 301 |
 | `/elementor-hf/*` | → `/` | 301 |
@@ -70,7 +70,7 @@ Original publish dates are in `docs/legacy-seo.json → posts[].publishedAt`.
 
 ## Launch checklist
 - [ ] Old image/PDF URLs 301 to the new files (spot-check a few from `src/lib/legacy-redirects.ts`)
-- [ ] All 5 blog posts re-added in Admin and reachable at the same URLs
+- [x] All 5 blog posts re-added in Admin and reachable at the same URLs (2026-10-17: 200, same title/description/canonical as `legacy-seo.json`, original publish dates)
 - [ ] Meta parity checked against `docs/legacy-seo.json`
 - [ ] Crawl the old sitemap URLs against the new server (Screaming Frog list mode) → no 404s
 - [ ] Google Search Console verification tag present (it is in `site.googleVerification`)

@@ -39,7 +39,10 @@ Pattern to follow: DB table + admin screen + server reads with a code fallback, 
 - [ ] Write the 10 blog drafts (`npm run blog:drafts`) and genuine developer pages
 - [ ] Replace all DUMMY values above
 - [ ] Native Arabic review
-- [ ] Re-add the 5 old blog posts in Admin with the same slug/meta (table in `docs/seo-migration.md`)
+- [x] Re-add the 5 old blog posts in Admin with the same slug/meta (table in `docs/seo-migration.md`) — all 5 live (2026-10-17), no featured images (the originals were deleted from the old server)
+- [x] Checklist post (Admin post 1): "Related service" was `C:/Program Files/Git/handover-inspection-dubai/` (CTA 404) — set to `/handover-inspection-dubai/` (2026-10-17)
+- [ ] Blog featured/OG images are placeholders picked from the site's own photos (2026-10-17): replace them per post in Admin → Posts (change "OG image" too, or clear it so it follows the featured image)
+- [x] Post 5 (`/property-snagging-inspection-dubai-abudhabi-sharjah/`) OG image was a sample photo (star trails) — now `/images/hero-city-in-hand.png` (client's choice, 2026-10-17)
 - [ ] Location photos: Dubai, Ajman, Fujairah and UAQ reuse inspection photos from the scope/gallery sets (2026-10-12) — replace with photos taken in each emirate when the client sends them (Admin → Images → Location page heroes, or `site.images.locations`). The WordPress pages used a stock "house + coins" image (`sale.jpg`), not used here (not an inspection photo)
 - [ ] About photo (`/images/about/property-handover.jpg`) is an Unsplash+ premium image with a visible watermark — replace with a licensed/real photo
 - [ ] Homepage Sample report collage (`/images/reports/sample-report-page-{1,2,3}.jpg`) is stock photography (hi-vis vest, hard hat), not our jobs — client asked for original photos (2026-10-09)

@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/db";
+import { DateInput } from "@/components/ui/DateInput";
 import { deleteReviewAction, saveReviewAction } from "../../actions";
 
 export const metadata = { title: "Reviews" };
@@ -19,7 +20,7 @@ export default async function ReviewsAdmin() {
         <label className="flex flex-col gap-1 text-sm font-semibold">Rating<select name="rating" defaultValue="5" className={input}>{[5, 4, 3, 2, 1].map((n) => <option key={n}>{n}</option>)}</select></label>
         <label className="flex flex-col gap-1 text-sm font-semibold">Source<select name="source" className={input}><option value="google">Google</option><option value="whatsapp">WhatsApp</option><option value="email">Email</option></select></label>
         <label className="flex flex-col gap-1 text-sm font-semibold md:col-span-4">Review text<textarea name="text" required rows={3} className={`${input} h-auto py-2`} /></label>
-        <label className="flex flex-col gap-1 text-sm font-semibold">Review date<input type="date" name="reviewDate" className={input} /></label>
+        <label className="flex flex-col gap-1 text-sm font-semibold">Review date<DateInput name="reviewDate" className={input} /></label>
         <label className="flex flex-col gap-1 text-sm font-semibold">Sort order<input type="number" name="sortOrder" defaultValue={0} className={input} /></label>
         <label className="flex items-center gap-2 self-end pb-3 text-sm"><input type="checkbox" name="published" defaultChecked /> Published</label>
         <button className="h-11 self-end rounded-lg bg-ink px-4 text-sm font-semibold text-white">Add review</button>

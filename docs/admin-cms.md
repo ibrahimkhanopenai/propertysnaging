@@ -12,7 +12,7 @@ URL: `/admin/` (login at `/admin/login/`). Admin is `noindex` and blocked in rob
 | Screen | Path |
 |---|---|
 | Dashboard | `/admin/` |
-| Posts list (each row: **Published/Draft switch**, **Edit**, **View ↗**, **Delete**) / new / edit | `/admin/posts/`, `/admin/posts/new/`, `/admin/posts/{id}/` |
+| Posts list (each row: **Published/Draft switch**, **Edit**, **View ↗**, **Delete**; **New post** button at the top — not in the sidebar) / new / edit | `/admin/posts/`, `/admin/posts/new/`, `/admin/posts/{id}/` |
 | Leads (quote form) | `/admin/leads/` |
 | Redirects | `/admin/redirects/` |
 | Reviews (genuine only) | `/admin/reviews/` |
@@ -90,6 +90,8 @@ URL: `/admin/` (login at `/admin/login/`). Admin is `noindex` and blocked in rob
   (`content/pages.*.ts`), price per sq ft (`PRICE_PER_SQFT` env).
 
 ## Blog post fields
+**Field-by-field guide (what each field means, where it shows, how to fill it): `docs/blog-post-fields.md`.** The editor also shows a one-line hint under each field.
+
 **Content:** title (H1), slug (auto from title, editable), excerpt, content (visual editor or Markdown, see below), FAQ repeater, featured image (upload) + alt, category, tags, location, related service (end CTA), author, table of contents toggle, language (EN/AR), status (Draft/Published/Scheduled), publish date.
 
 **SEO:** SEO title (30–60 counter), meta description (120–160 counter), live Google preview, focus keyword, secondary keywords, canonical URL, robots index/follow, schema type (BlogPosting/Article/HowTo), breadcrumb title, OG title/description/image. Live SEO checklist (keyword in title/description/slug/intro, H2 present, internal link, alt text, 600+ words).
@@ -110,6 +112,8 @@ URL: `/admin/` (login at `/admin/login/`). Admin is `noindex` and blocked in rob
 - **Delete** asks for confirmation (also on the edit screen) and warns when the post is live.
 
 ## Behaviour
+- **Publish date is UAE time** (UTC+4), whatever the admin's computer timezone (`toUaeDateTimeInput` / `parseUaeDateTimeInput` in `src/lib/utils.ts`). Saving a post again never moves its date.
+- **Date fields** (publish date, review date, and the public quote form's handover date) use `components/ui/DateInput`: a click anywhere in the field opens the browser's own calendar (`showPicker()`), with no date-picker library.
 - Scheduled posts go live automatically once `publishedAt` passes (pages revalidate hourly).
 - Changing the slug of a non-draft post auto-creates a 301 in `Redirect`.
 - Slugs that clash with static pages are rejected.

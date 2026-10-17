@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { cn, normalizePath, readingMinutes, slugify } from "@/lib/utils";
+import { cn, normalizePath, parseUaeDateTimeInput, readingMinutes, slugify, toUaeDateTimeInput } from "@/lib/utils";
 import { estimatePrice } from "@/lib/estimate";
 
 describe("slugify", () => {
@@ -27,6 +27,27 @@ describe("readingMinutes / cn", () => {
     expect(readingMinutes(Array(660).fill("w").join(" "))).toBe(3);
   });
   it("joins truthy classes", () => expect(cn("a", false, null, "b", undefined)).toBe("a b"));
+});
+
+describe("admin publish date (UAE time, UTC+4)", () => {
+  it("shows a stored date in UAE time", () => {
+    expect(toUaeDateTimeInput(new Date("2026-03-13T12:34:00Z"))).toBe("2026-03-13T16:34");
+    expect(toUaeDateTimeInput(new Date("2026-03-13T22:00:00Z"))).toBe("2026-03-14T02:00");
+    expect(toUaeDateTimeInput(null)).toBe("");
+  });
+  it("reads the input as UAE time, whatever the server timezone", () => {
+    expect(parseUaeDateTimeInput("2026-03-13T16:34")?.toISOString()).toBe("2026-03-13T12:34:00.000Z");
+    expect(parseUaeDateTimeInput("2026-03-14T02:00:30")?.toISOString()).toBe("2026-03-13T22:00:30.000Z");
+  });
+  it("round-trips, so saving a post again never moves its date", () => {
+    const d = new Date("2026-03-19T10:30:00Z");
+    let v = d;
+    for (let i = 0; i < 3; i++) v = parseUaeDateTimeInput(toUaeDateTimeInput(v))!;
+    expect(v.toISOString()).toBe(d.toISOString());
+  });
+  it("rejects anything that is not a datetime-local value", () => {
+    for (const bad of ["", "2026-03-13", "13/03/2026 10:30", "2026-03-13T10:30Z", "2026-13-40T10:30"]) expect(parseUaeDateTimeInput(bad)).toBeNull();
+  });
 });
 
 describe("estimatePrice (built-up area × rate per sq ft)", () => {

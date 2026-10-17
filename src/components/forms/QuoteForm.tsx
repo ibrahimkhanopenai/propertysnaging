@@ -7,6 +7,7 @@ import { getAttribution } from "@/lib/attribution";
 import { estimatePrice } from "@/lib/estimate";
 import { track } from "@/lib/track";
 import { cn } from "@/lib/utils";
+import { DateInput } from "@/components/ui/DateInput";
 
 type Props = {
   t: Dictionary["quote"];
@@ -154,7 +155,7 @@ export function QuoteForm({ t, locale, ratePerSqft, currency, whatsapp, source =
           </label>
           <label className={label}>
             {t.handoverDate}
-            <input name="handoverDate" type="date" className={field} />
+            <DateInput name="handoverDate" className={field} />
           </label>
         </div>
       </details>

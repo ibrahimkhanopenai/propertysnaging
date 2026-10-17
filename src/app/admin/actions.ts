@@ -8,7 +8,7 @@ import { z } from "zod";
 import { createSession, destroySession, getSession } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { clientIp, createRateLimiter } from "@/lib/rate-limit";
-import { normalizePath, slugify } from "@/lib/utils";
+import { normalizePath, parseUaeDateTimeInput, slugify } from "@/lib/utils";
 import { staticRoutes } from "@/lib/routes";
 import { settingFields, validateSetting } from "@/lib/settings-fields";
 import { defaultAreas, isLocationKey, suggestedCommunities } from "@/content/location-defaults";
@@ -116,7 +116,8 @@ export async function savePostAction(_prev: PostState, fd: FormData): Promise<Po
   }
 
   const publishedAtRaw = optional(fd.get("publishedAt"));
-  let publishedAt = publishedAtRaw ? new Date(publishedAtRaw) : null;
+  let publishedAt = publishedAtRaw ? parseUaeDateTimeInput(publishedAtRaw) : null;
+  if (publishedAtRaw && !publishedAt) return { error: "Publish date is not valid." };
   if (v.status === "PUBLISHED" && !publishedAt) publishedAt = new Date();
   if (v.status === "SCHEDULED" && (!publishedAt || publishedAt <= new Date())) return { error: "Scheduled posts need a future publish date." };
 
