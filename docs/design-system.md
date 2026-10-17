@@ -38,6 +38,12 @@ Global: floating Call/WhatsApp (desktop), bottom bar (mobile), 10-second callbac
 `ButtonLink` (variants: primary, **cta**, outline, whatsapp, light, ghostLight — `cta` = the one lead action per section, black `ink` (white `light` on black sections); WhatsApp buttons stay green `wa`; CRO audit 2026-10), `Container` (near full width: max 1920px, gutters 16→24→40→64px), `SectionHeading`, `Icon` (inline SVG), `PageHero`, `ContentPage`, `Faq`, `PostCard`.
 Radius: 12px buttons, 16–18px cards, 22–24px large panels. Min touch target 44px.
 
+**Header dropdowns (desktop, `Header.tsx`, CSS only):**
+- Each nav item spans the full header height, so the mouse never leaves it on the way down to its menu.
+- Hover intent: a menu opens after 100 ms, the Locations list closes 200 ms after the mouse leaves, and the full-width Services panel after 500 ms (long diagonal paths to its far columns). Keyboard focus opens at once.
+- The Locations list closes at once when Services is hovered.
+- Don't add a gap between the nav and the menus, and don't give the panels different z-indexes; both rules were tested in a browser, see changelog 2026-10-17-021.
+
 ## Section patterns (inspired by propertyinspectiondxb.com, Oct 2026 — order and colours unchanged)
 - **Service cards:** real inspection photo on top (4:3, purple inner ring + slight zoom on hover), title, summary, "Read more →". Photo/ALT pairing in `ServicesGrid.tsx` → `site.images.scope` + `home.services.photoAlt`.
 - **Icon cards** ("What we inspect"): icon in a round `mist` badge that turns `ink` on hover.

@@ -10,8 +10,21 @@ import { LanguageSwitch } from "./LanguageSwitch";
 import { MobileMenu } from "./MobileMenu";
 import { getNav, type NavItem } from "./nav";
 
+/**
+ * Dropdowns open below the header. Each nav <li> fills the full header height (see <nav> below), so the mouse
+ * never leaves the item's hover area on its way down to the menu.
+ * Hover intent (CSS only): a list closes 200 ms after the mouse leaves (a slightly diagonal path does not close it)
+ * and a menu opens 100 ms after the mouse arrives (passing over the next item does not pop its menu over this one).
+ * Keyboard focus opens at once. `visibility` is in the transition list so the close delay applies to it too.
+ * - The full-width Services panel waits longer (500 ms): the way to its far columns can pass over other items
+ *   (Arabic, slow mouse, farthest column needs ~450 ms).
+ * - A small list (Locations) closes at once when the Services item is hovered, so it never covers the Services panel.
+ *   Both use the same z-index, so a list opened after Services (later in the DOM) is on top of it.
+ */
 const dropdown =
-  "invisible absolute top-full z-50 translate-y-1 rounded-2xl border border-line bg-white p-3 opacity-0 shadow-[0_18px_40px_rgba(10,10,10,0.08)] transition group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100";
+  "invisible absolute top-full z-50 translate-y-1 rounded-2xl border border-line bg-white p-3 opacity-0 shadow-[0_18px_40px_rgba(10,10,10,0.08)] transition-[opacity,translate,visibility] duration-150 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-hover:delay-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100 group-focus-within:delay-0";
+const listDropdown = `${dropdown} delay-200 group-has-[>li[data-mega]:hover]/nav:delay-0`;
+const megaDropdown = `${dropdown} delay-500`;
 
 export async function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   const cfg = await getSettings();
@@ -28,16 +41,17 @@ export async function Header({ locale, dict }: { locale: Locale; dict: Dictionar
       <Container className="flex items-center justify-between gap-4 py-3">
         <Logo href={L("/")} />
 
-        <nav aria-label="Main" className="hidden xl:block">
-          <ul className="flex items-center">
+        {/* -my-3 + self-stretch: the nav (and every <li>) spans the header's full height, up to the top edge of the dropdowns */}
+        <nav aria-label="Main" className="hidden self-stretch xl:-my-3 xl:flex">
+          <ul className="group/nav flex items-stretch">
             {nav.map((item) => (
-              <li key={item.label} className={item.groups ? "group static" : "group relative"}>
+              <li key={item.label} data-mega={item.groups ? "" : undefined} className={`${item.groups ? "group static" : "group relative"} flex items-center`}>
                 <Link href={item.href} className="inline-flex items-center gap-1 whitespace-nowrap rounded-lg px-2 py-2 text-[15px] text-ink-soft hover:text-ink 2xl:px-2.5">
                   {item.label}
                   {item.children || item.groups ? <Icon name="chevron" size={14} /> : null}
                 </Link>
                 {item.children ? (
-                  <ul className={`${dropdown} start-0 min-w-60`}>
+                  <ul className={`${listDropdown} start-0 min-w-60`}>
                     {item.children.map((c) => (
                       <li key={c.href}>
                         <Link href={c.href} className="block rounded-lg px-3 py-2.5 text-[15px] hover:bg-mist">{c.label}</Link>
@@ -46,7 +60,7 @@ export async function Header({ locale, dict }: { locale: Locale; dict: Dictionar
                   </ul>
                 ) : null}
                 {item.groups ? (
-                  <div className={`${dropdown} inset-x-4 mx-auto grid max-w-[1400px] lg:inset-x-10 grid-cols-4 gap-6 p-6`}>
+                  <div className={`${megaDropdown} inset-x-4 mx-auto grid max-w-[1400px] lg:inset-x-10 grid-cols-4 gap-6 p-6`}>
                     {item.groups.map((g) => (
                       <div key={g.title}>
                         <p className="mb-2 px-3 text-[13px] font-semibold text-subtle">{g.title}</p>
