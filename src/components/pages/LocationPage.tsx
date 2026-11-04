@@ -24,7 +24,7 @@ import { getFaqs, isFaqPage } from "@/lib/faqs";
 
 /**
  * Location page (Dubai, Abu Dhabi … UAQ) built as an organic-search landing page (CRO audit 2026-10):
- * hero with hook, proofs, one copper CTA + WhatsApp and a real photo → key figures →
+ * hero with hook, proofs, one copper CTA + WhatsApp and a real photo →
  * why snagging matters here (with report photos) → communities + areas (Admin → Locations) →
  * sample report → city FAQ → related links → quote form (#quote).
  * URLs, <title> and meta description are unchanged (legacy SEO). Copy: content/locations.{en,ar}.ts;
@@ -86,20 +86,6 @@ export async function LocationPage({ pageKey, locale }: { pageKey: PageKey; loca
               </div>
             </div>
           ) : null}
-        </Container>
-      </section>
-
-      {/* KEY FIGURES (Admin → Settings — same numbers as the homepage) */}
-      <section aria-label={dict.home.trust.title} className="border-b border-line bg-mist">
-        <Container>
-          <ul className="grid grid-cols-2 gap-px py-2 lg:grid-cols-4">
-            {cfg.stats.filter((s) => s.key !== "inspections").map((s) => (
-              <li key={s.key} className="flex flex-col items-center gap-1.5 px-3 py-5 text-center">
-                <span dir="ltr" className="font-display text-[clamp(1.6rem,2.6vw,2.1rem)] font-extrabold leading-none tracking-[-0.02em] text-ink">{s.value}</span>
-                <span className="text-[13px] font-semibold uppercase leading-snug tracking-[0.1em] text-muted">{dict.home.trust.stats[s.key]}</span>
-              </li>
-            ))}
-          </ul>
         </Container>
       </section>
 

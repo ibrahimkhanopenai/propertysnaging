@@ -5,6 +5,7 @@ import { getPageContent } from "@/content/pages";
 import { defaultAreas, isLocationKey } from "@/content/location-defaults";
 import { staticRoutes } from "@/lib/routes";
 import { SortableList } from "@/components/admin/SortableList";
+import { SubmitButton } from "@/components/admin/SubmitButton";
 import { deleteLocationItemAction, loadLocationDefaultsAction, reorderLocationItemsAction, saveLocationItemAction } from "../../actions";
 
 export const metadata = { title: "Locations" };
@@ -55,7 +56,7 @@ export default async function LocationsAdmin({ searchParams }: { searchParams: P
           emirate={key}
           kind="AREA"
           title={`Areas we cover in ${city}`}
-          help="Area chips. While this list is empty the site shows the default list below."
+          help="Areas shown on the location page (name + optional description). While this list is empty the site shows the default list below."
           rows={rows.filter((r) => r.kind === "AREA")}
           fallback={isLocationKey(key) ? defaultAreas(key).map((a) => a.name) : []}
         />
@@ -82,7 +83,7 @@ function ItemList({ emirate, kind, title, help, rows, fallback }: { emirate: str
         <label className={`${label} sm:col-span-2`}>Description (English)<textarea name="description" maxLength={400} rows={2} className={ta} /></label>
         <label className={`${label} sm:col-span-2`}>Description (Arabic)<textarea name="descriptionAr" dir="rtl" maxLength={400} rows={2} className={ta} /></label>
         <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="published" defaultChecked /> Show on site</label>
-        <button className="h-10 rounded-lg bg-ink px-4 text-sm font-semibold text-white sm:col-start-2">Add to the end</button>
+        <SubmitButton pendingLabel="Adding…" savedLabel="Added ✓" className="h-10 rounded-lg bg-ink px-4 text-sm font-semibold text-white disabled:opacity-60 sm:col-start-2">Add to the end</SubmitButton>
       </form>
 
       {rows.length === 0 ? (
@@ -95,9 +96,9 @@ function ItemList({ emirate, kind, title, help, rows, fallback }: { emirate: str
           <form action={loadLocationDefaultsAction}>
             <input type="hidden" name="emirate" value={emirate} />
             <input type="hidden" name="kind" value={kind} />
-            <button className="rounded-lg border border-ink px-3 py-2 text-sm font-semibold hover:bg-ink hover:text-white">
+            <SubmitButton pendingLabel="Loading…" savedLabel="Loaded ✓" className="rounded-lg border border-ink px-3 py-2 text-sm font-semibold hover:bg-ink hover:text-white disabled:opacity-60">
               {kind === "AREA" ? "Load the default list to edit it" : "Load suggested communities"}
-            </button>
+            </SubmitButton>
           </form>
         </div>
       ) : null}
@@ -120,7 +121,7 @@ function ItemList({ emirate, kind, title, help, rows, fallback }: { emirate: str
               <label className={`${label} sm:col-span-2`}>Description (Arabic)<textarea name="descriptionAr" defaultValue={r.descriptionAr ?? ""} dir="rtl" maxLength={400} rows={2} className={ta} /></label>
               <div className="flex flex-wrap items-center gap-3 sm:col-span-2">
                 <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="published" defaultChecked={r.published} /> Show on site</label>
-                <button className="ms-auto h-9 rounded-lg bg-ink px-4 text-sm font-semibold text-white">Save</button>
+                <SubmitButton className="ms-auto h-9 rounded-lg bg-ink px-4 text-sm font-semibold text-white disabled:opacity-60">Save</SubmitButton>
                 <button formAction={deleteLocationItemAction} className="h-9 px-2 text-sm text-snag">Delete</button>
               </div>
             </form>
