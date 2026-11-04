@@ -8,8 +8,11 @@ import { track } from "@/lib/track";
 
 type Props = {
   t: Dictionary["home"]["booking"];
-  types: Dictionary["quote"]["types"];
+  /** Quote dictionary — reused for the WhatsApp message labels + the property-type options */
+  q: Dictionary["quote"];
   locale: Locale;
+  /** International format, no "+" (site.whatsapp) */
+  whatsapp: string;
 };
 
 // Neutral fields with the brand accent on focus (docs/design-system.md)
@@ -18,14 +21,15 @@ const field =
 
 /**
  * One-row short quote form (Name, Phone, Property type → Get my quote). Email was dropped
- * (CRO audit 2026-10: every extra field loses leads). Posts to /api/leads/ with gclid/UTM
- * (saved in MySQL + emailed to LEAD_NOTIFY_TO) and fires `generate_lead`.
+ * (CRO audit 2026-10: every extra field loses leads). On submit it opens WhatsApp with the
+ * details pre-filled (inside the click, so popup blockers allow it), posts the lead to
+ * /api/leads/ in the background (MySQL + email, with gclid/UTM) and fires `generate_lead`.
  */
-export function BookingForm({ t, types, locale }: Props) {
+export function BookingForm({ t, q, locale, whatsapp }: Props) {
   const id = useId();
   const [status, setStatus] = useState<"idle" | "sending" | "done" | "error" | "invalid">("idle");
 
-  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
     const fd = new FormData(form);
@@ -44,16 +48,29 @@ export function BookingForm({ t, types, locale }: Props) {
       setStatus("invalid");
       return;
     }
+
+    // Hand off to WhatsApp with the details pre-filled. Opened synchronously inside the
+    // click (before the background fetch) so popup blockers let it through — same as QuoteForm.
+    const lines = [
+      q.waIntro,
+      `${q.name}: ${data.name}`,
+      `${q.phone}: ${data.phone}`,
+      data.propertyType ? `${q.propertyType}: ${q.types[data.propertyType as keyof typeof q.types]}` : "",
+    ].filter(Boolean);
+    window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent(lines.join("\n"))}`, "_blank", "noopener");
+
     setStatus("sending");
-    try {
-      const r = await fetch("/api/leads/", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
-      if (!r.ok) throw new Error();
-      setStatus("done");
-      form.reset();
-      track("generate_lead", { form_id: "booking_bar", property_type: data.propertyType });
-    } catch {
-      setStatus("error");
-    }
+    fetch("/api/leads/", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data), keepalive: true })
+      .then((r) => {
+        if (!r.ok) {
+          setStatus("error");
+          return;
+        }
+        setStatus("done");
+        form.reset();
+        track("generate_lead", { form_id: "booking_bar", property_type: data.propertyType, method: "whatsapp" });
+      })
+      .catch(() => setStatus("error"));
   }
 
   return (
@@ -66,9 +83,9 @@ export function BookingForm({ t, types, locale }: Props) {
         <label className="sr-only" htmlFor={`${id}-type`}>{t.type}</label>
         <select id={`${id}-type`} name="propertyType" defaultValue="" className={field}>
           <option value="">{t.type}</option>
-          <option value="villa">{types.villa}</option>
-          <option value="apartment">{types.apartment}</option>
-          <option value="commercial">{types.commercial}</option>
+          <option value="villa">{q.types.villa}</option>
+          <option value="apartment">{q.types.apartment}</option>
+          <option value="commercial">{q.types.commercial}</option>
         </select>
         <button type="submit" disabled={status === "sending"} className="min-h-12 rounded-xl bg-ink px-8 font-semibold text-white transition hover:bg-ink-soft disabled:opacity-60 sm:col-span-3 lg:col-span-1">
           {status === "sending" ? t.sending : t.submit}
