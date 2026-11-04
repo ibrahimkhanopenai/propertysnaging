@@ -154,7 +154,7 @@ const en = {
       text: "Every defect is documented the same way, so you and your developer know exactly what to fix.",
       fields: [
         { title: "Location", text: "Room and exact position of the defect" },
-        { title: "Description", text: "What is wrong, in plain language" },
+        { title: "Description", text: "A clear account of each defect found" },
         { title: "Photograph", text: "Clear photo, marked where needed" },
         { title: "Severity", text: "Major or minor, so you can prioritise" },
         { title: "Recommendation", text: "What the developer should do to fix it" },
@@ -368,7 +368,7 @@ const en = {
   common: {
     home: "Home",
     learnMore: "Learn more",
-    download: "Download PDF",
+    download: "View PDF",
     bookInspection: "Book an inspection",
     notFoundTitle: "We couldn't find that page",
     notFoundText: "The link may be old or mistyped. Go back to the homepage or contact us on WhatsApp.",

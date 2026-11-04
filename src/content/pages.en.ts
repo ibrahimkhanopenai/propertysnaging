@@ -68,7 +68,7 @@ export const pagesEn: Record<OtherPageKey, PageContent> = {
   },
   companyProfile: {
     metaTitle: "Company Profile | Property Inspectors UAE",
-    metaDescription: "Download the Property Inspectors company profile: our team, certifications, services and coverage across the UAE.",
+    metaDescription: "View the Property Inspectors company profile: our team, certifications, services and coverage across the UAE.",
     breadcrumb: "Company profile",
     h1: "Company profile",
     intro: "Our team, certifications, services and coverage in one PDF.",
@@ -77,7 +77,7 @@ export const pagesEn: Record<OtherPageKey, PageContent> = {
   },
   sampleReport: {
     metaTitle: "Sample Snagging Report | See What You Get",
-    metaDescription: "Download a sample snagging report from Property Inspectors with defect photos, locations, severity and engineer recommendations.",
+    metaDescription: "View a sample snagging report from Property Inspectors with defect photos, locations, severity and engineer recommendations.",
     breadcrumb: "Sample report",
     h1: "Sample snagging report",
     intro: "See exactly what you will receive: defect photos, locations, severity and engineer recommendations.",
@@ -88,7 +88,7 @@ export const pagesEn: Record<OtherPageKey, PageContent> = {
   },
   checkList: {
     metaTitle: "Property Snagging Checklist | Free PDF",
-    metaDescription: "Download our property snagging checklist to understand what is inspected before handover in the UAE.",
+    metaDescription: "View our property snagging checklist to understand what is inspected before handover in the UAE.",
     breadcrumb: "Checklist",
     h1: "Property snagging checklist",
     intro: "The checklist our engineers use, room by room, before handover.",
@@ -105,10 +105,10 @@ export const pagesEn: Record<OtherPageKey, PageContent> = {
     sections: [],
   },
   downloadBrochure: {
-    metaTitle: "Download Brochure | Property Inspectors",
-    metaDescription: "Download the Property Inspectors brochure to learn about our snagging and inspection services in the UAE.",
+    metaTitle: "View Brochure | Property Inspectors",
+    metaDescription: "View the Property Inspectors brochure to learn about our snagging and inspection services in the UAE.",
     breadcrumb: "Brochure",
-    h1: "Download our brochure",
+    h1: "View our brochure",
     intro: "Everything about our snagging and inspection services in one document.",
     download: { href: site.pdfs.profile },
     sections: [],
