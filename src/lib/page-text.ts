@@ -82,7 +82,7 @@ export function pageTextFormValues(c: PageContent, row: PageTextRow | null | und
   return {
     hook: merged.hook ?? "",
     intro: merged.intro,
-    sections: merged.sections.map(normalize),
+    sections: (merged.sections ?? []).map(normalize),
     changed: { hook: row?.hook != null, intro: row?.intro != null, sections: storedSections(row?.sections) !== null },
   };
 }

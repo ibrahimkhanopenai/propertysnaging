@@ -9,6 +9,7 @@ import { deleteLocationItemAction, loadLocationDefaultsAction, reorderLocationIt
 
 export const metadata = { title: "Locations" };
 const input = "h-10 w-full rounded-lg border border-zinc-300 bg-white px-3 text-sm";
+const ta = "min-h-16 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm";
 const label = "flex flex-col gap-1 text-xs font-semibold text-muted";
 const emirates = staticRoutes.filter((r) => r.group === "location");
 
@@ -78,6 +79,8 @@ function ItemList({ emirate, kind, title, help, rows, fallback }: { emirate: str
         <label className={label}>Name (English) *<input name="name" required maxLength={160} className={input} /></label>
         <label className={label}>Name (Arabic)<input name="nameAr" dir="rtl" maxLength={160} className={input} /></label>
         {kind === "COMMUNITY" ? <label className={label}>Developer<input name="developer" placeholder="e.g. Emaar" maxLength={120} className={input} /></label> : null}
+        <label className={`${label} sm:col-span-2`}>Description (English)<textarea name="description" maxLength={400} rows={2} className={ta} /></label>
+        <label className={`${label} sm:col-span-2`}>Description (Arabic)<textarea name="descriptionAr" dir="rtl" maxLength={400} rows={2} className={ta} /></label>
         <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="published" defaultChecked /> Show on site</label>
         <button className="h-10 rounded-lg bg-ink px-4 text-sm font-semibold text-white sm:col-start-2">Add to the end</button>
       </form>
@@ -113,6 +116,8 @@ function ItemList({ emirate, kind, title, help, rows, fallback }: { emirate: str
               <label className={label}>English<input name="name" defaultValue={r.name} required maxLength={160} className={input} /></label>
               <label className={label}>Arabic<input name="nameAr" defaultValue={r.nameAr ?? ""} dir="rtl" maxLength={160} className={input} /></label>
               {kind === "COMMUNITY" ? <label className={`${label} sm:col-span-2`}>Developer<input name="developer" defaultValue={r.developer ?? ""} maxLength={120} className={input} /></label> : null}
+              <label className={`${label} sm:col-span-2`}>Description (English)<textarea name="description" defaultValue={r.description ?? ""} maxLength={400} rows={2} className={ta} /></label>
+              <label className={`${label} sm:col-span-2`}>Description (Arabic)<textarea name="descriptionAr" defaultValue={r.descriptionAr ?? ""} dir="rtl" maxLength={400} rows={2} className={ta} /></label>
               <div className="flex flex-wrap items-center gap-3 sm:col-span-2">
                 <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="published" defaultChecked={r.published} /> Show on site</label>
                 <button className="ms-auto h-9 rounded-lg bg-ink px-4 text-sm font-semibold text-white">Save</button>

@@ -6,8 +6,8 @@ export type LocationKey = "dubai" | "abudhabi" | "sharjah" | "ajman" | "rak" | "
 /**
  * Location pages — each with location-specific content (client rule: no duplicated location pages).
  * Dubai / Abu Dhabi / Sharjah: <title> + description + URL are the old site's (they rank; also identical on
- * truecheckinspection.com). Body copy builds on the WordPress pages (why it matters, common defects, how we
- * help, areas) but is written per city (2026-10-12).
+ * truecheckinspection.com). Body copy builds on the WordPress pages (why it matters, areas) but is
+ * written per city (2026-10-12).
  */
 export const locationsEn: Record<LocationKey, PageContent> = {
   dubai: {
@@ -32,20 +32,7 @@ export const locationsEn: Record<LocationKey, PageContent> = {
         "A snagging inspection gives you a written list of what's wrong, with photos, before you accept the keys and while the developer is still responsible for fixing it. Paying for the same repairs yourself a year later costs a lot more.",
       ],
     },
-    defects: {
-      title: "What we usually find in Dubai homes",
-      groups: [
-        { title: "Electrical and plumbing", items: ["Loose sockets and switches that don't work", "Low water pressure and slow drains", "Leaks under sinks and behind WC cisterns", "DB panel labels that don't match the circuits"] },
-        { title: "AC and ventilation", items: ["Rooms that never reach the set temperature", "Ducts that are blocked or badly sealed", "Condensate drains that drip or back up", "Noisy or vibrating fan coil units"] },
-        { title: "Walls, floors and joinery", items: ["Hairline cracks in plaster and paint", "Hollow-sounding floor tiles", "Doors and wardrobes that don't close properly", "Uneven grout and missing silicone"] },
-        { title: "Heat and humidity", items: ["Moisture behind bathroom walls", "Mould starting around AC grilles", "Gaps in window and balcony door seals", "Weak waterproofing on balconies and terraces"] },
-      ],
-    },
     communities: ["Dubai Marina & JBR", "Business Bay", "Downtown Dubai", "Palm Jumeirah", "Dubai Hills Estate", "JVC & JVT", "Arabian Ranches", "Damac Hills", "Dubai Creek Harbour", "Meydan & MBR City", "Dubai South"],
-    sections: [
-      { title: "Book around your handover date", paragraphs: ["Handover season can fill inspection calendars weeks ahead, so book as soon as your handover notice arrives. We inspect, send the report within 6–24 hours, and you forward it to the developer's customer care team before you sign."] },
-      { title: "Apartments, townhouses and villas", paragraphs: ["Most of our Dubai work is apartments in places like Business Bay, JVC and Dubai Creek Harbour. There we also look at the things outside your door that still affect you, such as balcony drainage and the main entrance door.", "Villas and townhouses in Dubai Hills, Arabian Ranches or Damac Hills take longer. Roofs, gardens, external drainage and several AC zones all need checking, so plan on 3–5 hours on site."] },
-    ],
     faqs: [
       { q: "How quickly can you inspect in Dubai?", a: "We usually schedule Dubai inspections within a few days, and reports are delivered within 6 to 24 hours." },
       { q: "Do you cover all Dubai communities?", a: "Yes — from Dubai Marina to Dubai South and everything in between." },
@@ -76,20 +63,7 @@ export const locationsEn: Record<LocationKey, PageContent> = {
         "The summer heat is hard on air conditioning, roof waterproofing and outside drainage. If a defect is in your snagging report before handover, fixing it is the developer's job. If it turns up after you've moved in, you may end up chasing it yourself.",
       ],
     },
-    defects: {
-      title: "What we often find in Abu Dhabi villas and apartments",
-      groups: [
-        { title: "Roofs and outside areas", items: ["Water ponding on roofs and terraces", "Garden levels that slope toward the house", "Cracked render and boundary walls", "Railings that are loose or already rusting"] },
-        { title: "AC and water heaters", items: ["AC units in some zones that don't cool properly", "Thermostats wired to the wrong unit", "Water heaters with no proper drain", "Condensate pipes leaking into ceilings"] },
-        { title: "Inside the villa", items: ["Hollow tiles in large living areas", "Joinery and wardrobe doors out of line", "Paint touch-ups that don't match", "Gaps around kitchen worktops"] },
-        { title: "Bathrooms and wet areas", items: ["Showers that don't drain fully", "Missing or poor silicone seals", "High damp readings in bathroom walls", "Weak water pressure on upper floors"] },
-      ],
-    },
     communities: ["Yas Island", "Saadiyat Island", "Al Reem Island", "Al Raha Beach", "Al Reef", "Masdar City", "Khalifa City", "Al Shamkha", "Al Khalidiyah", "Al Zahiyah", "Al Nahyan", "Al Markaziyah"],
-    sections: [
-      { title: "Planning your Abu Dhabi inspection", paragraphs: ["Our engineers travel from Dubai, so we group Abu Dhabi bookings on set days. Tell us your handover date early and we will reserve a slot that leaves time to submit the report."] },
-      { title: "Villas take longer, and that's fine", paragraphs: ["A large villa can take most of a day. We check the roof where there's safe access, every AC unit, the water heaters, the maid's and driver's rooms and the outside areas — not just the main living spaces."] },
-    ],
     faqs: [
       { q: "Is there an extra charge for Abu Dhabi?", a: "Contact us with your property details and location — we confirm the full price before booking." },
       { q: "How long does a villa inspection take in Abu Dhabi?", a: "Most villas take 3–5 hours. Very large homes can take longer; we'll tell you what to expect when you book." },
@@ -119,20 +93,7 @@ export const locationsEn: Record<LocationKey, PageContent> = {
         "New homes tend to have finishing and MEP snags the developer should fix before you move in. Older ones usually hide wear: tired AC units, old plumbing and signs of past leaks. Either way, knowing before you sign gives you something to negotiate with.",
       ],
     },
-    defects: {
-      title: "What we commonly find in Sharjah",
-      groups: [
-        { title: "New handovers", items: ["Paint and plaster edges left unfinished", "Tiles with hollow spots or uneven joints", "Sockets and lights that don't work", "Doors that rub or don't latch"] },
-        { title: "Older apartments", items: ["AC units near the end of their life", "Old water stains on ceilings", "Corroded pipes and weak water pressure", "Outdated or overloaded electrical points"] },
-        { title: "Bathrooms and kitchens", items: ["Showers and floor traps that drain slowly", "Cracked grout and failed silicone", "Moisture behind tiles", "Dripping mixer taps"] },
-        { title: "Heat and humidity", items: ["Condensation around AC grilles", "Mould in bathrooms with weak extraction", "Window seals letting in dust and heat", "Balcony doors that don't seal"] },
-      ],
-    },
     communities: ["Aljada", "Tilal City", "Al Zahia", "Muwaileh", "Al Mamsha", "Sharjah Waterfront City", "Al Khan", "Al Majaz", "Al Nahda", "Al Qasimia", "Al Taawun", "Al Qasba", "Al Qulayaa", "Al Rolla"],
-    sections: [
-      { title: "New communities", paragraphs: ["For new handovers we run full snagging and help you prepare the report for the developer's customer care team."] },
-      { title: "Older buildings", paragraphs: ["For resale and rental apartments in established areas, a secondary property inspection focuses on AC age, plumbing, electrical safety and signs of past leaks."] },
-    ],
     faqs: [
       { q: "Do you inspect older apartments in Sharjah?", a: "Yes. Our secondary property inspection is designed for lived-in and older homes." },
       { q: "Can you inspect a Sharjah apartment before I buy it?", a: "Yes. A pre-purchase inspection shows you the real condition before you sign, so you can negotiate on price or ask the seller to fix things first." },
@@ -160,20 +121,7 @@ export const locationsEn: Record<LocationKey, PageContent> = {
         "If you plan to rent the flat out, anything found after handover turns into tenant complaints and call-out fees. A snagging report before you take the keys puts those repairs on the developer's list instead.",
       ],
     },
-    defects: {
-      title: "What we often find in Ajman apartments",
-      groups: [
-        { title: "Finishing", items: ["Patchy paint and visible plaster repairs", "Hollow or chipped floor tiles", "Kitchen cabinets that aren't level", "Gaps at skirting and loose trims"] },
-        { title: "Electrical and plumbing", items: ["Dead sockets and unlabelled breakers", "Low pressure in showers", "Leaks at sink and basin wastes", "Water heaters not connected properly"] },
-        { title: "Air conditioning", items: ["Units that cool slowly or not at all", "Drain lines dripping inside the flat", "Filters still full of construction dust"] },
-        { title: "Balconies and windows", items: ["Balcony floors that hold water", "Sliding doors that stick", "Window seals with visible gaps"] },
-      ],
-    },
     communities: ["Al Zorah", "Emirates City", "Ajman Downtown", "Al Nuaimiya", "Al Rashidiya", "Al Yasmeen", "Al Helio"],
-    sections: [
-      { title: "Investors and landlords", paragraphs: ["If you're buying to rent, a snagging or pre-purchase inspection protects your yield: fewer repair call-outs and fewer tenant complaints in the first year."] },
-      { title: "Buying a resale flat", paragraphs: ["For older units in Al Nuaimiya, Al Rashidiya or Al Yasmeen we run a secondary inspection: AC age and condition, plumbing, electrical safety and signs of earlier leaks. It helps you judge whether the asking price is fair."] },
-    ],
     faqs: [
       { q: "How do I book an inspection in Ajman?", a: "Send us your property type, location and preferred date through the quote form or WhatsApp, and we confirm a slot." },
       { q: "Is it worth it for a small apartment?", a: "Usually, yes. Even a studio can have a dozen snags, and the price is based on the built-up area, so smaller homes cost less to inspect." },
@@ -200,20 +148,7 @@ export const locationsEn: Record<LocationKey, PageContent> = {
         "Many buyers here are investors or holiday-home owners who live somewhere else. An independent inspection means someone checks the property properly even if you can't be there for the handover.",
       ],
     },
-    defects: {
-      title: "What we look for in RAK homes",
-      groups: [
-        { title: "Coastal wear", items: ["Rust starting on railings, hinges and fixings", "Outside paint and render already flaking", "Corrosion on outdoor AC units"] },
-        { title: "Seals and openings", items: ["Window and door seals that let in wind-driven rain", "Balcony doors that don't close tight", "Gaps where pipes and cables pass through walls"] },
-        { title: "Damp and mould", items: ["Condensation in rooms with poor airflow", "Mould behind wardrobes and in bathrooms", "High moisture readings near outside walls"] },
-        { title: "Inside the home", items: ["Hollow tiles and uneven floors", "Plumbing leaks under sinks", "Sockets, switches and lights that don't work"] },
-      ],
-    },
     communities: ["Al Marjan Island", "Mina Al Arab", "Al Hamra Village", "Julphar", "Al Nakheel", "Seih Al Uraibi"],
-    sections: [
-      { title: "Coastal checks we add", bullets: ["Corrosion on balcony railings and fixings", "Window and door seals against wind-driven rain", "External paint and render quality", "Condensation and mould risk in AC rooms", "Condition of outdoor AC units"] },
-      { title: "Holiday homes and investors", paragraphs: ["Buying a holiday home or a short-let investment? We can inspect without you being present and send the report and photos digitally."] },
-    ],
     faqs: [
       { q: "Can you inspect if I live abroad?", a: "Yes. Arrange key access with the developer or your agent and we'll handle the inspection and send you the report." },
       { q: "Do you inspect villas in Al Hamra and Mina Al Arab?", a: "Yes, villas and townhouses as well as apartments. For villas we also check the roof, outside areas and every AC unit." },
@@ -240,20 +175,7 @@ export const locationsEn: Record<LocationKey, PageContent> = {
         "We inspect here by appointment and plan the trip around your handover or purchase date, so the report still reaches you in time to act on it.",
       ],
     },
-    defects: {
-      title: "What we focus on in Fujairah",
-      groups: [
-        { title: "Water and drainage", items: ["Roofs and terraces that don't drain", "Floor drains that are blocked or in the wrong place", "Water marks under windows after rain"] },
-        { title: "Waterproofing", items: ["Damp in bathroom and kitchen walls", "Failed sealant around showers and baths", "Moisture rising at ground-floor walls"] },
-        { title: "AC and humidity", items: ["AC that cools but leaves the air damp", "Condensate leaks into ceilings", "Mould starting around vents"] },
-        { title: "Finishes and fittings", items: ["Cracks in plaster and paint", "Doors that swell and stick", "Loose sanitaryware and fittings"] },
-      ],
-    },
     communities: ["Fujairah City", "Dibba Al Fujairah", "Al Aqah", "Kalba (nearby)"],
-    sections: [
-      { title: "Book ahead", paragraphs: ["We schedule Fujairah inspections by appointment. Share your handover or purchase date as early as possible so we can plan travel and still deliver your report in time."] },
-      { title: "New and resale homes", paragraphs: ["We inspect newly handed-over homes and existing ones. For a resale home, the report also shows how well the property has coped with the climate so far — useful when you're agreeing a price."] },
-    ],
     faqs: [
       { q: "Do you cover all of Fujairah?", a: "We cover Fujairah city and the wider emirate by appointment. Tell us your location when requesting a quote." },
       { q: "How far ahead should I book?", a: "Ideally a week or two before your deadline, so we can plan the trip and still get the report to you in time." },
@@ -280,20 +202,7 @@ export const locationsEn: Record<LocationKey, PageContent> = {
         "With a new home, the aim is a complete snag list for the developer. With an older one, it's knowing what you're buying: how old the AC is, whether the plumbing has leaked before and whether past repairs were done properly.",
       ],
     },
-    defects: {
-      title: "What we check in Umm Al Quwain",
-      groups: [
-        { title: "New builds", items: ["Paint, plaster and tile finishing", "Doors, windows and joinery alignment", "Every socket, switch and light"] },
-        { title: "Older homes", items: ["AC age, cooling and drainage", "Signs of old leaks and patch repairs", "Electrical safety at the DB panel"] },
-        { title: "Wet areas", items: ["Falls to shower and floor drains", "Grout, silicone and waterproofing", "Water pressure and hot water"] },
-        { title: "Outside", items: ["Roof and terrace drainage", "Cracks in outside walls", "Gates, railings and external lighting"] },
-      ],
-    },
     communities: ["UAQ waterfront developments", "Al Salamah", "Al Raas", "Al Ramlah", "Umm Al Quwain city centre"],
-    sections: [
-      { title: "New handovers", paragraphs: ["For newly completed homes we run a full snagging inspection and prepare a report ready for the developer."] },
-      { title: "Resale and older homes", paragraphs: ["For existing properties we focus on AC condition, plumbing, electrical safety, moisture and the quality of past repairs."] },
-    ],
     faqs: [
       { q: "How far in advance should I book in UAQ?", a: "Ideally one to two weeks before your handover or purchase deadline." },
       { q: "Can you inspect a UAQ villa before I buy it?", a: "Yes. A pre-purchase inspection gives you the real condition of the villa before you commit, so there are no surprises after transfer." },

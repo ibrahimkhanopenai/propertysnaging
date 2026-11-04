@@ -77,6 +77,7 @@ export function PageTextForm({ page, locale, isLocation, sectionsHelp, initial }
         </label>
       </fieldset>
 
+      {isLocation ? null : (
       <fieldset className="flex flex-col gap-4 rounded-2xl border border-line bg-white p-5">
         <legend className="flex items-center gap-2 px-1 text-lg font-bold">Sections <Badge changed={changed.sections} /></legend>
         <p className="-mt-2 text-sm text-muted">{sectionsHelp} Each heading is an H2. Paragraphs: leave a blank line between them. Bullet points: one per line.</p>
@@ -114,6 +115,7 @@ export function PageTextForm({ page, locale, isLocation, sectionsHelp, initial }
           + Add a section
         </button>
       </fieldset>
+      )}
 
       <div className="sticky bottom-0 flex flex-wrap items-center gap-4 border-t border-line bg-paper/95 py-4 backdrop-blur">
         <button disabled={pending} className="h-11 rounded-lg bg-ink px-6 text-sm font-semibold text-white disabled:opacity-60">{pending ? "Saving…" : "Save"}</button>

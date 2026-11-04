@@ -180,6 +180,9 @@ model LocationItem {
   nameAr    String?          @db.VarChar(160)
   /// COMMUNITY only, e.g. "Emaar"
   developer String?          @db.VarChar(120)
+  /// Optional blurb shown under the name on the location page
+  description   String?      @db.VarChar(400)
+  descriptionAr String?      @db.VarChar(400)
   published Boolean          @default(true)
   sortOrder Int              @default(0)
   createdAt DateTime         @default(now())

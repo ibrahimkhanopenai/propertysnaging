@@ -53,21 +53,22 @@ describe("Admin → Locations", () => {
 
   it("uses saved rows: published only, Arabic name when set", async () => {
     locationItem.findMany.mockResolvedValue([
-      { kind: "AREA", name: "Business Bay", nameAr: "الخليج التجاري", developer: null, published: true },
-      { kind: "AREA", name: "Hidden", nameAr: null, developer: null, published: false },
-      { kind: "COMMUNITY", name: "Dubai Hills Estate", nameAr: null, developer: "Emaar", published: true },
+      { kind: "AREA", name: "Business Bay", nameAr: "الخليج التجاري", developer: null, description: "Central business hub", descriptionAr: "مركز الأعمال", published: true },
+      { kind: "AREA", name: "Hidden", nameAr: null, developer: null, description: null, descriptionAr: null, published: false },
+      { kind: "COMMUNITY", name: "Dubai Hills Estate", nameAr: null, developer: "Emaar", description: "Villas & apartments", descriptionAr: null, published: true },
     ]);
     const ar = await getLocationItems("dubai", "ar", ["Fallback"]);
-    expect(ar.areas).toEqual(["الخليج التجاري"]);
-    expect(ar.communities).toEqual([{ name: "Dubai Hills Estate", developer: "Emaar" }]);
+    // Arabic picks descriptionAr; the community has only an English description, so it falls back to it.
+    expect(ar.areas).toEqual([{ name: "الخليج التجاري", description: "مركز الأعمال" }]);
+    expect(ar.communities).toEqual([{ name: "Dubai Hills Estate", developer: "Emaar", description: "Villas & apartments" }]);
   });
-  it("falls back to the content areas when the emirate has no rows", async () => {
+  it("falls back to the content areas (no descriptions) when the emirate has no rows", async () => {
     locationItem.findMany.mockResolvedValue([]);
-    expect(await getLocationItems("dubai", "en", ["A", "B"])).toEqual({ areas: ["A", "B"], communities: [] });
+    expect(await getLocationItems("dubai", "en", ["A", "B"])).toEqual({ areas: [{ name: "A", description: null }, { name: "B", description: null }], communities: [] });
   });
   it("falls back to the content areas when the DB is down", async () => {
     locationItem.findMany.mockRejectedValue(new Error("ECONNREFUSED"));
-    expect(await getLocationItems("dubai", "en", ["A"])).toEqual({ areas: ["A"], communities: [] });
+    expect(await getLocationItems("dubai", "en", ["A"])).toEqual({ areas: [{ name: "A", description: null }], communities: [] });
   });
   it("default lists cover every location page, with Arabic names", () => {
     for (const key of Object.keys(locationsEn) as LocationKey[]) {

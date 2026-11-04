@@ -20,6 +20,7 @@ import { getPageContent } from "@/content/pages";
 import { getEditablePage } from "@/lib/admin-pages";
 import { defaultFaqs, faqPages, isFaqPage, type FaqPageKey } from "@/lib/faqs";
 import { cleanSections, pageTextFormValues, pageTextLimits, sameSections, type PageTextFormValues } from "@/lib/page-text";
+import type { PageSection } from "@/content/types";
 import en from "@/i18n/dictionaries/en";
 import ar from "@/i18n/dictionaries/ar";
 
@@ -326,6 +327,8 @@ export async function saveLocationItemAction(fd: FormData) {
     name,
     nameAr: optional(fd.get("nameAr"))?.slice(0, 160) ?? null,
     developer: kind === "COMMUNITY" ? (optional(fd.get("developer"))?.slice(0, 120) ?? null) : null,
+    description: optional(fd.get("description"))?.slice(0, 400) ?? null,
+    descriptionAr: optional(fd.get("descriptionAr"))?.slice(0, 400) ?? null,
     published: fd.get("published") === "on",
   } as const;
   // Order is set by dragging (reorderLocationItemsAction); a new row goes to the end of its list
@@ -644,24 +647,31 @@ export async function savePageTextAction(_prev: PageTextState, fd: FormData): Pr
   }
 
   const L = pageTextLimits;
-  const hook = page.group === "location" ? String(fd.get("hook") ?? "").trim() : "";
+  const isLocation = page.group === "location";
+  const hook = isLocation ? String(fd.get("hook") ?? "").trim() : "";
   const intro = String(fd.get("intro") ?? "").trim();
   if (hook.length > L.hook) return { error: `The hook is too long (max ${L.hook} characters).` };
   if (intro.length > L.intro) return { error: `The intro is too long (max ${L.intro} characters).` };
-  let parsed: unknown;
-  try {
-    parsed = JSON.parse(String(fd.get("sections") ?? ""));
-  } catch {
-    return { error: "Section data is invalid." };
+
+  // Location pages have no body sections (only hook + intro are editable); service pages do.
+  let sections: PageSection[] | null = null;
+  if (!isLocation) {
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(String(fd.get("sections") ?? ""));
+    } catch {
+      return { error: "Section data is invalid." };
+    }
+    const cleaned = cleanSections(parsed);
+    if ("error" in cleaned) return { error: cleaned.error };
+    sections = sameSections(cleaned.sections, c.sections ?? []) ? null : cleaned.sections;
   }
-  const cleaned = cleanSections(parsed);
-  if ("error" in cleaned) return { error: cleaned.error };
 
   // Empty or equal to the content file → null = the default
   const data = {
     hook: hook && hook !== (c.hook ?? "") ? hook : null,
     intro: intro && intro !== c.intro ? intro : null,
-    sections: sameSections(cleaned.sections, c.sections) ? null : cleaned.sections,
+    sections,
   };
   if (data.hook === null && data.intro === null && data.sections === null) await prisma.pageText.deleteMany({ where: { page: page.key, locale } });
   else {

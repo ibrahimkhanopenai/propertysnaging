@@ -28,27 +28,33 @@ export async function getGallery(opts: { featuredOnly?: boolean; take?: number }
   return site.defaultGallery.slice(0, opts.take).map((url, i) => ({ id: `d${i}`, url, alt: "Property Inspectors inspection photo", caption: null, category: "inspection" }));
 }
 
-export type CommunityItem = { name: string; developer: string | null };
+export type CommunityItem = { name: string; developer: string | null; description: string | null };
+export type AreaItem = { name: string; description: string | null };
 
 /**
  * Location page lists from Admin → Locations. `emirate` = location page key (dubai, abudhabi, …).
- * Areas: no rows for the emirate (or DB down) → `fallbackAreas` from content/locations.*.ts.
- * Communities: no rows → empty (the block is hidden). Arabic uses nameAr when set, else name.
+ * Areas: no rows for the emirate (or DB down) → `fallbackAreas` from content/locations.*.ts (no descriptions).
+ * Communities: no rows → empty (the block is hidden). Arabic uses nameAr / descriptionAr when set, else the English value.
  */
 export async function getLocationItems(
   emirate: string,
   locale: "en" | "ar",
   fallbackAreas: string[] = [],
-): Promise<{ areas: string[]; communities: CommunityItem[] }> {
+): Promise<{ areas: AreaItem[]; communities: CommunityItem[] }> {
   try {
     const rows = await prisma.locationItem.findMany({ where: { emirate }, orderBy: [{ sortOrder: "asc" }, { id: "asc" }] });
     const label = (r: (typeof rows)[number]) => (locale === "ar" && r.nameAr ? r.nameAr : r.name);
+    const desc = (r: (typeof rows)[number]) => (locale === "ar" && r.descriptionAr ? r.descriptionAr : r.description) || null;
     const areaRows = rows.filter((r) => r.kind === "AREA");
     return {
-      areas: areaRows.length ? areaRows.filter((r) => r.published).map(label) : fallbackAreas,
-      communities: rows.filter((r) => r.kind === "COMMUNITY" && r.published).map((r) => ({ name: label(r), developer: r.developer })),
+      areas: areaRows.length
+        ? areaRows.filter((r) => r.published).map((r) => ({ name: label(r), description: desc(r) }))
+        : fallbackAreas.map((name) => ({ name, description: null })),
+      communities: rows
+        .filter((r) => r.kind === "COMMUNITY" && r.published)
+        .map((r) => ({ name: label(r), developer: r.developer, description: desc(r) })),
     };
   } catch {
-    return { areas: fallbackAreas, communities: [] };
+    return { areas: fallbackAreas.map((name) => ({ name, description: null })), communities: [] };
   }
 }

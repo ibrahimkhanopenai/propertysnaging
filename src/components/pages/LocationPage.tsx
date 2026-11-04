@@ -6,8 +6,6 @@ import { Kicker } from "@/components/ui/Kicker";
 import { Reveal } from "@/components/ui/Reveal";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { WhyChoose } from "@/components/home/WhyChoose";
-import { Process } from "@/components/home/Process";
 import { SampleReportSection } from "@/components/home/SampleReportSection";
 import { FinalCta } from "@/components/home/FinalCta";
 import { Faq } from "./Faq";
@@ -27,10 +25,10 @@ import { getFaqs, isFaqPage } from "@/lib/faqs";
 /**
  * Location page (Dubai, Abu Dhabi … UAQ) built as an organic-search landing page (CRO audit 2026-10):
  * hero with hook, proofs, one copper CTA + WhatsApp and a real photo → key figures →
- * why snagging matters here + defects we find (with report photos) → local tips → communities + areas (Admin → Locations) →
- * why choose us → process → sample report → city FAQ → related links → quote form (#quote).
+ * why snagging matters here (with report photos) → communities + areas (Admin → Locations) →
+ * sample report → city FAQ → related links → quote form (#quote).
  * URLs, <title> and meta description are unchanged (legacy SEO). Copy: content/locations.{en,ar}.ts;
- * hook, intro and local tips can be overridden in Admin → Page text, the FAQs in Admin → FAQs.
+ * hook and intro can be overridden in Admin → Page text, the FAQs in Admin → FAQs.
  */
 export async function LocationPage({ pageKey, locale }: { pageKey: PageKey; locale: Locale }) {
   const cfg = await getSettings();
@@ -94,9 +92,9 @@ export async function LocationPage({ pageKey, locale }: { pageKey: PageKey; loca
       {/* KEY FIGURES (Admin → Settings — same numbers as the homepage) */}
       <section aria-label={dict.home.trust.title} className="border-b border-line bg-mist">
         <Container>
-          <ul className="grid grid-cols-2 gap-px py-2 sm:grid-cols-3 lg:grid-cols-5">
-            {cfg.stats.map((s) => (
-              <li key={s.key} className="flex flex-col items-center gap-1.5 px-3 py-5 text-center max-sm:last:col-span-2">
+          <ul className="grid grid-cols-2 gap-px py-2 lg:grid-cols-4">
+            {cfg.stats.filter((s) => s.key !== "inspections").map((s) => (
+              <li key={s.key} className="flex flex-col items-center gap-1.5 px-3 py-5 text-center">
                 <span dir="ltr" className="font-display text-[clamp(1.6rem,2.6vw,2.1rem)] font-extrabold leading-none tracking-[-0.02em] text-ink">{s.value}</span>
                 <span className="text-[13px] font-semibold uppercase leading-snug tracking-[0.1em] text-muted">{dict.home.trust.stats[s.key]}</span>
               </li>
@@ -105,41 +103,18 @@ export async function LocationPage({ pageKey, locale }: { pageKey: PageKey; loca
         </Container>
       </section>
 
-      {/* WHY IT MATTERS HERE + DEFECTS WE FIND */}
-      {c.why || c.defects ? (
+      {/* WHY IT MATTERS HERE (full width) + REPORT PHOTOS */}
+      {c.why ? (
         <section className="bg-white py-16 md:py-24">
           <Container className="flex flex-col gap-14">
-            <div className="grid gap-10 lg:grid-cols-12 lg:gap-14">
-              {c.why ? (
-                <Reveal className="flex flex-col gap-5 lg:col-span-5">
-                  <h2 className="font-display text-[clamp(1.8rem,3.2vw,2.5rem)] font-extrabold leading-[1.08] tracking-[-0.02em] text-balance">{c.why.title}</h2>
-                  {c.why.paragraphs?.map((p) => (
-                    <p key={p} className="text-[17px] leading-relaxed text-muted">{p}</p>
-                  ))}
-                </Reveal>
-              ) : null}
-              {c.defects ? (
-                <Reveal className="flex flex-col gap-6 lg:col-span-7">
-                  <h2 className="font-display text-2xl font-extrabold leading-tight tracking-[-0.01em]">{c.defects.title}</h2>
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    {c.defects.groups.map((g) => (
-                      <div key={g.title} className="rounded-2xl border border-line bg-white p-5">
-                        <h3 className="font-display text-lg font-extrabold">{g.title}</h3>
-                        <ul className="mt-3 flex flex-col gap-2">
-                          {g.items.map((it) => (
-                            <li key={it} className="flex gap-2.5 text-[15px] leading-snug text-muted">
-                              {/* red = defects only (design system) */}
-                              <span aria-hidden="true" className="mt-[7px] size-1.5 shrink-0 rounded-full bg-snag" />
-                              {it}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
-                  </div>
-                </Reveal>
-              ) : null}
-            </div>
+            <Reveal className="flex flex-col gap-5">
+              <h2 className="max-w-3xl font-display text-[clamp(1.8rem,3.2vw,2.5rem)] font-extrabold leading-[1.08] tracking-[-0.02em] text-balance">{c.why.title}</h2>
+              <div className="grid gap-x-12 gap-y-4 text-[17px] leading-relaxed text-muted md:grid-cols-2">
+                {c.why.paragraphs?.map((p) => (
+                  <p key={p}>{p}</p>
+                ))}
+              </div>
+            </Reveal>
 
             <Reveal className="flex flex-col gap-5">
               <Kicker>{ui.findingPhotosTitle}</Kicker>
@@ -163,33 +138,10 @@ export async function LocationPage({ pageKey, locale }: { pageKey: PageKey; loca
         </section>
       ) : null}
 
-      {/* LOCAL TIPS, then COMMUNITIES (left) + AREAS (right) — both lists from Admin → Locations
+      {/* COMMUNITIES (left) + AREAS (right) — both lists from Admin → Locations
           (areas fall back to content/locations.*.ts; communities are hidden until added) */}
       <section className="border-y border-line bg-mist py-16 md:py-20">
         <Container className="flex flex-col gap-12 md:gap-14">
-          {c.sections.length ? (
-            <div className="grid gap-10 md:grid-cols-2 md:gap-12">
-              {c.sections.map((s, i) => (
-                <Reveal key={i} className="flex flex-col gap-3">
-                  <h2 className="font-display text-2xl font-extrabold leading-tight">{s.title}</h2>
-                  {s.paragraphs?.map((p, j) => (
-                    <p key={j} className="leading-relaxed text-muted">{p}</p>
-                  ))}
-                  {s.bullets ? (
-                    <ul className="flex flex-col gap-2.5">
-                      {s.bullets.map((b, j) => (
-                        <li key={j} className="flex gap-3 leading-relaxed">
-                          <Icon name="check" size={20} className="mt-0.5 shrink-0 text-brand-dark" />
-                          <span>{b}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : null}
-                </Reveal>
-              ))}
-            </div>
-          ) : null}
-
           {communities.length || areas.length ? (
             <div className={communities.length && areas.length ? "grid gap-6 lg:grid-cols-2" : "grid gap-6"}>
               {communities.length ? (
@@ -207,6 +159,7 @@ export async function LocationPage({ pageKey, locale }: { pageKey: PageKey; loca
                         <span className="flex min-w-0 flex-col">
                           <span className="font-semibold leading-snug text-ink">{x.name}</span>
                           {x.developer ? <span className="text-[13px] text-subtle">{x.developer}</span> : null}
+                          {x.description ? <span className="mt-0.5 text-[13px] leading-snug text-muted">{x.description}</span> : null}
                         </span>
                       </li>
                     ))}
@@ -216,11 +169,16 @@ export async function LocationPage({ pageKey, locale }: { pageKey: PageKey; loca
               {areas.length ? (
                 <Reveal className="flex flex-col gap-5 rounded-[22px] border border-line bg-white p-6 md:p-8">
                   <h2 className="font-display text-2xl font-extrabold leading-tight">{ui.areasIn.replace("{city}", city)}</h2>
-                  <ul className="flex flex-wrap gap-2">
+                  <ul className="grid gap-x-6 gap-y-4 sm:grid-cols-2">
                     {areas.map((x) => (
-                      <li key={x} className="inline-flex items-center gap-1.5 rounded-full border border-line bg-mist px-3.5 py-2 text-[15px]">
-                        <Icon name="pin" size={15} className="shrink-0 text-brand-dark" />
-                        {x}
+                      <li key={x.name} className="flex items-start gap-3">
+                        <span aria-hidden="true" className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-brand-line bg-brand-tint text-brand-dark">
+                          <Icon name="pin" size={17} />
+                        </span>
+                        <span className="flex min-w-0 flex-col">
+                          <span className="font-semibold leading-snug text-ink">{x.name}</span>
+                          {x.description ? <span className="mt-0.5 text-[13px] leading-snug text-muted">{x.description}</span> : null}
+                        </span>
                       </li>
                     ))}
                   </ul>
@@ -232,8 +190,6 @@ export async function LocationPage({ pageKey, locale }: { pageKey: PageKey; loca
         </Container>
       </section>
 
-      <WhyChoose dict={dict} />
-      <Process dict={dict} />
       <SampleReportSection locale={locale} dict={dict} quoteHref="#quote" />
 
       {faqs.length ? <Faq title={dict.common.faqTitle} items={faqs} /> : null}

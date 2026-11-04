@@ -74,7 +74,7 @@ export async function ContentPage({ pageKey, locale, children }: { pageKey: Page
         </section>
       ) : null}
 
-      {c.sections.length > 0 ? (
+      {c.sections && c.sections.length > 0 ? (
         <section className="py-16 md:py-20">
           <Container className="grid gap-x-16 gap-y-12 md:grid-cols-2">
             {c.sections.map((s, i) => (

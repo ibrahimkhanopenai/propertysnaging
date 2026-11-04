@@ -31,9 +31,8 @@ export type PageContent = {
   download?: { href: string };
   /** Location pages: "Why snagging matters in {city}" */
   why?: PageSection;
-  /** Location pages: defects we find there, grouped (based on the WordPress site's list, written per city) */
-  defects?: { title: string; groups: Array<{ title: string; items: string[] }> };
-  sections: PageSection[];
+  /** Service / info pages: body sections (Admin → Page text can override these). Location pages have none. */
+  sections?: PageSection[];
   faqs?: Array<{ q: string; a: string }>;
   /** Internal links shown as "Related services" */
   related?: RouteKey[];

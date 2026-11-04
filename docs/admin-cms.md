@@ -23,12 +23,12 @@ URL: `/admin/` (login at `/admin/login/`). Admin is `noindex` and blocked in rob
 | Settings — phone, WhatsApp, email, address, key figures, Google review + sample report links | `/admin/settings/` |
 | FAQs — homepage + each service/location page (EN/AR, drag order, show/hide); homepage + service FAQs also feed /faqs/ | `/admin/faqs/` |
 | Defects we find — homepage "Real findings" items (photo + ALT, category, defect, recommendation; EN/AR, drag order) | `/admin/findings/` |
-| Page text — service/location pages: hook (locations), intro, sections; per language | `/admin/page-text/` |
+| Page text — hook (location pages), intro (service + location pages), sections (service pages only); per language | `/admin/page-text/` |
 
 ## Locations (`LocationItem`)
 - Per emirate (location page key: `dubai`, `abudhabi`, `sharjah`, `ajman`, `rak`, `fujairah`, `uaq`) two lists:
-  **Communities we inspect in {city}** (`COMMUNITY`: name EN/AR + developer) and **Areas we cover in {city}** (`AREA`: name EN/AR).
-  On the page: local tips on top, then communities (left) + areas (right).
+  **Communities we inspect in {city}** (`COMMUNITY`: name EN/AR + developer + description EN/AR) and **Areas we cover in {city}** (`AREA`: name EN/AR + description EN/AR).
+  On the page: communities (left) + areas (right); each item shows its name, developer (communities) and description under the name.
 - Each row: show/hide, edit, delete. **Order = drag** the ⠿ handle (mouse or touch; or focus it and press ↑/↓); the order saves at once
   (`reorderLocationItemsAction`, sortOrder 1…n). New rows go to the end. Saving regenerates that location page (EN + AR) at once.
 - Empty list: areas fall back to `content/locations.*.ts`; communities are hidden. The **Load defaults** buttons (and `npm run db:seed`) fill an
@@ -73,11 +73,11 @@ URL: `/admin/` (login at `/admin/login/`). Admin is `noindex` and blocked in rob
   (`/images/scope/paint-and-walls.jpg`), because it is positioned for that photo.
 
 ## Page text (`PageText`, one row per page + language)
-- Service + location pages (`editablePages`, `src/lib/admin-pages.ts`). Fields: hook (location pages only), intro, sections
-  (`[{ id?, title, paragraphs?, bullets? }]`, max 12; each needs a heading and a paragraph or bullet; headings must be unique).
+- Service + location pages (`editablePages`, `src/lib/admin-pages.ts`). Fields: hook (location pages only), intro, and sections
+  (`[{ id?, title, paragraphs?, bullets? }]`, max 12; each needs a heading and a paragraph or bullet; headings must be unique) — **sections are service pages only**; location pages have no body sections, so their editor shows just hook + intro.
 - Read with `await getPageContentWithText(pageKey, locale)` (`src/lib/page-text.ts`) in `ContentPage` / `LocationPage`. A null field (or no row,
   or MySQL down) uses the content file. Text equal to the content file stores null, so later code edits still show; **Reset to default** deletes the row.
-- Not editable here (SEO, AGENTS.md §5): URL, `<title>`, meta description, H1, breadcrumb. Location "Why snagging matters" + defect groups,
+- Not editable here (SEO, AGENTS.md §5): URL, `<title>`, meta description, H1, breadcrumb. Location "Why snagging matters",
   card summaries and info pages are still code.
 - Client rule: every service/location page keeps unique copy (no keyword-swapped clones).
 

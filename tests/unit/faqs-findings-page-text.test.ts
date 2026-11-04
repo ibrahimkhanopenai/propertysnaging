@@ -136,6 +136,7 @@ describe("Admin → Page text", () => {
     for (const p of editablePages) {
       for (const l of ["en", "ar"] as const) {
         const c = getPageContent(p.key, l);
+        if (!c.sections) continue; // location pages have no body sections (only hook + intro are editable)
         const r = cleanSections(c.sections);
         expect("sections" in r, `${p.key}/${l}`).toBe(true);
         if ("sections" in r) expect(sameSections(r.sections, c.sections)).toBe(true);
