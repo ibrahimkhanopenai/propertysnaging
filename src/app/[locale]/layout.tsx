@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
-import { DM_Sans, IBM_Plex_Sans_Arabic, Manrope } from "next/font/google";
+import { dmSans, manrope, plexArabic } from "@/fonts";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import "../globals.css";
 import { Header } from "@/components/layout/Header";
@@ -18,10 +18,6 @@ import { isLocale, localeDir, locales } from "@/i18n/config";
 import { organizationSchema, websiteSchema } from "@/lib/schema";
 import { getSettings } from "@/lib/settings";
 import { site } from "@/lib/site";
-
-const manrope = Manrope({ subsets: ["latin"], weight: ["600", "700", "800"], variable: "--font-manrope", display: "swap" });
-const dmSans = DM_Sans({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-dmsans", display: "swap" });
-const plexArabic = IBM_Plex_Sans_Arabic({ subsets: ["arabic"], weight: ["400", "500", "600", "700"], variable: "--font-plex-ar", display: "swap" });
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));

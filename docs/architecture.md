@@ -37,7 +37,7 @@ Static page folders always win over the catch-all, so slugs that clash with page
 
 ## Performance choices
 - No UI kit, no icon library, no animation library. Client JS only for: quote form, mobile menu, language switch.
-- `next/font` (self-hosted Google fonts, `display: swap`); Arabic font loaded only on `/ar/`.
+- `next/font/local` with woff2 files vendored in `src/fonts/` (defined in `src/fonts/index.ts`; regenerate via `scripts/download-fonts.mjs`), `display: swap`; Arabic font loaded only on `/ar/`. Not `next/font/google` — its build-time fetch to Google fails intermittently in CI (vercel/next.js#99114).
 - `next/image` AVIF/WebP, explicit `sizes`, only hero is `priority`.
 - Static/ISR everywhere; 1-day cache headers on `/images/*` and `/downloads/*` (files are replaced in place), long cache on `/uploads/*`.
 - GTM: Google's official snippet server-rendered in `<head>` + `<noscript>` right after `<body>` (`components/analytics/GoogleTagManager.tsx`; gtm.js loads async). GA4-only fallback via `@next/third-parties` (after hydration).
